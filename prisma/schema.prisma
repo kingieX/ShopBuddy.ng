@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            String   @id @default(uuid()) @map("id") // Use UUID for id
+  title         String
+  description   String
+  mainImage     String
+  galleryImages String[]
+  regularPrice  Float
+  salePrice     Float?
+  status        String
+  categoryId    String   @map("category_id") // Foreign key to Category
+  category      Category @relation(fields: [categoryId], references: [id]) // Relation to Category
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("products") // Map table name to "products"
+}
+
+model Category {
+  id       String    @id @default(uuid()) @map("id") // Use UUID for id
+  name     String    @unique
+  products Product[] @relation // No 'fields' or 'references' needed here
+
+  @@map("categories") // Map table name to "categories"
+}
