@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import SuccessModal from "./SuccessModal";
 import LoadingSpinner from "@/app/admin/components/LoadingSpinner";
 import { useRouter } from "next/navigation";
+// import { useNavigate } from 'react-router-dom';
 import { Category, Product } from "@prisma/client";
 
 interface EditProductFormProps {
@@ -22,6 +23,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  // const navigate = useNavigate();
 
   // Prefill the form with the product's data
   const formik = useFormik({
@@ -78,7 +80,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
 
       // API call for updating the product
     try {
-        const response = await fetch(`/api/admin/edit-product/${product.id}`, {
+        const response = await fetch(`/api/products/${product.id}`, {
             method: "PUT",
             body: formData,
         });
@@ -100,19 +102,19 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
     },
   });
 
-  const handleMainImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      formik.setFieldValue("mainImage", file);
-    }
-  };
+  // const handleMainImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     formik.setFieldValue("mainImage", file);
+  //   }
+  // };
 
-  const handleImageGalleryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    if (files.length <= 4) {
-      setImageGallery(files);
-    }
-  };
+  // const handleImageGalleryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = Array.from(event.target.files || []);
+  //   if (files.length <= 4) {
+  //     setImageGallery(files);
+  //   }
+  // };
 
    // Handle closing the modal
    const handleCloseModal = () => {
@@ -123,12 +125,13 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
   // Handle adding another product
   const handleAddAnotherProduct = () => {
     setShowModal(false);
-    formik.resetForm();
-    setImageGallery([]);
+    // formik.resetForm();
+    // setImageGallery([]);
+    // navigate('/admin/products')
   };
 
   return (
-    <div className="w-full py-4;">
+    <div className="w-full">
       <form onSubmit={formik.handleSubmit} className="w-full flex lg:flex-row flex-col justify-center items-start gap-4">
         <div className="w-full lg:w-3/5 space-y-4 px-4">
           <div className="max-w-4xl p-4 bg-white rounded lg:shadow-lg shadow">
@@ -176,8 +179,8 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
             </div>
           </div>
 
-          <div className="max-w-4xl p-4 bg-white rounded lg:shadow-lg shadow">
-            {/* Main Image */}
+          {/* <div className="max-w-4xl p-4 bg-white rounded lg:shadow-lg shadow">
+            // Main Image
             <div className="mb-6">
               <label htmlFor="mainImage" className="block font-medium">
                 Product Image
@@ -214,7 +217,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
               )}
             </div>
 
-            {/* Image Gallery */}
+            // Image Gallery
             <div>
               <label htmlFor="gallery" className="block font-medium">
                 Product Gallery
@@ -254,7 +257,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
                 </div>
             )}
             </div>
-          </div>
+          </div> */}
 
           {/* Prices */}
           <div className="max-w-4xl p-4 bg-white rounded lg:shadow-lg shadow">
@@ -303,36 +306,32 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
             </div>
           </div>
 
+        </div>
+
+        <div className="w-full lg:w-1/3 space-y-4 px-4">
           {/* Status */}
           <div className="max-w-4xl p-4 bg-white rounded lg:shadow-lg shadow">
             <label htmlFor="status" className="block font-medium">
               Product Status
             </label>
             <select
-                id="status"
-                name="status"
-                className={`mt-1 block w-full border border-gray-300 rounded-md p-2 ${
-                    formik.touched.status && formik.errors.status
-                        ? "border-red-500"
-                        : ""
-                }`}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.status}
+              id="status"
+              name="status"
+              className={`mt-1 block w-full border border-gray-300 rounded-md p-2 ${formik.touched.status && formik.errors.status ? "border-red-500" : ""}`}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.status}
             >
-                <option value="">Select Status</option>
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-                <option value="archived">Archived</option>
+              <option value="">Select Status</option>
+              <option value="on_sale">On Sale</option>
+              <option value="sold_out">Sold Out</option>
             </select>
             {formik.touched.status && formik.errors.status ? (
               <p className="text-error text-sm">{formik.errors.status}</p>
             ) : null}
           </div>
-        </div>
 
-        {/* Categories */}
-        <div className="w-full lg:w-1/3 space-y-4 px-4">
+          {/* Categories */}
           <div className="max-w-md p-4 bg-white rounded lg:shadow-lg shadow">
             <label htmlFor="categoryId" className="block font-medium">
               Product Category
@@ -363,15 +362,15 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
 
           {/* Add New Category */}
           <div className="max-w-md p-4 bg-white rounded lg:shadow-lg shadow">
-            <div>
-              <label htmlFor="newCategory" className="block font-medium">
+            <div className="w-full">
+              <label htmlFor="newCategory" className="block font-medium mb-2">
                 Or Add New Category
               </label>
               <input
                 id="newCategory"
                 name="newCategory"
                 type="text"
-                className="border"
+                className="border w-full py-2 px-4"
                 onChange={(e) => setNewCategory(e.target.value)}
                 onBlur={formik.handleBlur}
                 value={newCategory}
@@ -382,22 +381,24 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, initialCateg
           </div>
 
           {/* Submit Button */}
-          <div className="max-w-md p-4 bg-white rounded lg:shadow-lg shadow">
+          <button
+            type="submit"
+            className="w-full bg-button text-white py-2 px-4 mt-4 rounded-md hover:bg-blue-600 transition-colors flex justify-center items-center gap-2"
+            disabled={loading}
+          >
             {loading ? (
+            <>
               <LoadingSpinner />
+              Saving Changes...
+            </>
             ) : (
-              <button
-                type="submit"
-                className="w-full px-6 py-3 text-white bg-blue-600 rounded hover:bg-blue-700"
-              >
-                Save Changes
-              </button>
+              "Save Change"
             )}
-          </div>
+          </button>
+        </div>
 
           {/* Success Modal */}
           {showModal && <SuccessModal onClose={handleCloseModal} onAddAnotherProduct={handleAddAnotherProduct} />}
-        </div>
       </form>
     </div>
   );

@@ -3,6 +3,7 @@
 import prisma from '@/lib/db/prisma';
 import EditProductForm from './_components/EditProductForm';
 import { Product, Category } from '@prisma/client';
+import AdminLayout from '../../page';
 
 // Server Component (this can be a server action or a page component)
 const EditProductPage = async ({ params }: { params: { id: string } }) => {
@@ -23,9 +24,13 @@ const EditProductPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
+    <AdminLayout>
     <div>
+      {/* Page Heading */}
+      <h1 className="text-xl lg:text-2xl text-black font-semibold ml-4 mb-4">Edit Product</h1>
       <EditProductForm product={product} initialCategories={initialCategories} />
     </div>
+    </AdminLayout>
   );
 };
 

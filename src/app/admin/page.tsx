@@ -17,7 +17,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         <TopBar />
 
         {/* Content below the top bar */}
-        <div className="flex-1 overflow-y-auto pt-16 p-4 mt-4 bg-gray-50">
+        <div className="flex-1 overflow-y-auto lg:pt-16 p-4 mt-4 bg-gray-50">
           {children}
         </div>
       </div>

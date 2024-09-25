@@ -2,11 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaTags, FaShoppingCart, FaUsers, FaCogs, FaClipboardList, FaThLarge } from 'react-icons/fa';
 import { TfiHome } from "react-icons/tfi";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { BiCategoryAlt } from "react-icons/bi";
 import { GiShoppingCart } from "react-icons/gi";
+import { BsCartPlus, BsCartCheck } from "react-icons/bs";
+import { MdPeopleOutline } from "react-icons/md";
+import { MdOutlineSettingsSuggest } from "react-icons/md";
+
 
 import Logo from '../../assets/favicon.svg'
 import Image from 'next/image';
@@ -19,10 +22,10 @@ const Sidebar = () => {
     { name: "Billboards", href: "/admin/billboards", icon: <RiAdvertisementLine /> },
     { name: "Categories", href: "/admin/categories", icon: <BiCategoryAlt /> },
     { name: "Products", href: "/admin/products", icon: <GiShoppingCart /> },
-    { name: "Add Product", href: "/admin/add-product", icon: <FaClipboardList /> },
-    { name: "Orders", href: "/admin/orders", icon: <FaClipboardList /> },
-    { name: "Customers", href: "/admin/customers", icon: <FaUsers /> },
-    { name: "Settings", href: "/admin/settings", icon: <FaCogs /> },
+    { name: "Add Product", href: "/admin/add-product", icon: <BsCartPlus /> },
+    { name: "Orders", href: "/admin/orders", icon: <BsCartCheck /> },
+    { name: "Customers", href: "/admin/customers", icon: <MdPeopleOutline /> },
+    { name: "Settings", href: "/admin/settings", icon: <MdOutlineSettingsSuggest /> },
   ];
 
   return (

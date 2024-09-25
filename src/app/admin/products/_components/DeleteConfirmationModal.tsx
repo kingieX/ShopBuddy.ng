@@ -22,12 +22,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
           <DialogTitle>Delete Product</DialogTitle>
         </DialogHeader>
         <div className="mt-2">
-          <p>
+          <p className='lg:text-left text-center lg:text-lg text-sm'>
             Are you sure you want to delete the product "<strong>{productName}</strong>"? This
             action cannot be undone.
           </p>
         </div>
-        <DialogFooter className="mt-4 flex justify-end space-x-4">
+        <DialogFooter className="mt-4 flex lg:flex-row flex-col gap-2 lg:justify-end lg:space-x-4">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded"
