@@ -23,6 +23,8 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ initialCategories }) =>
   const [imageGallery, setImageGallery] = useState<File[]>([]);
   const [showModal, setShowModal] = useState(false); 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   const router = useRouter();
 
@@ -131,9 +133,22 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ initialCategories }) =>
 
   const handleImageGalleryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    if (files.length <= 4) {
-      setImageGallery(files);
+
+    // Check if adding these files exceeds the limit
+    if (imageGallery.length + files.length > 4) {
+      setError('You can only upload a maximum of 4 images.');
+      return;
     }
+
+    // Clear error if image count is valid
+    setError(null);
+
+    // Add new images to the gallery
+    setImageGallery((prevImages) => [...prevImages, ...files]);
+  };
+
+  const handleImageDelete = (index: number) => {
+    setImageGallery((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   return (
@@ -225,43 +240,54 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ initialCategories }) =>
 
                       {/* Image Gallery */}
                       <div>
-                          <label htmlFor="gallery" className="block font-medium">
-                              Product Gallery
-                          </label>
-                          <p className="text-sm text-gray-600">
-                              Add Product Gallery Images (Max 4)
-                          </p>
-                          <input
-                              id="gallery"
-                              name="gallery"
-                              type="file"
-                              accept="image/*"
-                              multiple
-                              onChange={handleImageGalleryChange}
-                              className="hidden" />
-                          <label htmlFor="gallery" className="block mt-2 cursor-pointer">
-                              <div className="flex items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-md p-6">
-                                  <span>
-                                      Drag'n'drop some files here, or click to select files
-                                  </span>
-                              </div>
-                          </label>
-                        {imageGallery.length > 0 && (
-                            <div className="grid grid-cols-2 gap-4 mt-4">
-                                {imageGallery.map((image, idx) => (
-                                    <div key={idx} className="relative">
-                                        <Image
-                                            src={URL.createObjectURL(image)}
-                                            alt={`Gallery Image ${idx + 1}`}
-                                            width={150}
-                                            height={150}
-                                            className="rounded"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                      </div>
+      <label htmlFor="gallery" className="block font-medium">
+        Product Gallery
+      </label>
+      <p className="text-sm text-gray-600">Add Product Gallery Images (Max 4)</p>
+
+      <input
+        id="gallery"
+        name="gallery"
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageGalleryChange}
+        className="hidden"
+      />
+      <label htmlFor="gallery" className="block mt-2 cursor-pointer">
+        <div className="flex items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-md p-6">
+          <span>Drag'n'drop some files here, or click to select files</span>
+        </div>
+      </label>
+
+      {/* Display error message */}
+      {error && <p className="text-red-600 mt-2">{error}</p>}
+
+      {/* Image Gallery */}
+      {imageGallery.length > 0 && (
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          {imageGallery.map((image, idx) => (
+            <div key={idx} className="relative">
+              <Image
+                src={URL.createObjectURL(image)}
+                alt={`Gallery Image ${idx + 1}`}
+                width={150}
+                height={150}
+                className="rounded"
+              />
+              {/* X Button to Delete */}
+              <button
+                type="button"
+                onClick={() => handleImageDelete(idx)}
+                className="absolute top-0 right-21 text-danger-dark rounded-full p-2"
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
                   </div>
               </div>
 
@@ -356,15 +382,15 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ initialCategories }) =>
                   ) : null}
               </div>
               {/* New Category Input */}
-              <div>
-                  <label htmlFor="newCategory">New Category</label>
+              <div className="w-full flex flex-col">
+                  <label htmlFor="newCategory" className="mb-1">New Category</label>
                   <input
                       type="text"
                       id="newCategory"
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
                       placeholder="Enter a new category"
-                      className="border" />
+                      className="border px-4 py-2" />
               </div>
 
           </div>

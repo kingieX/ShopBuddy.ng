@@ -24,7 +24,7 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
     return (
       <AdminLayout>
         <div>
-          <h1>
+          <h1 className="text-xl lg:text-2xl text-black font-semibold ml-4 mb-4">
             Product Details
           </h1>
           <ProductDetailComponent product={product} />

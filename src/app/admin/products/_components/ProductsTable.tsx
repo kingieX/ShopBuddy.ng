@@ -110,7 +110,9 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
                         {/* Tooltip for View */}
                         <Tooltip.Root>
                           <Tooltip.Trigger asChild>
-                            <EyeIcon className="h-5 w-5 cursor-pointer" />
+                            <Link href={`/admin/products/${product.id}`}>
+                              <EyeIcon className="h-5 w-5 cursor-pointer" />
+                            </Link>
                           </Tooltip.Trigger>
                           <Tooltip.Portal>
                             <Tooltip.Content className="bg-gray-700 text-white px-2 py-1 rounded text-sm">

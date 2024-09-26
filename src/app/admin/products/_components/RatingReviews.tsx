@@ -14,7 +14,7 @@ const RatingReviews = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="max-w-lg py-4">
       <h2 className="text-xl font-bold mb-4">Ratings & Reviews</h2>
       <div className="flex items-center mb-4">
         {/* Average Rating */}
@@ -44,7 +44,10 @@ const RatingReviews = () => {
       {/* Rating Breakdown */}
       {Object.entries(ratings).map(([star, count]) => (
         <div key={star} className="flex items-center mb-2">
-            <span className="w-6 text-sm font-medium">{star} <FaStar className="inline text-yellow-500" /></span>
+          <div className='flex space-x-1'>
+            <span className="text-sm text-gray-500 font-medium">{star}</span>
+            <FaStar className="inline text-gray-500" />
+          </div>
             <div className="w-full bg-gray-200 rounded-full h-2 mx-2">
             <div
                 className={`h-2 rounded-full ${
