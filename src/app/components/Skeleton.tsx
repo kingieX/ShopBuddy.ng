@@ -1,10 +1,10 @@
 // components/ui/Skeleton.tsx
 import React from 'react';
 
-const Skeleton = ({ width = "100%", height = "20px" }) => {
+const Skeleton = ({ width = '100%', height = '20px' }) => {
   return (
     <div
-      className="animate-pulse bg-gray-300 rounded"
+      className="animate-pulse rounded bg-gray-300"
       style={{ width, height }}
     ></div>
   );

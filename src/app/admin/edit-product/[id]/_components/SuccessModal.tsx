@@ -6,8 +6,11 @@ interface SuccessModalProps {
   onAddAnotherProduct: () => void;
 }
 
-const SuccessModal: React.FC<SuccessModalProps> = ({ onClose, onAddAnotherProduct }) => {
-  const [isVisible, setIsVisible] = useState(false);  // Modal visibility state with animation
+const SuccessModal: React.FC<SuccessModalProps> = ({
+  onClose,
+  onAddAnotherProduct,
+}) => {
+  const [isVisible, setIsVisible] = useState(false); // Modal visibility state with animation
 
   useEffect(() => {
     // Start animation when the component is mounted
@@ -15,25 +18,30 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ onClose, onAddAnotherProduc
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
       {/* Add animation class based on visibility */}
       <div
         className={`transform transition-all duration-500 ease-out ${
           isVisible ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
-        } flex flex-col justify-center items-center bg-white rounded-lg p-8 shadow-lg max-w-md w-full mx-4`}
+        } mx-4 flex w-full max-w-md flex-col items-center justify-center rounded-lg bg-white p-8 shadow-lg`}
       >
-        <h2 className="lg:text-2xl text-lg text-center font-semibold mb-4 animate-pulse">Product Updated Successfully!</h2>
-        <p className="lg:text-lg text-sm mb-6 text-center">Changes made to the product will be updated now!!!</p>
+        <h2 className="mb-4 animate-pulse text-center text-lg font-semibold lg:text-2xl">
+          Product Updated Successfully!
+        </h2>
+        <p className="mb-6 text-center text-sm lg:text-lg">
+          Changes made to the product will be updated now!!!
+        </p>
         <div className="flex justify-center gap-4">
-          <Link href='/admin/products'
+          <Link
+            href="/admin/products"
             // onClick={onAddAnotherProduct}
-            className="bg-button text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            className="rounded bg-button px-4 py-2 text-white transition hover:bg-blue-600"
           >
             View Product
           </Link>
           <button
             onClick={onClose}
-            className="border border-gray-500 px-4 py-2 rounded hover:bg-gray-300 transition"
+            className="rounded border border-gray-500 px-4 py-2 transition hover:bg-gray-300"
           >
             Cancel
           </button>

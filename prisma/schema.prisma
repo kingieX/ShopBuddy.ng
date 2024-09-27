@@ -31,3 +31,15 @@ model Category {
 
   @@map("categories") // Map table name to "categories"
 }
+
+model Promotion {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  imageUrl     String   // Image for the promotion
+  isActive     Boolean  @default(true)  // Promotion active status
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

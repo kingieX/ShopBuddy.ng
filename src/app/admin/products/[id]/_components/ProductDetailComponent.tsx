@@ -32,10 +32,9 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
   const images = [product.mainImage, ...product.galleryImages];
 
   return (
-    <div className="lg:max-w-5xl max-w-sm lg:mx-auto mx-0 lg:px-8 lg:py-8 px-4 py-4 bg-white rounded-md shadow-md">
-      
-      <div className="flex lg:flex-row flex-col-reverse lg:space-x-8">
-        <div className="w-full max-w-sm lg:w-1/2 lg:mb-0">
+    <div className="mx-0 max-w-sm rounded-md bg-white px-4 py-4 shadow-md lg:mx-auto lg:max-w-5xl lg:px-8 lg:py-8">
+      <div className="flex flex-col-reverse lg:flex-row lg:space-x-8">
+        <div className="w-full max-w-sm lg:mb-0 lg:w-1/2">
           {/* Main Swiper for the main image */}
           <Swiper
             modules={[Navigation, Pagination]} // Corrected module usage
@@ -43,7 +42,7 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             slidesPerView={1}
             navigation // Enable navigation (previous/next buttons)
             pagination={{ clickable: true }} // Enable pagination (dots)
-            className="rounded-lg overflow-hidden border"
+            className="overflow-hidden rounded-lg border"
           >
             {images.map((image, index) => (
               <SwiperSlide key={index}>
@@ -52,7 +51,7 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
                   alt={`Product image ${index}`}
                   width={600}
                   height={600}
-                  className="object-cover w-full h-auto max-w-sm " // Smaller height on mobile
+                  className="h-auto w-full max-w-sm object-cover" // Smaller height on mobile
                 />
               </SwiperSlide>
             ))}
@@ -70,13 +69,13 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
           >
             {images.map((image, index) => (
               <SwiperSlide key={index}>
-                <div className="border rounded-md max-w-sm cursor-pointer overflow-hidden">
+                <div className="max-w-sm cursor-pointer overflow-hidden rounded-md border">
                   <Image
                     src={image}
                     alt={`Thumbnail ${index}`}
                     width={150}
                     height={150}
-                    className="object-cover w-full h-full"
+                    className="h-full w-full object-cover"
                   />
                 </div>
               </SwiperSlide>
@@ -84,10 +83,12 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
           </Swiper>
         </div>
 
-        <div className="lg:w-1/2 w-full px-8">
-          <div className="flex flex-col justify-center items-start space-y-1 border-b pb-1 mb-2">
-            <h1 className="lg:text-4xl text-2xl font-semibold mb-2">{product.title}</h1>
-            <div className='flex justify-center place-items-baseline text-gray-500 space-x-1'>
+        <div className="w-full px-8 lg:w-1/2">
+          <div className="mb-2 flex flex-col items-start justify-center space-y-1 border-b pb-1">
+            <h1 className="mb-2 text-2xl font-semibold lg:text-4xl">
+              {product.title}
+            </h1>
+            <div className="flex place-items-baseline justify-center space-x-1 text-gray-500">
               {/* <StarRating rating={2.2} /> */}
               <p>4.4</p>
               <FaStar className="text-yellow-500" size={12} />
@@ -95,14 +96,14 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center items-start space-y-1 border-b pb-1 mb-2">
-            <div className='flex justify-start place-items-baseline space-x-1'>
+          <div className="mb-2 flex flex-col items-start justify-center space-y-1 border-b pb-1">
+            <div className="flex place-items-baseline justify-start space-x-1">
               {product.salePrice !== product.regularPrice ? (
-                <span className="text-gray-700 font-semibold">
+                <span className="font-semibold text-gray-700">
                   <CurrencyFormatter amount={product.salePrice} />
                 </span>
               ) : (
-                <span className="text-gray-700 font-semibold">
+                <span className="font-semibold text-gray-700">
                   <CurrencyFormatter amount={product.regularPrice} />
                 </span>
               )}
@@ -114,30 +115,27 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
               ) : (
                 ''
               )}
-              <span className='text-yellow-500'>(x% off)</span>
+              <span className="text-yellow-500">(x% off)</span>
             </div>
             <div className="mb-4">
-              <p className="text-lg text-gray-700 font-semibold">
-                  {product.category ? product.category.name : 'Uncategorized'}
+              <p className="text-lg font-semibold text-gray-700">
+                {product.category ? product.category.name : 'Uncategorized'}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col justify-center items-start space-y-1 border-b pb-1">
-            <h2 className='font-semibold'>
-              Product Details
-            </h2>
+          <div className="flex flex-col items-start justify-center space-y-1 border-b pb-1">
+            <h2 className="font-semibold">Product Details</h2>
             <p className="text-gray-700">{product.description}</p>
           </div>
-          
+
           <div>
             <ProductDetails />
           </div>
 
-          <div className=''>
+          <div className="">
             <RatingReviews />
           </div>
-
         </div>
       </div>
     </div>

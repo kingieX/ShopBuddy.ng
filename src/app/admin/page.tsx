@@ -1,23 +1,23 @@
 // components/AdminLayout.tsx
-import Sidebar from "./components/Sidebar";
-import TopBar from "./components/TopBar";
+import Sidebar from './components/Sidebar';
+import TopBar from './components/TopBar';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="lg:w-64 w-0 hidden lg:block bg-gray-100 h-screen border-r border-gray-300 fixed">
+      <aside className="fixed hidden h-screen w-0 border-r border-gray-300 bg-gray-100 lg:block lg:w-64">
         {/* Your Sidebar Code */}
         <Sidebar />
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className="static flex flex-1 flex-col lg:ml-64">
         {/* TopBar, without overlapping the sidebar */}
         <TopBar />
 
         {/* Content below the top bar */}
-        <div className="flex-1 overflow-y-auto lg:pt-16 p-4 mt-4 bg-gray-50">
+        <div className="h-screen flex-1 overflow-y-auto bg-gray-50 p-4 pt-14 lg:mt-4 lg:pt-16">
           {children}
         </div>
       </div>

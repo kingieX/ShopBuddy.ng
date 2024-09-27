@@ -7,18 +7,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { EyeIcon } from "lucide-react";
-import { LiaEdit } from "react-icons/lia";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import Image from "next/image";
-import CurrencyFormatter from "@/app/constants/CurrencyFormatter";
+} from '@/components/ui/table';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { EyeIcon } from 'lucide-react';
+import { LiaEdit } from 'react-icons/lia';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import Image from 'next/image';
+import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import StarRating from '@/app/constants/StarRating';
-import { Product, Category } from "@prisma/client";
+import { Product, Category } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import Link from "next/link";
+import Link from 'next/link';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 interface ProductWithCategory extends Product {
@@ -30,9 +30,13 @@ interface ProductsTableProps {
   onDelete: (id: string) => void; // Prop to handle deletion
 }
 
-export default function ProductsTable({ products, onDelete }: ProductsTableProps) {
+export default function ProductsTable({
+  products,
+  onDelete,
+}: ProductsTableProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<ProductWithCategory | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductWithCategory | null>(null);
 
   const handleDeleteClick = (product: ProductWithCategory) => {
     setSelectedProduct(product);
@@ -54,7 +58,7 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
   return (
     <div className="w-full overflow-auto">
       <ScrollArea>
-        <div className="w-full lg:max-w-max max-w-xs overflow-x-auto">
+        <div className="w-full max-w-xs overflow-x-auto lg:max-w-max">
           <Tooltip.TooltipProvider>
             <Table className="w-full min-w-[990px] px-2">
               <TableHeader>
@@ -73,19 +77,27 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
                   <TableRow key={product.id}>
                     <TableCell className="flex items-center space-x-2">
                       <Image
-                        src={product.mainImage || ""}
+                        src={product.mainImage || ''}
                         alt={product.title}
                         width={64}
                         height={64}
-                        className="w-16 h-16 bg-gray-200 rounded-md"
+                        className="h-16 w-16 rounded-md bg-gray-200"
                       />
                       <div>
-                        <p className="text-black font-semibold">{product.title}</p>
+                        <p className="font-semibold text-black">
+                          {product.title}
+                        </p>
                         <StarRating rating={4.5} />
                       </div>
                     </TableCell>
-                    <TableCell>{product.category ? product.category.name : "Uncategorized"}</TableCell>
-                    <TableCell>{new Date(product.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {product.category
+                        ? product.category.name
+                        : 'Uncategorized'}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(product.createdAt).toLocaleDateString()}
+                    </TableCell>
                     <TableCell>
                       <CurrencyFormatter amount={product.regularPrice} />
                     </TableCell>
@@ -97,10 +109,14 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
                       )}
                     </TableCell>
                     <TableCell>
-                      {product.status === "on_sale" ? (
-                        <Badge className="text-success bg-green-100">On sale</Badge>
+                      {product.status === 'on_sale' ? (
+                        <Badge className="bg-green-100 text-success">
+                          On sale
+                        </Badge>
                       ) : (
-                        <Badge className="text-error bg-red-100">Sold out</Badge>
+                        <Badge className="bg-red-100 text-error">
+                          Sold out
+                        </Badge>
                       )}
                     </TableCell>
 
@@ -115,7 +131,7 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
                             </Link>
                           </Tooltip.Trigger>
                           <Tooltip.Portal>
-                            <Tooltip.Content className="bg-gray-700 text-white px-2 py-1 rounded text-sm">
+                            <Tooltip.Content className="rounded bg-gray-700 px-2 py-1 text-sm text-white">
                               View
                               <Tooltip.Arrow className="fill-gray-700" />
                             </Tooltip.Content>
@@ -130,7 +146,7 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
                             </Link>
                           </Tooltip.Trigger>
                           <Tooltip.Portal>
-                            <Tooltip.Content className="bg-gray-700 text-white px-2 py-1 rounded text-sm">
+                            <Tooltip.Content className="rounded bg-gray-700 px-2 py-1 text-sm text-white">
                               Edit
                               <Tooltip.Arrow className="fill-gray-700" />
                             </Tooltip.Content>
@@ -145,7 +161,7 @@ export default function ProductsTable({ products, onDelete }: ProductsTableProps
                             </span>
                           </Tooltip.Trigger>
                           <Tooltip.Portal>
-                            <Tooltip.Content className="bg-gray-700 text-white px-2 py-1 rounded text-xs">
+                            <Tooltip.Content className="rounded bg-gray-700 px-2 py-1 text-xs text-white">
                               Delete
                               <Tooltip.Arrow className="fill-gray-700" />
                             </Tooltip.Content>

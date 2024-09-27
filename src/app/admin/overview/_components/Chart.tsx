@@ -1,7 +1,14 @@
-"use client"
+'use client';
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
+import { TrendingUp } from 'lucide-react';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import {
   Card,
@@ -10,43 +17,43 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from '@/components/ui/chart';
 
-export const description = "A bar chart with a label"
+export const description = 'A bar chart with a label';
 
 const chartData = [
-  { month: "January", sales: 186 },
-  { month: "February", sales: 305 },
-  { month: "March", sales: 237 },
-  { month: "April", sales: 73 },
-  { month: "May", sales: 209 },
-  { month: "June", sales: 214 },
-  { month: "July", sales: 24 },
-  { month: "August", sales: 54 },
-  { month: "September", sales: 100 },
-  { month: "October", sales: 582 },
-  { month: "November", sales: 289 },
-  { month: "December", sales: 1000 },
-]
+  { month: 'January', sales: 186 },
+  { month: 'February', sales: 305 },
+  { month: 'March', sales: 237 },
+  { month: 'April', sales: 73 },
+  { month: 'May', sales: 209 },
+  { month: 'June', sales: 214 },
+  { month: 'July', sales: 24 },
+  { month: 'August', sales: 54 },
+  { month: 'September', sales: 100 },
+  { month: 'October', sales: 582 },
+  { month: 'November', sales: 289 },
+  { month: 'December', sales: 1000 },
+];
 
 const chartConfig = {
   desktop: {
-    label: "Sales",
-    color: "hsl(var(--chart-1))",
+    label: 'Sales',
+    color: 'hsl(var(--chart-1))',
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export default function Chart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
+        <CardTitle>Historical Sales Stat</CardTitle>
         <CardDescription>January - December 2024</CardDescription>
       </CardHeader>
       <CardContent>
@@ -91,10 +98,10 @@ export default function Chart() {
         <div className="flex gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+        <div className="text-muted-foreground leading-none">
+          Showing total sales for the last 12 months
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

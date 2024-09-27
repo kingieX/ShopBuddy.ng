@@ -15,8 +15,8 @@ const RatingReviews = () => {
 
   return (
     <div className="max-w-lg py-4">
-      <h2 className="text-xl font-bold mb-4">Ratings & Reviews</h2>
-      <div className="flex items-center mb-4">
+      <h2 className="mb-4 text-xl font-bold">Ratings & Reviews</h2>
+      <div className="mb-4 flex items-center">
         {/* Average Rating */}
         <div className="text-5xl font-bold">{averageRating}</div>
         <div className="ml-4">
@@ -35,39 +35,38 @@ const RatingReviews = () => {
             ))}
           </div>
           {/* Verified Buyers */}
-          <div className="text-gray-600 text-sm">
+          <div className="text-sm text-gray-600">
             {totalReviews} Verified Buyers
           </div>
         </div>
       </div>
-      
+
       {/* Rating Breakdown */}
       {Object.entries(ratings).map(([star, count]) => (
-        <div key={star} className="flex items-center mb-2">
-          <div className='flex space-x-1'>
-            <span className="text-sm text-gray-500 font-medium">{star}</span>
+        <div key={star} className="mb-2 flex items-center">
+          <div className="flex space-x-1">
+            <span className="text-sm font-medium text-gray-500">{star}</span>
             <FaStar className="inline text-gray-500" />
           </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 mx-2">
+          <div className="mx-2 h-2 w-full rounded-full bg-gray-200">
             <div
-                className={`h-2 rounded-full ${
+              className={`h-2 rounded-full ${
                 Number(star) === 5
-                    ? 'bg-green-500'
-                    : Number(star) === 4
+                  ? 'bg-green-500'
+                  : Number(star) === 4
                     ? 'bg-green-400'
                     : Number(star) === 3
-                    ? 'bg-yellow-500'
-                    : Number(star) === 2
-                    ? 'bg-yellow-400'
-                    : 'bg-red-500'
-                }`}
-                style={{ width: `${(count / totalReviews) * 100}%` }}
+                      ? 'bg-yellow-500'
+                      : Number(star) === 2
+                        ? 'bg-yellow-400'
+                        : 'bg-red-500'
+              }`}
+              style={{ width: `${(count / totalReviews) * 100}%` }}
             ></div>
-            </div>
-            <span className="text-sm font-medium">{count}</span>
+          </div>
+          <span className="text-sm font-medium">{count}</span>
         </div>
-        ))}
-
+      ))}
     </div>
   );
 };

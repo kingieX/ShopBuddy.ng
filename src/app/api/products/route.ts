@@ -12,7 +12,7 @@ export async function GET() {
     });
 
     // Convert dates to ISO strings for safe JSON serialization
-    const serializedProducts = products.map(product => ({
+    const serializedProducts = products.map((product) => ({
       ...product,
       createdAt: product.createdAt.toISOString(),
       updatedAt: product.updatedAt.toISOString(),

@@ -1,6 +1,12 @@
 // components/DeleteConfirmationModal.tsx
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface DeleteConfirmationModalProps {
   isOpen: boolean;
@@ -22,21 +28,21 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
           <DialogTitle>Delete Product</DialogTitle>
         </DialogHeader>
         <div className="mt-2">
-          <p className='lg:text-left text-center lg:text-lg text-sm'>
-            Are you sure you want to delete the product "<strong>{productName}</strong>"? This
-            action cannot be undone.
+          <p className="text-center text-sm lg:text-left lg:text-lg">
+            Are you sure you want to delete the product "
+            <strong>{productName}</strong>"? This action cannot be undone.
           </p>
         </div>
-        <DialogFooter className="mt-4 flex lg:flex-row flex-col gap-2 lg:justify-end lg:space-x-4">
+        <DialogFooter className="mt-4 flex flex-col gap-2 lg:flex-row lg:justify-end lg:space-x-4">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded"
+            className="rounded bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
           >
             Delete
           </button>

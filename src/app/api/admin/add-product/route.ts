@@ -6,10 +6,13 @@ import streamifier from 'streamifier';
 // Helper function to upload image to Cloudinary using streams
 const uploadImage = (buffer: Buffer, folder: string): Promise<any> => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
-      if (result) resolve(result);
-      else reject(error);
-    });
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder },
+      (error, result) => {
+        if (result) resolve(result);
+        else reject(error);
+      }
+    );
     streamifier.createReadStream(buffer).pipe(uploadStream);
   });
 };
@@ -29,7 +32,10 @@ export async function POST(req: Request) {
 
     // Validate required fields
     if (!title || !description || !regularPriceStr || !status) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
     }
 
     const regularPrice = parseFloat(regularPriceStr.toString());
@@ -67,15 +73,19 @@ export async function POST(req: Request) {
     // Upload the main image to Cloudinary using streams
     const mainImageFile = formData.get('mainImage') as File | null;
     if (!mainImageFile) {
-      return NextResponse.json({ error: 'Main image is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Main image is required' },
+        { status: 400 }
+      );
     }
     const mainImageBuffer = Buffer.from(await mainImageFile.arrayBuffer());
 
-    const mainImageUpload = await uploadImage(mainImageBuffer, 'products/main_images').catch(
-      (err) => {
-        throw new Error('Failed to upload main image');
-      }
-    );
+    const mainImageUpload = await uploadImage(
+      mainImageBuffer,
+      'products/main_images'
+    ).catch((err) => {
+      throw new Error('Failed to upload main image');
+    });
     const mainImageUrl = mainImageUpload.secure_url;
 
     // Upload gallery images to Cloudinary using streams
@@ -87,7 +97,9 @@ export async function POST(req: Request) {
     await Promise.all(
       galleryImageKeys.map(async (key) => {
         const galleryImageFile = formData.get(key) as File;
-        const galleryImageBuffer = Buffer.from(await galleryImageFile.arrayBuffer());
+        const galleryImageBuffer = Buffer.from(
+          await galleryImageFile.arrayBuffer()
+        );
         const galleryImageUpload = await uploadImage(
           galleryImageBuffer,
           'products/gallery_images'
