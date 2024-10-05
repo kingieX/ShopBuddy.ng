@@ -1,4 +1,4 @@
-// components/PromotionTable.tsx
+'use client';
 import React, { useState } from 'react';
 import {
   Table,
@@ -132,7 +132,7 @@ export default function PromotionTable({
                         <Tooltip.Root>
                           <Tooltip.Trigger asChild>
                             <Link
-                              href={`/admin/edit-promotion/${promotion.id}`}
+                              href={`/admin/billboards/edit/${promotion.id}`}
                             >
                               <LiaEdit className="h-5 w-5 cursor-pointer" />
                             </Link>

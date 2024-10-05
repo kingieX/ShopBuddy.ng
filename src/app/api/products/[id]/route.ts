@@ -118,6 +118,7 @@ export async function PUT(
   }
 }
 
+// Handle DELETE request to delete a product
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
