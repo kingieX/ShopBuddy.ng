@@ -1,160 +1,304 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { FaCalendarAlt } from 'react-icons/fa'; // Import the FontAwesome calendar icon
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Card } from '@/components/ui/card';
+import SuccessModal from './SuccessModal';
+import LoadingSpinner from '@/app/admin/components/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 
-// Validation schema using Yup
-const PromotionSchema = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
-  description: Yup.string().required('Description is required'),
-  startDate: Yup.date().required('Start date is required'),
-  endDate: Yup.date()
-    .min(Yup.ref('startDate'), 'End date cannot be before start date')
-    .required('End date is required'),
-  image: Yup.mixed().required('Image is required'),
-});
+const AddPromotionForm: React.FC = () => {
+  const [promotionImage, setPromotionImage] = useState<File | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-interface PromotionFormProps {
-  onSubmit: (data: any) => void;
-}
-
-const AddPromotionForm: React.FC<PromotionFormProps> = ({ onSubmit }) => {
-  const [isActive, setIsActive] = useState(false);
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
       title: '',
       description: '',
-      startDate: null,
-      endDate: null,
-      image: null,
+      startDate: '',
+      endDate: '',
+      status: '',
+      promotionImage: null as File | null,
     },
-    validationSchema: PromotionSchema,
-    onSubmit: (values) => {
-      onSubmit({ ...values, isActive });
+    validationSchema: Yup.object({
+      title: Yup.string().required('Promotion title is required'),
+      description: Yup.string().required('Promotion description is required'),
+      startDate: Yup.date().required('Start date is required'),
+      endDate: Yup.date().required('End date is required'),
+      status: Yup.string().required('Promotion status is required'),
+      promotionImage: Yup.mixed().required('Promotion image is required'),
+    }),
+    onSubmit: async (values) => {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append('title', values.title);
+      formData.append('description', values.description);
+      formData.append('startDate', values.startDate);
+      formData.append('endDate', values.endDate);
+      formData.append('status', values.status);
+      // Ensure you append the image file from the input
+      if (values.promotionImage) {
+        formData.append('image', values.promotionImage); // Append the image file
+      }
+
+      // Log form data before submission
+      console.log('Form Values:', {
+        title: values.title,
+        description: values.description,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        status: values.status,
+        promotionImage: values.promotionImage
+          ? values.promotionImage.name
+          : 'No Image',
+      });
+
+      try {
+        const response = await fetch('/api/admin/promotions', {
+          method: 'POST',
+          body: formData,
+        });
+
+        console.log('Response:', response);
+
+        if (response.ok) {
+          setShowModal(true);
+        } else {
+          const errorData = await response.json();
+          console.error('Error:', errorData.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
+  // Handle closing the modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+    formik.resetForm();
+  };
+
+  // Handle adding another product
+  const handleAddAnotherPromotion = () => {
+    setShowModal(false);
+    formik.resetForm();
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      formik.setFieldValue('promotionImage', file);
+    }
+  };
+
   return (
-    <Card className="lg:w-1/2">
-      <form onSubmit={formik.handleSubmit} className="space-y-4 p-8 lg:px-12">
-        {/* Title */}
-        <div>
-          <Label htmlFor="title">Promotion Title</Label>
-          <Input
-            id="title"
-            name="title"
-            placeholder="Enter the promotion title"
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.title && formik.errors.title ? (
-            <p className="text-red-500">{formik.errors.title}</p>
-          ) : null}
+    <div className="w-full py-4">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex w-full flex-col items-start justify-center gap-4 lg:flex-row"
+      >
+        <div className="w-full space-y-4 px-4 lg:w-3/5">
+          <div className="max-w-4xl rounded bg-white p-4 shadow lg:shadow-lg">
+            {/* Promotion Title */}
+            <div>
+              <label htmlFor="title" className="block font-medium">
+                Promotion Title
+              </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                className={`mt-1 block w-full rounded-md border border-gray-300 p-2 ${
+                  formik.touched.title && formik.errors.title
+                    ? 'border-red-500'
+                    : ''
+                }`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.title}
+              />
+              {formik.touched.title && formik.errors.title ? (
+                <p className="text-sm text-danger">{formik.errors.title}</p>
+              ) : null}
+            </div>
+
+            {/* Promotion Description */}
+            <div>
+              <label htmlFor="description" className="block font-medium">
+                Promotion Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                className={`mt-1 block w-full rounded-md border border-gray-300 p-2 ${
+                  formik.touched.description && formik.errors.description
+                    ? 'border-red-500'
+                    : ''
+                }`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.description}
+              />
+              {formik.touched.description && formik.errors.description ? (
+                <p className="text-sm text-error">
+                  {formik.errors.description}
+                </p>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="max-w-4xl rounded bg-white p-4 shadow lg:shadow-lg">
+            {/* Promotion Image */}
+            <div className="mb-6">
+              <label htmlFor="promotionImage" className="block font-medium">
+                Promotion Image
+              </label>
+              <input
+                id="promotionImage"
+                name="promotionImage"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+              <label
+                htmlFor="promotionImage"
+                className="mt-2 block cursor-pointer"
+              >
+                <div className="flex w-full items-center justify-between rounded-md border border-gray-300 p-3">
+                  <span>Choose file</span>
+                  <span>
+                    {formik.values.promotionImage
+                      ? (formik.values.promotionImage as File).name
+                      : 'No file chosen'}
+                  </span>
+                </div>
+              </label>
+              {formik.values.promotionImage && (
+                <div className="mt-4">
+                  <Image
+                    src={URL.createObjectURL(
+                      formik.values.promotionImage as File
+                    )}
+                    alt="Promotion Image Preview"
+                    width={150}
+                    height={150}
+                    className="rounded"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Description */}
-        <div>
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            placeholder="Enter the promotion description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.description && formik.errors.description ? (
-            <p className="text-red-500">{formik.errors.description}</p>
-          ) : null}
-        </div>
-
-        <div className="flex w-full space-x-2">
-          {/* Start Date with Icon */}
-          <div className="w-full">
-            <Label htmlFor="startDate">Start Date</Label>
-            <div className="relative">
-              <DatePicker
+        <div className="w-full px-4 lg:w-2/5 lg:max-w-2xl">
+          <div className="mb-4 space-y-4 rounded bg-white px-4 py-6 shadow lg:shadow-lg">
+            {/* Start Date */}
+            <div>
+              <label htmlFor="startDate" className="block font-medium">
+                Start Date
+              </label>
+              <input
                 id="startDate"
-                selected={formik.values.startDate}
-                onChange={(date) => formik.setFieldValue('startDate', date)}
+                name="startDate"
+                type="date"
+                className={`mt-1 block w-full rounded-md border border-gray-300 p-2 ${
+                  formik.touched.startDate && formik.errors.startDate
+                    ? 'border-red-500'
+                    : ''
+                }`}
+                onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                dateFormat="yyyy-MM-dd"
-                className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 pl-10 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" // Padding to the left for the icon
+                value={formik.values.startDate}
               />
-              <FaCalendarAlt className="absolute left-2 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500" />
+              {formik.touched.startDate && formik.errors.startDate ? (
+                <p className="text-sm text-error">{formik.errors.startDate}</p>
+              ) : null}
             </div>
-            {formik.touched.startDate && formik.errors.startDate ? (
-              <p className="text-red-500">{formik.errors.startDate}</p>
-            ) : null}
-          </div>
 
-          {/* End Date with Icon */}
-          <div className="w-full">
-            <Label htmlFor="endDate">End Date</Label>
-            <div className="relative">
-              <DatePicker
+            {/* End Date */}
+            <div>
+              <label htmlFor="endDate" className="block font-medium">
+                End Date
+              </label>
+              <input
                 id="endDate"
-                selected={formik.values.endDate}
-                onChange={(date) => formik.setFieldValue('endDate', date)}
+                name="endDate"
+                type="date"
+                className={`mt-1 block w-full rounded-md border border-gray-300 p-2 ${
+                  formik.touched.endDate && formik.errors.endDate
+                    ? 'border-red-500'
+                    : ''
+                }`}
+                onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                dateFormat="yyyy-MM-dd"
-                className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 pl-10 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" // Padding to the left for the icon
+                value={formik.values.endDate}
               />
-              <FaCalendarAlt className="absolute left-2 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500" />
+              {formik.touched.endDate && formik.errors.endDate ? (
+                <p className="text-sm text-error">{formik.errors.endDate}</p>
+              ) : null}
             </div>
-            {formik.touched.endDate && formik.errors.endDate ? (
-              <p className="text-red-500">{formik.errors.endDate}</p>
-            ) : null}
           </div>
-        </div>
 
-        {/* Image Upload */}
-        <div>
-          <Label htmlFor="image">Promotion Image</Label>
-          <Input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={(event) =>
-              formik.setFieldValue('image', event.currentTarget.files?.[0])
-            }
-          />
-          {formik.touched.image && formik.errors.image ? (
-            <p className="text-red-500">{formik.errors.image}</p>
-          ) : null}
+          <div className="mb-4 space-y-6 rounded bg-white px-4 py-6 shadow lg:shadow-lg">
+            {/* Status */}
+            <div className="w-full">
+              <label htmlFor="status" className="block font-medium">
+                Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                className={`mt-1 block w-full rounded-md border border-gray-300 p-2 ${
+                  formik.touched.status && formik.errors.status
+                    ? 'border-red-500'
+                    : ''
+                }`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.status}
+              >
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              {formik.touched.status && formik.errors.status ? (
+                <p className="text-sm text-error">{formik.errors.status}</p>
+              ) : null}
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-button px-4 py-2 text-white transition-colors hover:bg-blue-600"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <LoadingSpinner />
+                Adding Promotion...
+              </>
+            ) : (
+              'Add Promotion'
+            )}
+          </button>
         </div>
-
-        {/* Active Status */}
-        <div className="flex items-center space-x-2">
-          <Label htmlFor="isActive">Active Status</Label>
-          <Switch
-            id="isActive"
-            checked={isActive}
-            onCheckedChange={setIsActive}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <Button
-          className="w-full bg-button text-white hover:bg-blue-500"
-          type="submit"
-        >
-          Submit Promotion
-        </Button>
       </form>
-    </Card>
+
+      {showModal && (
+        <SuccessModal
+          onClose={handleCloseModal}
+          onAddAnotherPromotion={handleAddAnotherPromotion}
+        />
+      )}
+    </div>
   );
 };
 

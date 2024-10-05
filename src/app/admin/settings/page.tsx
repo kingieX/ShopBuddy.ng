@@ -1,24 +1,15 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+'use client';
+import { useState } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import AdminLayout from '../page';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  CircleUser,
-  File,
-  ListFilter,
-  Menu,
-  Package2,
-  Search,
-} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   Card,
@@ -28,28 +19,33 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const Settings = () => {
+  // State to control the modal visibility
+  const [open, setOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleChangePassword = (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent form submission
+    // Add logic to handle password change
+    if (newPassword === confirmPassword) {
+      console.log('Password changed successfully.');
+    } else {
+      console.log('Passwords do not match.');
+    }
+    setOpen(false);
+  };
+
   return (
     <AdminLayout>
       <header className="stick z-5 top-0 flex h-14 items-center gap-4 border-b bg-white px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -68,54 +64,141 @@ const Settings = () => {
         </Breadcrumb>
       </header>
 
-      <main className="bg-muted/40 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
+      <main className="bg-muted/40 flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl">
           <div className="grid w-full gap-6">
-            <Card x-chunk="dashboard-04-chunk-1">
+            {/* User Profile Settings */}
+            <Card>
               <CardHeader>
-                <CardTitle>Store Name</CardTitle>
+                <CardTitle>User Profile Settings</CardTitle>
                 <CardDescription>
-                  Used to identify your store in the marketplace.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form>
-                  <Input placeholder="Store Name" />
-                </form>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
-            </Card>
-            <Card x-chunk="dashboard-04-chunk-2">
-              <CardHeader>
-                <CardTitle>Plugins Directory</CardTitle>
-                <CardDescription>
-                  The directory within your project, in which your plugins are
-                  located.
+                  Update your profile information
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form className="flex flex-col gap-4">
-                  <Input
-                    placeholder="Project Name"
-                    defaultValue="/content/plugins"
-                  />
+                  <Input placeholder="Email Address" type="email" />
+                  {/* Trigger for Password Change Modal */}
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="include" defaultChecked />
-                    <label
-                      htmlFor="include"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    <Button
+                      variant="outline"
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevent button from submitting the form
+                        setOpen(true);
+                      }}
                     >
-                      Allow administrators to change the directory.
-                    </label>
+                      Change Password
+                    </Button>
                   </div>
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button className="bg-button text-white hover:bg-blue-600">
+                  Save
+                </Button>
               </CardFooter>
             </Card>
+
+            {/* Notifications Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Notifications Settings</CardTitle>
+                <CardDescription>
+                  Manage your email and SMS notifications
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form className="flex flex-col gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="email-notifications" />
+                    <label htmlFor="email-notifications">
+                      Email Notifications
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="sms-notifications" />
+                    <label htmlFor="sms-notifications">SMS Notifications</label>
+                  </div>
+                </form>
+              </CardContent>
+              <CardFooter className="border-t px-6 py-4">
+                <Button className="bg-button text-white hover:bg-blue-600">
+                  Save
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* Security Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Security Settings</CardTitle>
+                <CardDescription>Enhance your account security</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form className="flex flex-col gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="2fa" />
+                    <label htmlFor="2fa">
+                      Enable Two-Factor Authentication (2FA)
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button variant="outline">View Login Activity</Button>
+                  </div>
+                </form>
+              </CardContent>
+              <CardFooter className="border-t px-6 py-4">
+                <Button className="bg-button text-white hover:bg-blue-600">
+                  Save
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* Logout */}
+            <Card>
+              <CardFooter className="px-6 py-4">
+                <Button className="w-full bg-red-600 text-white hover:bg-red-400">
+                  Logout
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* Password Change Modal */}
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Change Password</DialogTitle>
+                </DialogHeader>
+                <form
+                  onSubmit={handleChangePassword}
+                  className="flex flex-col gap-4"
+                >
+                  <Input
+                    placeholder="New Password"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  <Input
+                    placeholder="Confirm New Password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <DialogFooter className="mt-4">
+                    <Button variant="outline" onClick={() => setOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="bg-blue-500 text-white hover:bg-blue-600"
+                    >
+                      Save Changes
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </main>

@@ -1,4 +1,3 @@
-// pages/admin/products/index.tsx (Updated)
 'use client';
 
 import Link from 'next/link';

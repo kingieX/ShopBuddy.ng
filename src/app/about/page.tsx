@@ -12,7 +12,7 @@ const About = () => {
       <Navbar isSignedIn={true} isAuthPage={false} profileImage="" />
 
       {/* Hero Section */}
-      <section className="bg-white px-8 py-16">
+      <section className="bg-white px-8 py-20">
         <div className="container mx-auto grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div className="flex flex-col justify-center lg:ml-8">
             <h1 className="mb-4 text-4xl font-bold">Our Story</h1>

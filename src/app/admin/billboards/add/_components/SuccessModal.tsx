@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 interface SuccessModalProps {
-  onClose: () => void;
-  onAddAnotherProduct: () => void;
+  onAddAnotherPromotion: () => void;
+  onClose: () => void; // Add an onClose function to handle closing the modal
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({
-  onClose,
-  onAddAnotherProduct,
+  onAddAnotherPromotion,
+  onClose, // Handle modal closing
 }) => {
   const [isVisible, setIsVisible] = useState(false); // Modal visibility state with animation
 
   useEffect(() => {
-    // Start animation when the component is mounted
-    setIsVisible(true);
+    setIsVisible(true); // Start animation when the component is mounted
   }, []);
 
   return (
@@ -32,13 +31,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
         </p>
         <div className="flex justify-center gap-4">
           <button
-            onClick={onAddAnotherProduct}
+            onClick={onAddAnotherPromotion}
             className="rounded bg-button px-4 py-2 text-white transition hover:bg-blue-600"
           >
-            Add Another Product
+            Add Another Promotion
           </button>
           <button
-            onClick={onClose}
+            onClick={onClose} // Use the onClose function to close the modal
             className="rounded border border-gray-500 px-4 py-2 transition hover:bg-gray-300"
           >
             Cancel

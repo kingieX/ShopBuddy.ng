@@ -32,7 +32,7 @@ const Navbar = ({
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full border-b bg-white shadow-md">
+    <nav className="fixed z-20 w-full border-b bg-white shadow-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-16 justify-between">
           {/* left */}
@@ -90,7 +90,7 @@ const Navbar = ({
             {!isSignedIn && !isAuthPage && (
               <Link
                 href="/auth/signup"
-                className="ml-4 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                className="ml-4 rounded-md bg-button px-4 py-2 text-white hover:bg-blue-600"
               >
                 Sign Up
               </Link>
