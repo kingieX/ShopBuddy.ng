@@ -2,12 +2,11 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 interface SuccessModalProps {
-  onAddAnotherPromotion: () => void;
+  // onAddAnotherPromotion: () => void;
   onClose: () => void; // Add an onClose function to handle closing the modal
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({
-  onAddAnotherPromotion,
   onClose, // Handle modal closing
 }) => {
   const [isVisible, setIsVisible] = useState(false); // Modal visibility state with animation

@@ -11,28 +11,19 @@ import {
 import Link from 'next/link';
 import EditPromotionForm from './_components/EditPromotionForm'; // Import the EditPromotionForm
 import prisma from '@/lib/db/prisma';
-import { notFound } from 'next/navigation'; // For handling non-existing promotions
-
-interface EditPromotionProps {
-  params: {
-    id: string; // Capture the promotion ID from the URL
-  };
-}
 
 // Define the async function to fetch the promotion details
-export default async function EditPromotion({ params }: EditPromotionProps) {
-  const promotionId = params.id;
+const EditPromotion = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
 
   // Fetch the promotion details from the database
   const promotion = await prisma.promotion.findUnique({
-    where: {
-      id: promotionId,
-    },
+    where: { id },
   });
 
   // If promotion doesn't exist, return a 404 page
   if (!promotion) {
-    return notFound();
+    return <p>Promotion not found</p>;
   }
 
   return (
@@ -60,4 +51,6 @@ export default async function EditPromotion({ params }: EditPromotionProps) {
       </div>
     </AdminLayout>
   );
-}
+};
+
+export default EditPromotion;

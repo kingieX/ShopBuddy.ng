@@ -1,7 +1,45 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/db/prisma';
-import cloudinary from '@/lib/cloudinary/cloudinary';
+// import cloudinary from '@/lib/cloudinary/cloudinary';
+import { v2 as cloudinary } from 'cloudinary'; // Import Cloudinary if you use it for image storage
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Handle GET request to fetch promotion details
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const promotionId = params.id;
+  console.log('Promotion ID:', promotionId);
+
+  try {
+    const promotion = await prisma.promotion.findUnique({
+      where: { id: promotionId },
+    });
+
+    if (!promotion) {
+      return NextResponse.json(
+        { message: 'Promotion not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(promotion, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching promotion:', error);
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+//Handle DELETE request
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
@@ -46,13 +84,13 @@ export async function DELETE(
 
 // Handle PUT request to update promotion data
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const promotionId = params.id;
 
   try {
-    const formData = await req.formData();
+    const formData = await req.formData(); // Get form data
 
     // Extract the form fields
     const title = formData.get('title') as string;
@@ -61,33 +99,34 @@ export async function PUT(
     const endDate = formData.get('endDate') as string;
     const status = formData.get('status') as string;
 
-    // Optional: Handle promotion image update
+    // Optional: Handle promotionImage update
     let promotionImageUrl = undefined;
     if (formData.get('promotionImage')) {
       const promotionImageFile = formData.get('promotionImage') as File;
       const promotionImageBuffer = Buffer.from(
         await promotionImageFile.arrayBuffer()
       );
-      const imageUpload = await cloudinary.uploader.upload(
+      const promotionImageUpload = await cloudinary.uploader.upload(
         promotionImageBuffer.toString('base64'),
         {
-          folder: 'promotions/images',
-          resource_type: 'image',
+          folder: 'promotions',
+          resources_type: 'image',
+          public_id: promotionId,
         }
       );
-      promotionImageUrl = imageUpload.secure_url;
+      promotionImageUrl = promotionImageUpload.secure_url;
     }
 
-    // Update the promotion in the database
+    // Update the Promotion in the database
     const promotion = await prisma.promotion.update({
       where: { id: promotionId },
       data: {
         title,
         description,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate,
+        endDate,
         status,
-        ...(promotionImageUrl && { imageUrl: promotionImageUrl }), // Update imageUrl if a new image was uploaded
+        ...(promotionImageUrl && { promotionImage: promotionImageUrl }),
       },
     });
 
@@ -98,7 +137,7 @@ export async function PUT(
   } catch (error) {
     console.error('Error updating promotion:', error);
     return NextResponse.json(
-      { error: 'Failed to update promotion' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

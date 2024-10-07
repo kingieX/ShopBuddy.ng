@@ -4,14 +4,14 @@ const nextConfig = {
   images: {
     domains: ['res.cloudinary.com'], // Add Cloudinary domain here
   },
-  async middleware() {
-    return [
-      {
-        source: '/admin/:path*',
-        middleware: ['authMiddleware'],
-      },
-    ];
-  },
+  // async middleware() {
+  //   return [
+  //     {
+  //       source: '/admin/:path*',
+  //       middleware: ['authMiddleware'],
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;

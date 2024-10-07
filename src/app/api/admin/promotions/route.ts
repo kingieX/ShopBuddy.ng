@@ -29,14 +29,14 @@ export async function POST(req: Request) {
     const description = formData.get('description');
     const startDateStr = formData.get('startDate');
     const endDateStr = formData.get('endDate');
-    const isActiveStr = formData.get('status');
+    const status = formData.get('status');
     const imageFile = formData.get('image') as File | null;
 
     // Validate required fields
     if (
       !title ||
       !description ||
-      !isActiveStr ||
+      !status ||
       !startDateStr ||
       !endDateStr ||
       !imageFile
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
         description,
         startDateStr,
         endDateStr,
-        isActiveStr,
+        status,
         imageFile,
       });
 
@@ -58,8 +58,6 @@ export async function POST(req: Request) {
 
     const startDate = new Date(startDateStr.toString());
     const endDate = new Date(endDateStr.toString());
-    const isActive = isActiveStr.toString();
-
     // Upload the promotion image to Cloudinary using streams
     const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
     const imageUpload = await uploadImage(imageBuffer, 'promotions').catch(
@@ -77,7 +75,7 @@ export async function POST(req: Request) {
         description: description.toString(),
         startDate,
         endDate,
-        isActive: Boolean(isActiveStr.toString()),
+        status: status.toString(),
         imageUrl,
       },
     });

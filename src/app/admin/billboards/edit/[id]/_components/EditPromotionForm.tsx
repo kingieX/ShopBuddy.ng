@@ -7,28 +7,20 @@ import * as Yup from 'yup';
 import SuccessModal from './SuccessModal';
 import LoadingSpinner from '@/app/admin/components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
+import { Promotion } from '@prisma/client';
 
-interface Promotion {
-  id: any;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  imageUrl: string;
-}
-
-interface EditPromotionFormProps {
+interface EditProductFormProps {
   promotion: Promotion;
 }
 
-const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
+const EditPromotionForm: React.FC<EditProductFormProps> = ({ promotion }) => {
   const [promotionImage, setPromotionImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
+  // Prefill the form with promotion's data
   const formik = useFormik({
     initialValues: {
       title: promotion.title,
@@ -41,10 +33,10 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
     validationSchema: Yup.object({
       title: Yup.string().required('Promotion title is required'),
       description: Yup.string().required('Promotion description is required'),
+      promotionImage: Yup.mixed().nullable(),
       startDate: Yup.date().required('Start date is required'),
       endDate: Yup.date().required('End date is required'),
       status: Yup.string().required('Promotion status is required'),
-      promotionImage: Yup.mixed(), // Image is optional for edit
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -52,24 +44,13 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
-      formData.append('startDate', values.startDate);
-      formData.append('endDate', values.endDate);
+      formData.append('startDate', values.startDate?.toDateString());
+      formData.append('endDate', values.endDate?.toDateString());
       formData.append('status', values.status);
-      if (values.promotionImage) {
-        formData.append('image', values.promotionImage); // Append the new image file if changed
-      }
 
-      // Log form data before submission
-      console.log('Form Values:', {
-        title: values.title,
-        description: values.description,
-        startDate: values.startDate,
-        endDate: values.endDate,
-        status: values.status,
-        promotionImage: values.promotionImage
-          ? values.promotionImage.name
-          : 'No Image',
-      });
+      if (promotionImage) {
+        formData.append('promotionImage', values.promotionImage!);
+      }
 
       try {
         const response = await fetch(`/api/admin/promotions/${promotion.id}`, {
@@ -77,9 +58,9 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
           body: formData,
         });
 
-        console.log('Response:', response);
-
         if (response.ok) {
+          const result = await response.json();
+          console.log('Success:', result.message);
           setShowModal(true);
         } else {
           const errorData = await response.json();
@@ -93,18 +74,22 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
     },
   });
 
-  // Handle closing the modal
-  const handleCloseModal = () => {
-    setShowModal(false);
-    router.push('/admin/promotions');
-  };
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setPromotionImage(file);
       formik.setFieldValue('promotionImage', file);
     }
   };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    router.push('/admin/promotions'); // Navigate to promotions list after successful edit
+  };
+
+  if (!promotion) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="w-full py-4">
@@ -189,24 +174,13 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
                   </span>
                 </div>
               </label>
-              {promotion.imageUrl && !formik.values.promotionImage && (
-                <div className="mt-4">
-                  <Image
-                    src={promotion.imageUrl}
-                    alt="Current Promotion Image"
-                    width={150}
-                    height={150}
-                    className="rounded"
-                  />
-                </div>
-              )}
               {formik.values.promotionImage && (
                 <div className="mt-4">
                   <Image
                     src={URL.createObjectURL(
                       formik.values.promotionImage as File
                     )}
-                    alt="Promotion Image Preview"
+                    alt="Current Promotion Image"
                     width={150}
                     height={150}
                     className="rounded"
@@ -235,10 +209,12 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
                 }`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.startDate}
+                value={formik.values.startDate.toISOString().split('T')[0]} // Convert Date object to string
               />
               {formik.touched.startDate && formik.errors.startDate ? (
-                <p className="text-sm text-error">{formik.errors.startDate}</p>
+                <p className="text-sm text-error">
+                  {String(formik.errors.startDate)}
+                </p>
               ) : null}
             </div>
 
@@ -258,19 +234,19 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
                 }`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.endDate}
+                value={formik.values.endDate.toISOString().split('T')[0]} // Convert Date object to string
               />
               {formik.touched.endDate && formik.errors.endDate ? (
-                <p className="text-sm text-error">{formik.errors.endDate}</p>
+                <p className="text-sm text-error">
+                  {String(formik.errors.endDate)}
+                </p>
               ) : null}
             </div>
-          </div>
 
-          <div className="mb-4 space-y-6 rounded bg-white px-4 py-6 shadow lg:shadow-lg">
-            {/* Status */}
-            <div className="w-full">
+            {/* Promotion Status */}
+            <div>
               <label htmlFor="status" className="block font-medium">
-                Status
+                Promotion Status
               </label>
               <select
                 id="status"
@@ -284,6 +260,7 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
                 onBlur={formik.handleBlur}
                 value={formik.values.status}
               >
+                <option value="">Select Status</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
@@ -293,26 +270,30 @@ const EditPromotionForm: React.FC<EditPromotionFormProps> = ({ promotion }) => {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-button px-4 py-2 text-white transition-colors hover:bg-blue-600"
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <LoadingSpinner />
-                Saving Changes...
-              </>
-            ) : (
-              'Save Change'
-            )}
-          </button>
+          {/* Submit Button */}
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-button px-4 py-2 text-white transition-colors hover:bg-blue-600"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  {' '}
+                  <LoadingSpinner /> Updating..
+                </>
+              ) : (
+                'Update Promotion'
+              )}
+            </button>
+          </div>
         </div>
       </form>
 
+      {/* Success Modal */}
       {showModal && (
         <SuccessModal
-          onAddAnotherPromotion={handleCloseModal}
+          // message="Promotion updated successfully!"
           onClose={handleCloseModal}
         />
       )}

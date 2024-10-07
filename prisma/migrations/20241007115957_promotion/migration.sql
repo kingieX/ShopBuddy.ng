@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Promotion" ALTER COLUMN "isActive" DROP DEFAULT,
+ALTER COLUMN "isActive" SET DATA TYPE TEXT;
