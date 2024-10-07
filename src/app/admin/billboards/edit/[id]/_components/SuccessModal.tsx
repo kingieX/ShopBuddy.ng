@@ -24,7 +24,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
         } mx-4 flex w-full max-w-md flex-col items-center justify-center rounded-lg bg-white p-8 shadow-lg`}
       >
         <h2 className="mb-4 animate-pulse text-center text-lg font-semibold lg:text-2xl">
-          Promotion Ediited Successfully!
+          Promotion Edited Successfully!
         </h2>
         <p className="mb-6 text-center text-sm lg:text-lg">
           Would you like to add another promotion or return to the dashboard?

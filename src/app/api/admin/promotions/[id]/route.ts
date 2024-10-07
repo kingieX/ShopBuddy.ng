@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/db/prisma';
+import streamifier from 'streamifier';
 import cloudinary from '@/lib/cloudinary/cloudinary';
 // import { v2 as cloudinary } from 'cloudinary'; // Import Cloudinary if you use it for image storage
 
@@ -84,78 +85,85 @@ export async function DELETE(
 
 // Handle PUT request to update promotion data
 
+// Helper function to upload image to Cloudinary using streams (same as in POST)
+const uploadImage = (buffer: Buffer, folder: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder },
+      (error, result) => {
+        if (result) resolve(result);
+        else reject(error);
+      }
+    );
+    streamifier.createReadStream(buffer).pipe(uploadStream);
+  });
+};
+
 export async function PUT(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   const promotionId = params.id;
 
   try {
-    const formData = await req.formData(); // Get form data
+    const formData = await req.formData();
 
     // Extract the form fields
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
-    const startDate = formData.get('startDate') as string;
-    const endDate = formData.get('endDate') as string;
+    const startDateStr = formData.get('startDate') as string;
+    const endDateStr = formData.get('endDate') as string;
     const status = formData.get('status') as string;
+    const imageFile = formData.get('promotionImage') as File | null;
 
-    // Optional: Handle promotionImage update
-    let promotionImageUrl = undefined;
-    if (formData.get('promotionImage')) {
+    // Validate required fields
+    if (!title || !description || !startDateStr || !endDateStr || !status) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+
+    let promotionImageUrl;
+
+    // Handle image upload only if a new image is provided
+    if (imageFile) {
+      const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+
       try {
-        const promotionImageFile = formData.get('promotionImage') as File;
-        const arrayBuffer = await promotionImageFile.arrayBuffer();
-        const base64String = Buffer.from(arrayBuffer).toString('base64');
-
-        const promotionImageUpload = await cloudinary.uploader.upload(
-          `data:image/jpeg;base64,${base64String}`, // Ensure correct base64 format
-          {
-            folder: 'promotions',
-            public_id: promotionId, // Use this to overwrite existing image
-            resource_type: 'image',
-          }
-        );
-        promotionImageUrl = promotionImageUpload.secure_url;
-      } catch (cloudinaryError) {
-        console.error(
-          'Cloudinary Upload Error:',
-          (cloudinaryError as Error).message
-        );
+        const imageUpload = await uploadImage(imageBuffer, 'promotions');
+        promotionImageUrl = imageUpload.secure_url; // Get the uploaded image URL
+      } catch (error) {
+        console.error('Image upload failed:', error);
         return NextResponse.json(
-          { error: 'Image upload failed' },
+          { error: 'Failed to upload promotion image' },
           { status: 500 }
         );
       }
     }
 
-    // Now update the promotion in Prisma
-    try {
-      const promotion = await prisma.promotion.update({
-        where: { id: promotionId },
-        data: {
-          title,
-          description,
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          status,
-          ...(promotionImageUrl && { promotionImage: promotionImageUrl }),
-        },
-      });
+    // Update the promotion in the database
+    const promotion = await prisma.promotion.update({
+      where: { id: promotionId },
+      data: {
+        title,
+        description,
+        startDate,
+        endDate,
+        status,
+        ...(promotionImageUrl && { imageUrl: promotionImageUrl }), // Update image only if a new one was uploaded
+      },
+    });
 
-      return NextResponse.json({
-        message: 'Promotion updated successfully',
-        promotion,
-      });
-    } catch (prismaError) {
-      console.error('Prisma Update Error:', (prismaError as Error).message);
-      return NextResponse.json(
-        { error: 'Failed to update promotion in the database' },
-        { status: 500 }
-      );
-    }
-  } catch (generalError) {
-    console.error('General Error:', (generalError as Error).message);
+    return NextResponse.json({
+      message: 'Promotion updated successfully',
+      promotion,
+    });
+  } catch (error) {
+    console.error('Error updating promotion:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

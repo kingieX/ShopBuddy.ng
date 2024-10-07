@@ -44,9 +44,19 @@ const EditPromotionForm: React.FC<EditProductFormProps> = ({ promotion }) => {
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
-      formData.append('startDate', values.startDate?.toDateString());
-      formData.append('endDate', values.endDate?.toDateString());
       formData.append('status', values.status);
+      formData.append(
+        'startDate',
+        values.startDate
+          ? new Date(values.startDate).toISOString().slice(0, 10)
+          : ''
+      );
+      formData.append(
+        'endDate',
+        values.endDate
+          ? new Date(values.endDate).toISOString().slice(0, 10)
+          : ''
+      );
 
       if (promotionImage) {
         formData.append('promotionImage', values.promotionImage!);
@@ -209,7 +219,14 @@ const EditPromotionForm: React.FC<EditProductFormProps> = ({ promotion }) => {
                 }`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.startDate.toISOString().split('T')[0]} // Convert Date object to string
+                // Convert Date to string format 'YYYY-MM-DD' if startDate is a valid Date object
+                value={
+                  formik.values.startDate
+                    ? new Date(formik.values.startDate)
+                        .toISOString()
+                        .slice(0, 10)
+                    : ''
+                }
               />
               {formik.touched.startDate && formik.errors.startDate ? (
                 <p className="text-sm text-error">
@@ -234,7 +251,11 @@ const EditPromotionForm: React.FC<EditProductFormProps> = ({ promotion }) => {
                 }`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.endDate.toISOString().split('T')[0]} // Convert Date object to string
+                value={
+                  formik.values.endDate
+                    ? new Date(formik.values.endDate).toISOString().slice(0, 10)
+                    : ''
+                }
               />
               {formik.touched.endDate && formik.errors.endDate ? (
                 <p className="text-sm text-error">
