@@ -20,7 +20,7 @@ interface Promotion {
   description: string;
   startDate: string;
   endDate: string;
-  isActive: boolean;
+  status: string;
   imageUrl: string;
 }
 

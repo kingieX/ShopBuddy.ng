@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/db/prisma';
-// import cloudinary from '@/lib/cloudinary/cloudinary';
-import { v2 as cloudinary } from 'cloudinary'; // Import Cloudinary if you use it for image storage
+import cloudinary from '@/lib/cloudinary/cloudinary';
+// import { v2 as cloudinary } from 'cloudinary'; // Import Cloudinary if you use it for image storage
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -83,6 +83,7 @@ export async function DELETE(
 }
 
 // Handle PUT request to update promotion data
+
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -102,40 +103,59 @@ export async function PUT(
     // Optional: Handle promotionImage update
     let promotionImageUrl = undefined;
     if (formData.get('promotionImage')) {
-      const promotionImageFile = formData.get('promotionImage') as File;
-      const promotionImageBuffer = Buffer.from(
-        await promotionImageFile.arrayBuffer()
-      );
-      const promotionImageUpload = await cloudinary.uploader.upload(
-        promotionImageBuffer.toString('base64'),
-        {
-          folder: 'promotions',
-          resources_type: 'image',
-          public_id: promotionId,
-        }
-      );
-      promotionImageUrl = promotionImageUpload.secure_url;
+      try {
+        const promotionImageFile = formData.get('promotionImage') as File;
+        const arrayBuffer = await promotionImageFile.arrayBuffer();
+        const base64String = Buffer.from(arrayBuffer).toString('base64');
+
+        const promotionImageUpload = await cloudinary.uploader.upload(
+          `data:image/jpeg;base64,${base64String}`, // Ensure correct base64 format
+          {
+            folder: 'promotions',
+            public_id: promotionId, // Use this to overwrite existing image
+            resource_type: 'image',
+          }
+        );
+        promotionImageUrl = promotionImageUpload.secure_url;
+      } catch (cloudinaryError) {
+        console.error(
+          'Cloudinary Upload Error:',
+          (cloudinaryError as Error).message
+        );
+        return NextResponse.json(
+          { error: 'Image upload failed' },
+          { status: 500 }
+        );
+      }
     }
 
-    // Update the Promotion in the database
-    const promotion = await prisma.promotion.update({
-      where: { id: promotionId },
-      data: {
-        title,
-        description,
-        startDate,
-        endDate,
-        status,
-        ...(promotionImageUrl && { promotionImage: promotionImageUrl }),
-      },
-    });
+    // Now update the promotion in Prisma
+    try {
+      const promotion = await prisma.promotion.update({
+        where: { id: promotionId },
+        data: {
+          title,
+          description,
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
+          status,
+          ...(promotionImageUrl && { promotionImage: promotionImageUrl }),
+        },
+      });
 
-    return NextResponse.json({
-      message: 'Promotion updated successfully',
-      promotion,
-    });
-  } catch (error) {
-    console.error('Error updating promotion:', error);
+      return NextResponse.json({
+        message: 'Promotion updated successfully',
+        promotion,
+      });
+    } catch (prismaError) {
+      console.error('Prisma Update Error:', (prismaError as Error).message);
+      return NextResponse.json(
+        { error: 'Failed to update promotion in the database' },
+        { status: 500 }
+      );
+    }
+  } catch (generalError) {
+    console.error('General Error:', (generalError as Error).message);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

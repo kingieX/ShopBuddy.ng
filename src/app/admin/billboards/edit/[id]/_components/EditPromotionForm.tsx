@@ -147,8 +147,8 @@ const EditPromotionForm: React.FC<EditProductFormProps> = ({ promotion }) => {
             </div>
           </div>
 
+          {/* Promotion Image */}
           <div className="max-w-4xl rounded bg-white p-4 shadow lg:shadow-lg">
-            {/* Promotion Image */}
             <div className="mb-6">
               <label htmlFor="promotionImage" className="block font-medium">
                 Promotion Image

@@ -24,7 +24,7 @@ interface Promotion {
   description: string;
   startDate: string;
   endDate: string;
-  isActive: boolean;
+  status: string;
   imageUrl: string;
 }
 
@@ -99,7 +99,7 @@ export default function PromotionTable({
                       {new Date(promotion.endDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {promotion.isActive ? (
+                      {promotion.status === 'active' ? (
                         <Badge className="bg-green-100 text-success">
                           Active
                         </Badge>
