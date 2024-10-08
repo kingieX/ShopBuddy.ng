@@ -250,7 +250,7 @@ const SignUp = () => {
             <div className="text-center text-sm">
               Already have an account?{' '}
               <Link
-                href="/auth/login"
+                href="/auth/signin"
                 className="text-sm text-blue-500 underline underline-offset-4"
               >
                 Sign in

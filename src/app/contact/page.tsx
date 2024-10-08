@@ -9,7 +9,7 @@ const ContactPage = () => {
   return (
     <div>
       {/* Import the Navbar */}
-      <Navbar isSignedIn={false} isAuthPage={false} profileImage={''} />
+      <Navbar isAuthPage={false} />
 
       {/* Contact Page Section */}
       <section className="py-12">

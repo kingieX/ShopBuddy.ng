@@ -28,6 +28,8 @@ model Category {
   id       String    @id @default(uuid()) @map("id") // Use UUID for id
   name     String    @unique
   products Product[] @relation // No 'fields' or 'references' needed here
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("categories") // Map table name to "categories"
 }

@@ -1,14 +1,8 @@
 'use client';
+
+import { useSession, signOut } from 'next-auth/react'; // Import the useSession and signOut hooks
 import { useState } from 'react';
-import {
-  Menu,
-  X,
-  Search,
-  ShoppingCart,
-  Heart,
-  User,
-  LucideAArrowDown,
-} from 'lucide-react'; // React Lucide icons
+import { Menu, X, Search, ShoppingCart, Heart } from 'lucide-react'; // React Lucide icons
 import { GoPerson } from 'react-icons/go';
 import { LuShoppingBag } from 'react-icons/lu';
 import { FaRegStar } from 'react-icons/fa6';
@@ -20,16 +14,11 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Navbar = ({
-  isSignedIn,
-  isAuthPage,
-  profileImage,
-}: {
-  isSignedIn: boolean;
-  isAuthPage: boolean;
-  profileImage: string | undefined;
-}) => {
+const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { data: session, status } = useSession(); // Use session and status from NextAuth
+  const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
 
   return (
     <nav className="fixed z-20 w-full border-b bg-white shadow-md">
@@ -48,7 +37,6 @@ const Navbar = ({
           </div>
 
           {/* middle */}
-          {/* Menu on large screens */}
           <div className="mr-12 hidden items-center space-x-4 md:flex">
             <Link
               href="/"
@@ -89,13 +77,14 @@ const Navbar = ({
             {/* Sign Up / Profile */}
             {!isSignedIn && !isAuthPage && (
               <Link
-                href="/auth/signup"
+                href="/auth/signin"
                 className="ml-4 rounded-md bg-button px-4 py-2 text-white hover:bg-blue-600"
               >
-                Sign Up
+                Sign In
               </Link>
             )}
-            {isSignedIn && (
+
+            {isSignedIn && session && (
               <div className="relative">
                 <GoPerson
                   className="h-8 w-8 cursor-pointer rounded-full border bg-button p-1 text-white"
@@ -124,13 +113,13 @@ const Navbar = ({
                       <FaRegStar className="mr-2 inline-block h-6 w-6" />
                       My Reviews
                     </Link>
-                    <Link
-                      href="/logout"
-                      className="my-1 block px-4 py-2 text-sm hover:text-gray-300"
+                    <button
+                      className="my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300"
+                      onClick={() => signOut()} // Call signOut function on logout
                     >
                       <CiLogout className="mr-2 inline-block h-6 w-6" />
                       Logout
-                    </Link>
+                    </button>
                   </div>
                 )}
               </div>
@@ -179,16 +168,18 @@ const Navbar = ({
                   About
                 </Link>
               </div>
+
               {!isSignedIn && !isAuthPage && (
                 <Link
-                  href="/auth/signup"
+                  href="/auth/signin"
                   className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
                 >
                   <CiLogout className="mr-2 inline-block h-6 w-6" />
-                  Sign Up
+                  Sign In
                 </Link>
               )}
-              {isSignedIn && (
+
+              {isSignedIn && session && (
                 <div className="mt-2 py-1 text-white">
                   <Link
                     href="/profile"
@@ -211,13 +202,13 @@ const Navbar = ({
                     <FaRegStar className="mr-2 inline-block h-6 w-6" />
                     My Reviews
                   </Link>
-                  <Link
-                    href="/logout"
-                    className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
+                  <button
+                    className="my-1 block w-full px-4 py-2 text-left text-sm hover:text-blue-700"
+                    onClick={() => signOut()} // Call signOut function on logout
                   >
                     <CiLogout className="mr-2 inline-block h-6 w-6" />
                     Logout
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>

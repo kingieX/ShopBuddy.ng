@@ -1,7 +1,11 @@
+// app/layout.tsx or wherever your layout is
+
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import SessionProviderWrapper from './SessionProviderWrapper'; // Import the client-side SessionProvider wrapper
 
+// Font configuration remains in the server component
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -13,6 +17,7 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
+// Metadata is a server-side export
 export const metadata: Metadata = {
   title: 'ShopBuddy',
   description: 'An E-commerce website',
@@ -21,17 +26,18 @@ export const metadata: Metadata = {
   },
 };
 
+// Server-side RootLayout
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
       </body>
     </html>
   );

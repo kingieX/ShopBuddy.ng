@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import Footer from '@/app/components/Footer';
 import { Eye, EyeOff, Loader2 } from 'lucide-react'; // Icons for eye and loader
 import Navbar from '@/app/components/NavBar';
+import { signIn, useSession } from 'next-auth/react'; // Import signIn from NextAuth.js
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
@@ -16,6 +18,17 @@ const SignIn = () => {
   // State management for show/hide password and loading state
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState(''); // State for email input
+  const [password, setPassword] = useState(''); // State for password input
+  const [error, setError] = useState(''); // State for error messages
+  const router = useRouter(); // Get router instance
+  const { status } = useSession(); // Get session status from NextAuth
+
+  // Check if user is already authenticated
+  if (status === 'authenticated') {
+    router.push('/'); // Redirect to home if authenticated
+    return null;
+  }
 
   // Toggle password visibility
   const togglePasswordVisibility = () => {
@@ -23,19 +36,36 @@ const SignIn = () => {
   };
 
   // Handle form submission (login button)
-  const handleLogin = () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
     setLoading(true);
-    // Simulate a delay for loading effect
-    setTimeout(() => {
-      setLoading(false);
-      // Add actual login logic here
-    }, 2000);
+    setError('');
+
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (res?.error) {
+      setError(res.error); // Set error message if login fails
+    } else {
+      router.push('/'); // Redirect to home if login is successful
+    }
+
+    setLoading(false); // Reset loading state
+  };
+
+  // Handle Google login
+  const handleGoogleSignIn = () => {
+    setLoading(true);
+    signIn('google'); // Trigger Google sign-in
   };
 
   return (
     <>
       <div>
-        <Navbar isSignedIn={false} isAuthPage={true} profileImage="" />
+        <Navbar isAuthPage={true} />
       </div>
       <div className="w-full lg:grid lg:min-h-[500px] lg:grid-cols-2 xl:min-h-[800px]">
         {/* Image Section */}
@@ -50,7 +80,7 @@ const SignIn = () => {
         </div>
 
         {/* Sign-In Form Section */}
-        <div className="flex flex-col items-center justify-center py-4">
+        <div className="flex flex-col items-center justify-center py-24 lg:py-4">
           <div className="mx-auto grid w-[350px] gap-6">
             {/* Title & Subtitle */}
             <div className="grid gap-2 text-center">
@@ -68,6 +98,8 @@ const SignIn = () => {
                 type="email"
                 placeholder="m@example.com"
                 required
+                value={email} // Bind email state
+                onChange={(e) => setEmail(e.target.value)} // Update email state on input change
               />
             </div>
 
@@ -79,6 +111,8 @@ const SignIn = () => {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  value={password} // Bind password state
+                  onChange={(e) => setPassword(e.target.value)} // Update password state on input change
                 />
                 {/* Eye Icon */}
                 <button
@@ -97,6 +131,9 @@ const SignIn = () => {
                 Forgot your password?
               </Link>
             </div>
+
+            {/* Error Message */}
+            {error && <p className="text-sm text-red-500">{error}</p>}
 
             {/* Login Button with Spinner */}
             <Button
@@ -126,6 +163,7 @@ const SignIn = () => {
             <Button
               variant="outline"
               className="flex w-full items-center justify-center hover:bg-gray-100"
+              onClick={handleGoogleSignIn} // Handle Google sign-in
             >
               <Image
                 src="/assets/google-icon.svg" // Add the path to your Google logo
@@ -134,7 +172,11 @@ const SignIn = () => {
                 height={20}
                 className="mr-2"
               />
-              Login with Google
+              {loading ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                'Sign in with Google'
+              )}
             </Button>
           </div>
 

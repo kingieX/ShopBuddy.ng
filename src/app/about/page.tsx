@@ -6,10 +6,28 @@ import StatsSection from './_components/StatCard';
 import TestimonialsSection from './_components/TestimonialsSection';
 import ExtrasSection from './_components/Extras';
 
+// import { getSession } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+// import { useEffect } from "react";
+
 const About = () => {
+  // use for protected pages
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   const securePage = async () => {
+  //     const session = await getSession();
+  //     if (!session) {
+  //       router.push("/auth/signin");
+  //     }
+  //   };
+
+  //   securePage();
+  // }, [router]);
+
   return (
     <>
-      <Navbar isSignedIn={true} isAuthPage={false} profileImage="" />
+      <Navbar isAuthPage={false} />
 
       {/* Hero Section */}
       <section className="bg-white px-8 py-20">

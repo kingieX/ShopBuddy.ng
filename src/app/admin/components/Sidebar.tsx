@@ -38,6 +38,11 @@ const Sidebar = () => {
       href: '/admin/add-product',
       icon: <BsCartPlus size={22} />,
     },
+    {
+      name: 'Category',
+      href: '/admin/categories',
+      icon: <BiCategoryAlt size={20} />,
+    },
     { name: 'Orders', href: '/admin/orders', icon: <CgList size={22} /> },
     { name: 'Payments', href: '/admin/payments', icon: <SlWallet size={20} /> },
     {
