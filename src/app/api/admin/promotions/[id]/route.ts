@@ -16,7 +16,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const promotionId = params.id;
-  console.log('Promotion ID:', promotionId);
+  // console.log('Promotion ID:', promotionId);
 
   try {
     const promotion = await prisma.promotion.findUnique({

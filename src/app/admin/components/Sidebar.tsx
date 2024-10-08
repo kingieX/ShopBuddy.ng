@@ -6,10 +6,11 @@ import { SlWallet } from 'react-icons/sl';
 import { RiAdvertisementLine } from 'react-icons/ri';
 import { BiCategoryAlt } from 'react-icons/bi';
 import { GiShoppingCart } from 'react-icons/gi';
-import { BsCartPlus, BsCartCheck } from 'react-icons/bs';
+import { BsCartPlus } from 'react-icons/bs';
 import { MdPeopleOutline } from 'react-icons/md';
 import { MdOutlineSettingsSuggest } from 'react-icons/md';
 import { CgList } from 'react-icons/cg';
+import { Component, CircleGauge } from 'lucide-react';
 
 import Logo from '../../assets/favicon.svg';
 import Image from 'next/image';
@@ -21,7 +22,7 @@ const Sidebar = () => {
     {
       name: 'Overview',
       href: '/admin/overview',
-      icon: <BiCategoryAlt size={20} />,
+      icon: <CircleGauge size={20} />,
     },
     {
       name: 'Billboards',
@@ -41,7 +42,7 @@ const Sidebar = () => {
     {
       name: 'Category',
       href: '/admin/categories',
-      icon: <BiCategoryAlt size={20} />,
+      icon: <Component size={20} />,
     },
     { name: 'Orders', href: '/admin/orders', icon: <CgList size={22} /> },
     { name: 'Payments', href: '/admin/payments', icon: <SlWallet size={20} /> },

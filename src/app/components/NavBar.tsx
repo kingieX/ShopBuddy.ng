@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession, signOut } from 'next-auth/react'; // Import the useSession and signOut hooks
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Search, ShoppingCart, Heart } from 'lucide-react'; // React Lucide icons
 import { GoPerson } from 'react-icons/go';
 import { LuShoppingBag } from 'react-icons/lu';
@@ -16,9 +16,28 @@ import Link from 'next/link';
 
 const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const { data: session, status } = useSession(); // Use session and status from NextAuth
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
+  const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
+
+  // Use useEffect to add/remove the event listener for clicks outside the menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false); // Close the menu if the click is outside the menu
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside); // Clean up the event listener
+    };
+  }, [menuOpen]);
 
   return (
     <nav className="fixed z-20 w-full border-b bg-white shadow-md">
@@ -85,7 +104,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
             )}
 
             {isSignedIn && session && (
-              <div className="relative">
+              <div className="relative" ref={menuRef}>
                 <GoPerson
                   className="h-8 w-8 cursor-pointer rounded-full border bg-button p-1 text-white"
                   onClick={() => setMenuOpen(!menuOpen)}
@@ -144,7 +163,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="absolute right-0 w-64 border bg-primary text-white md:hidden">
-            <div className="flex flex-col items-start space-y-1 py-3">
+            <div className="flex w-full flex-col items-start space-y-1 py-3">
               <div className="w-full border-b">
                 <Link
                   href="/"
@@ -170,17 +189,19 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
               </div>
 
               {!isSignedIn && !isAuthPage && (
-                <Link
-                  href="/auth/signin"
-                  className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
-                >
-                  <CiLogout className="mr-2 inline-block h-6 w-6" />
-                  Sign In
-                </Link>
+                <div className="w-full border-b">
+                  <Link
+                    href="/auth/signin"
+                    className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
+                  >
+                    <CiLogout className="mr-2 inline-block h-6 w-6" />
+                    Sign In
+                  </Link>
+                </div>
               )}
 
               {isSignedIn && session && (
-                <div className="mt-2 py-1 text-white">
+                <div className="w-full border-b">
                   <Link
                     href="/profile"
                     className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
