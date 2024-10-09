@@ -10,6 +10,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'; // Icons for eye and loader
 import Navbar from '@/app/components/NavBar';
 import { signIn, useSession } from 'next-auth/react'; // Import signIn from NextAuth.js
 import { useRouter } from 'next/navigation'; // Import useRouter for navigation
+import toast from 'react-hot-toast';
 
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
@@ -51,6 +52,9 @@ const SignIn = () => {
       setError(res.error); // Set error message if login fails
     } else {
       router.push('/'); // Redirect to home if login is successful
+      toast.success('successfully signed in', {
+        duration: 4000, // Toast shows for 4 seconds
+      });
     }
 
     setLoading(false); // Reset loading state
@@ -125,7 +129,7 @@ const SignIn = () => {
               </div>
 
               <Link
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="ml-auto inline-block text-xs underline"
               >
                 Forgot your password?

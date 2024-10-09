@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/table'; // Using Shadcn components
 import { Badge } from '@/components/ui/badge';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
+import Image from 'next/image';
+import StarRating from '@/app/constants/StarRating';
 
 interface CategoryDetailProps {
   category: {
@@ -76,7 +78,20 @@ const CategoryDetail: React.FC<CategoryDetailProps> = ({ category }) => {
           <TableBody>
             {category.products.map((product) => (
               <TableRow key={product.id}>
-                <TableCell>{product.title}</TableCell>
+                {/* <TableCell>{product.title}</TableCell> */}
+                <TableCell className="flex items-center space-x-2">
+                  <Image
+                    src={product.mainImage || ''}
+                    alt={product.title}
+                    width={64}
+                    height={64}
+                    className="h-16 w-16 rounded-md bg-gray-200"
+                  />
+                  <div>
+                    <p className="font-semibold text-black">{product.title}</p>
+                    <StarRating rating={4.5} />
+                  </div>
+                </TableCell>
                 <TableCell>
                   <CurrencyFormatter amount={product.regularPrice} />
                 </TableCell>

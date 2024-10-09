@@ -84,9 +84,12 @@ export default function ProductsTable({
                         className="h-16 w-16 rounded-md bg-gray-200"
                       />
                       <div>
-                        <p className="font-semibold text-black">
-                          {product.title}
-                        </p>
+                        <Link
+                          className="font-semibold text-black hover:text-gray-600 hover:underline"
+                          href={`/admin/products/${product.id}`}
+                        >
+                          <p className="">{product.title}</p>
+                        </Link>
                         <StarRating rating={4.5} />
                       </div>
                     </TableCell>

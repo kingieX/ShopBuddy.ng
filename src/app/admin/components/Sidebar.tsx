@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SlWallet } from 'react-icons/sl';
 import { RiAdvertisementLine } from 'react-icons/ri';
-import { BiCategoryAlt } from 'react-icons/bi';
 import { GiShoppingCart } from 'react-icons/gi';
 import { BsCartPlus } from 'react-icons/bs';
 import { MdPeopleOutline } from 'react-icons/md';

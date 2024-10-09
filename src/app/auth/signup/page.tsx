@@ -15,6 +15,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -71,6 +72,9 @@ const SignUp = () => {
 
         // Redirect to verification request page
         router.push('/auth/verify-request');
+        toast.success('User registered successfully', {
+          duration: 4000, // Toast shows for 4 seconds
+        });
         console.log('User registered successfully', formattedValues);
       } catch (error) {
         if (
@@ -94,7 +98,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Navbar isSignedIn={false} isAuthPage={true} profileImage="" />
+      <Navbar isAuthPage={true} />
       <div className="w-full lg:grid lg:grid-cols-2">
         <div className="bg-muted hidden lg:block">
           <Image

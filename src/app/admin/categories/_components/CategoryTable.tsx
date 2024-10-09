@@ -62,18 +62,33 @@ export default function CategoryTable({
           <Tooltip.TooltipProvider>
             <Table className="w-full min-w-[990px] px-2">
               <TableHeader>
-                <TableRow className="bg-gray-50 text-gray-600">
-                  <TableHead>Category Name</TableHead>
-                  <TableHead>Number of products</TableHead>
-                  <TableHead>Actions</TableHead>
+                <TableRow>
+                  <TableHead className="bg-gray-50 font-semibold text-gray-700">
+                    s/n
+                  </TableHead>
+                  <TableHead className="bg-gray-50 font-semibold text-gray-700">
+                    Category Name
+                  </TableHead>
+                  <TableHead className="bg-gray-50 font-semibold text-gray-700">
+                    Number of products
+                  </TableHead>
+                  <TableHead className="bg-gray-50 font-semibold text-gray-700">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="text-gray-500">
-                {categories.map((category) => (
+                {categories.map((category, index) => (
                   <TableRow key={category.id}>
+                    <TableCell>{index + 1}</TableCell>
                     {/* Category name */}
                     <TableCell className="flex items-center space-x-2">
-                      {category.name}
+                      <Link
+                        className="hover:text-gray-600 hover:underline"
+                        href={`/admin/categories/${category.id}`}
+                      >
+                        {category.name}
+                      </Link>
                     </TableCell>
 
                     {/* Number of products */}

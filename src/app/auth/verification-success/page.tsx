@@ -9,7 +9,7 @@ const VerificationSuccess = () => {
 
   return (
     <>
-      <Navbar isSignedIn={false} isAuthPage={true} profileImage="" />
+      <Navbar isAuthPage={true} />
       <div className="flex flex-col items-center justify-center gap-6 bg-gray-50 py-24">
         <div className="max-w-lg rounded-lg bg-white p-8 text-center shadow-lg">
           <h1 className="text-4xl font-semibold text-green-600">

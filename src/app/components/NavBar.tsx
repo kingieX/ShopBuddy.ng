@@ -20,11 +20,17 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
   const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
 
-  // Use useEffect to add/remove the event listener for clicks outside the menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false); // Close the menu if the click is outside the menu
+      // Check if the clicked target is a link or inside the menu
+      const target = event.target as HTMLElement;
+
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        !target.closest('.ignore-menu-close')
+      ) {
+        setMenuOpen(false); // Close the menu if the click is outside the menu and not on a link
       }
     };
 
@@ -35,7 +41,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside); // Clean up the event listener
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [menuOpen]);
 
@@ -167,21 +173,21 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
               <div className="w-full border-b">
                 <Link
                   href="/"
-                  className="my-1 block px-4 py-2 text-base hover:text-blue-700"
+                  className="ignore-menu-close my-1 block px-4 py-2 text-base hover:text-blue-700"
                 >
                   <TfiHome className="mr-2 inline-block h-6 w-6" />
                   Home
                 </Link>
                 <Link
                   href="/contact"
-                  className="my-1 block px-4 py-2 text-base hover:text-blue-700"
+                  className="ignore-menu-close my-1 block px-4 py-2 text-base hover:text-blue-700"
                 >
                   <MdOutlineLocalLibrary className="mr-2 inline-block h-6 w-6" />
                   Contact
                 </Link>
                 <Link
                   href="/about"
-                  className="my-1 block px-4 py-2 text-base hover:text-blue-700"
+                  className="ignore-menu-close my-1 block px-4 py-2 text-base hover:text-blue-700"
                 >
                   <AiOutlineQuestionCircle className="mr-2 inline-block h-6 w-6" />
                   About
@@ -192,7 +198,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                 <div className="w-full border-b">
                   <Link
                     href="/auth/signin"
-                    className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
+                    className="ignore-menu-close my-1 block px-4 py-2 text-sm hover:text-blue-700"
                   >
                     <CiLogout className="mr-2 inline-block h-6 w-6" />
                     Sign In
@@ -204,27 +210,27 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                 <div className="w-full border-b">
                   <Link
                     href="/profile"
-                    className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
+                    className="ignore-menu-close my-1 block px-4 py-2 text-sm hover:text-blue-700"
                   >
                     <GoPerson className="mr-2 inline-block h-6 w-6" />
                     Manage my account
                   </Link>
                   <Link
                     href="/orders"
-                    className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
+                    className="ignore-menu-close my-1 block px-4 py-2 text-sm hover:text-blue-700"
                   >
                     <LuShoppingBag className="mr-2 inline-block h-6 w-6" />
                     My Orders
                   </Link>
                   <Link
                     href="/reviews"
-                    className="my-1 block px-4 py-2 text-sm hover:text-blue-700"
+                    className="ignore-menu-close my-1 block px-4 py-2 text-sm hover:text-blue-700"
                   >
                     <FaRegStar className="mr-2 inline-block h-6 w-6" />
                     My Reviews
                   </Link>
                   <button
-                    className="my-1 block w-full px-4 py-2 text-left text-sm hover:text-blue-700"
+                    className="ignore-menu-close my-1 block w-full px-4 py-2 text-left text-sm hover:text-blue-700"
                     onClick={() => signOut()} // Call signOut function on logout
                   >
                     <CiLogout className="mr-2 inline-block h-6 w-6" />

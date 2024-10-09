@@ -55,7 +55,7 @@ const VerifyRequest = () => {
 
   return (
     <>
-      <Navbar isSignedIn={false} isAuthPage={true} profileImage="" />
+      <Navbar isAuthPage={true} />
       <div className="flex flex-col items-center justify-center gap-6 px-10 py-24">
         <h1 className="text-3xl font-semibold">Verify Your Email</h1>
         <p className="text-gray-600">
