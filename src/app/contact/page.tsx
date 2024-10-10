@@ -1,22 +1,69 @@
-// pages/contact.tsx
+'use client';
+import { useState } from 'react';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
-
-import { IoCallOutline } from 'react-icons/io5';
-import { IoMailOutline } from 'react-icons/io5';
+import { IoCallOutline, IoMailOutline } from 'react-icons/io5';
+import toast from 'react-hot-toast';
 
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSuccessMessage('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSuccessMessage('Your message has been sent successfully!');
+        toast.success('Your message has been sent successfully!', {
+          duration: 4000, // Toast shows for 4 seconds
+        });
+      } else {
+        setSuccessMessage('Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      setSuccessMessage('An error occurred. Please try again.');
+    }
+
+    setIsSubmitting(false);
+  };
+
   return (
     <div>
-      {/* Import the Navbar */}
       <Navbar isAuthPage={false} />
-
-      {/* Contact Page Section */}
       <section className="py-12">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto py-16 lg:px-4">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
-            {/* Contact Information - 1/4 of the width */}
-            <div className="col-span-2 rounded-lg bg-gray-50 p-8">
+            <div className="col-span-2 rounded-lg p-8 lg:bg-gray-50">
+              {/* Contact Info */}
               <div className="mb-6">
                 <div className="mb-6 flex items-center space-x-2">
                   <div className="flex items-center justify-center rounded-full bg-button">
@@ -53,30 +100,39 @@ const ContactPage = () => {
               </div>
             </div>
 
-            {/* Contact Form - 3/4 of the width */}
+            {/* Contact Form */}
             <div className="col-span-3 rounded-lg bg-white p-8">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                  <div className="col-span-1 md:col-span-1">
+                  <div className="col-span-1">
                     <input
                       type="text"
+                      name="name"
                       placeholder="Your Name *"
+                      value={formData.name}
+                      onChange={handleChange}
                       className="w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500"
                       required
                     />
                   </div>
-                  <div className="col-span-1 md:col-span-1">
+                  <div className="col-span-1">
                     <input
                       type="email"
+                      name="email"
                       placeholder="Your Email *"
+                      value={formData.email}
+                      onChange={handleChange}
                       className="w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500"
                       required
                     />
                   </div>
-                  <div className="col-span-1 md:col-span-1">
+                  <div className="col-span-1">
                     <input
                       type="tel"
+                      name="phone"
                       placeholder="Your Phone *"
+                      value={formData.phone}
+                      onChange={handleChange}
                       className="w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500"
                       required
                     />
@@ -85,7 +141,10 @@ const ContactPage = () => {
 
                 <div>
                   <textarea
+                    name="message"
                     placeholder="Your Message"
+                    value={formData.message}
+                    onChange={handleChange}
                     className="w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500"
                     rows={4}
                   ></textarea>
@@ -95,17 +154,22 @@ const ContactPage = () => {
                   <button
                     type="submit"
                     className="w-full rounded-md bg-button px-4 py-3 text-white hover:bg-blue-600"
+                    disabled={isSubmitting}
                   >
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
                 </div>
+
+                {successMessage && (
+                  <div className="mt-4 text-center text-green-500">
+                    {successMessage}
+                  </div>
+                )}
               </form>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Import the Footer */}
       <Footer />
     </div>
   );
