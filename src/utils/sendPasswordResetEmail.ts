@@ -16,7 +16,7 @@ export async function sendPasswordResetEmail(
     });
 
     const mailOptions = {
-      from: '"ShopBuddy Support" <support@shopbuddy.com>',
+      from: '"ShopBuddy Support" <support@shopbuddy.ng>',
       to: email,
       subject: 'Password Reset Request',
       html: `
@@ -51,7 +51,7 @@ export async function sendPasswordResetEmail(
                 <td style="padding: 20px; background-color: #f4f4f4; text-align: center; color: #888;">
                   <p style="font-size: 12px;">
                     &copy; 2024 ShopBuddy. All rights reserved.<br>
-                    support@shopbuddy.com | <a href="https://shopbuddy.com" style="color: #007bff; text-decoration: none;">Visit our website</a>
+                    support@shopbuddy.ng | <a href="https://shopbuddy.ng" style="color: #007bff; text-decoration: none;">Visit our website</a>
                   </p>
                 </td>
               </tr>

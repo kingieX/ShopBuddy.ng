@@ -15,6 +15,7 @@ export default function ResetPassword() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
@@ -51,9 +52,12 @@ export default function ResetPassword() {
 
       if (res.ok) {
         // Show success toast notification
-        toast.success('Password successfully reset!', {
-          duration: 4000, // Toast shows for 4 seconds
-        });
+        toast.success(
+          'Password successfully reset! Redirecting to Log in page',
+          {
+            duration: 4000, // Toast shows for 4 seconds
+          }
+        );
 
         // Redirect to login page after 4 seconds
         setTimeout(() => {
@@ -99,7 +103,7 @@ export default function ResetPassword() {
 
             <div className="relative mt-4">
               <Input
-                type={showPassword ? 'text' : 'password'}
+                type={showConfirmPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 placeholder="Confirm New Password"
                 value={confirmPassword}
@@ -109,10 +113,12 @@ export default function ResetPassword() {
               {/* Toggle password visibility for confirmPassword */}
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
+                onClick={() => {
+                  setShowConfirmPassword(!showConfirmPassword);
+                }}
                 className="absolute right-3 top-3 cursor-pointer"
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
 

@@ -99,6 +99,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
           console.log('Created product:', result.product); // Access the 'product' data if needed
           // Redirect to success page
           setShowModal(true);
+          router.refresh();
         } else {
           const errorData = await response.json();
           console.error('Error:', errorData.error);
@@ -110,6 +111,9 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
         // router.push(/error?errorMessage=${encodeURIComponent(error.message)});
       } finally {
         setLoading(false);
+        formik.resetForm();
+        // reload
+        router.refresh();
       }
     },
   });
@@ -117,12 +121,14 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
   // Handle closing the modal
   const handleCloseModal = () => {
     setShowModal(false);
+    router.refresh();
     formik.resetForm();
   };
 
   // Handle adding another product
   const handleAddAnotherProduct = () => {
     setShowModal(false);
+    router.refresh();
     formik.resetForm();
     setImageGallery([]);
   };

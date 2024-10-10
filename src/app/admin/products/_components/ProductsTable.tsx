@@ -60,7 +60,7 @@ export default function ProductsTable({
       <ScrollArea>
         <div className="w-full max-w-xs overflow-x-auto lg:max-w-max">
           <Tooltip.TooltipProvider>
-            <Table className="w-full min-w-[990px] px-2">
+            <Table className="w-full min-w-[990px] px-1">
               <TableHeader>
                 <TableRow className="bg-gray-50 text-gray-600">
                   <TableHead>Product</TableHead>
@@ -74,7 +74,7 @@ export default function ProductsTable({
               </TableHeader>
               <TableBody className="text-gray-500">
                 {products.map((product) => (
-                  <TableRow key={product.id}>
+                  <TableRow key={product.id} className="w-full">
                     <TableCell className="flex items-center space-x-2">
                       <Image
                         src={product.mainImage || ''}
@@ -117,7 +117,7 @@ export default function ProductsTable({
                           On sale
                         </Badge>
                       ) : (
-                        <Badge className="bg-red-100 text-error">
+                        <Badge className="bg-red-100 text-error hover:bg-red-200">
                           Sold out
                         </Badge>
                       )}

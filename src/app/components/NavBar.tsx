@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react'; // Import the useSession and signOut hooks
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation'; // Use router for navigation
 import { Menu, X, Search, ShoppingCart, Heart } from 'lucide-react'; // React Lucide icons
 import { GoPerson } from 'react-icons/go';
 import { LuShoppingBag } from 'react-icons/lu';
@@ -16,9 +17,18 @@ import Link from 'next/link';
 
 const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState<string | null>(null); // Track active link
   const { data: session, status } = useSession(); // Use session and status from NextAuth
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
   const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
+  const router = useRouter();
+
+  // Handle link click to set active state and navigate
+  const handleLinkClick = (path: string) => {
+    setActiveLink(path); // Update the active link state first
+    setMenuOpen(false); // Close the menu after click
+    // router.push(path); // Navigate programmatically
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -53,7 +63,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
           <div className="flex flex-shrink-0 items-center">
             <Image
               src="/assets/favicon.svg"
-              alt="Google"
+              alt="Favicon"
               width={40}
               height={40}
               className="mr-2"
@@ -111,36 +121,53 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
 
             {isSignedIn && session && (
               <div className="relative" ref={menuRef}>
-                <GoPerson
-                  className="h-8 w-8 cursor-pointer rounded-full border bg-button p-1 text-white"
-                  onClick={() => setMenuOpen(!menuOpen)}
-                />
+                <div
+                  className={`flex h-8 w-8 items-center justify-center rounded-full border border-button text-button ${
+                    activeLink
+                      ? 'bg-button text-white'
+                      : 'hover:bg-button hover:text-white'
+                  }`}
+                >
+                  <GoPerson
+                    className="h-8 w-8 cursor-pointer p-1"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                  />
+                </div>
                 {menuOpen && (
                   <div className="absolute right-0 z-10 mt-2 w-64 rounded-md bg-primary py-1 text-white shadow-lg">
-                    <Link
-                      href="/profile"
-                      className="my-1 block px-4 py-2 text-sm hover:text-gray-300"
+                    <button
+                      className={`my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300 ${
+                        activeLink === '/profile' ? 'text-gray-300' : ''
+                      }`}
+                      onClick={() => handleLinkClick('/profile')}
                     >
                       <GoPerson className="mr-2 inline-block h-6 w-6" />
                       Manage my account
-                    </Link>
-                    <Link
-                      href="/orders"
-                      className="my-1 block px-4 py-2 text-sm hover:text-gray-300"
+                    </button>
+                    <button
+                      className={`my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300 ${
+                        activeLink === '/orders' ? 'text-gray-300' : ''
+                      }`}
+                      onClick={() => handleLinkClick('/orders')}
                     >
                       <LuShoppingBag className="mr-2 inline-block h-6 w-6" />
                       My Orders
-                    </Link>
-                    <Link
-                      href="/orders"
-                      className="my-1 block px-4 py-2 text-sm hover:text-gray-300"
+                    </button>
+                    <button
+                      className={`my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300 ${
+                        activeLink === '/reviews' ? 'text-gray-300' : ''
+                      }`}
+                      onClick={() => handleLinkClick('/reviews')}
                     >
                       <FaRegStar className="mr-2 inline-block h-6 w-6" />
                       My Reviews
-                    </Link>
+                    </button>
                     <button
                       className="my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300"
-                      onClick={() => signOut()} // Call signOut function on logout
+                      onClick={() => {
+                        signOut();
+                        setActiveLink(''); // Reset active link after logout
+                      }}
                     >
                       <CiLogout className="mr-2 inline-block h-6 w-6" />
                       Logout
