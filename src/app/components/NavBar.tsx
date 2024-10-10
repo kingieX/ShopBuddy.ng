@@ -14,6 +14,15 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,7 +30,16 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const { data: session, status } = useSession(); // Use session and status from NextAuth
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
   const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
+
   const router = useRouter();
+
+  // Handle logout logic
+  const handleLogout = () => {
+    signOut();
+    setActiveLink('');
+    setShowLogoutDialog(false); // Close dialog after logout
+  };
 
   // Handle link click to set active state and navigate
   const handleLinkClick = (path: string) => {
@@ -135,7 +153,8 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                 </div>
                 {menuOpen && (
                   <div className="absolute right-0 z-10 mt-2 w-64 rounded-md bg-primary py-1 text-white shadow-lg">
-                    <button
+                    <Link
+                      href="/profile"
                       className={`my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300 ${
                         activeLink === '/profile' ? 'text-gray-300' : ''
                       }`}
@@ -143,8 +162,9 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                     >
                       <GoPerson className="mr-2 inline-block h-6 w-6" />
                       Manage my account
-                    </button>
-                    <button
+                    </Link>
+                    <Link
+                      href="/orders"
                       className={`my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300 ${
                         activeLink === '/orders' ? 'text-gray-300' : ''
                       }`}
@@ -152,8 +172,9 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                     >
                       <LuShoppingBag className="mr-2 inline-block h-6 w-6" />
                       My Orders
-                    </button>
-                    <button
+                    </Link>
+                    <Link
+                      href="/reviews"
                       className={`my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300 ${
                         activeLink === '/reviews' ? 'text-gray-300' : ''
                       }`}
@@ -161,13 +182,17 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                     >
                       <FaRegStar className="mr-2 inline-block h-6 w-6" />
                       My Reviews
-                    </button>
+                    </Link>
                     <button
                       className="my-1 block w-full px-4 py-2 text-left text-sm hover:text-gray-300"
+                      // onClick={() => {
+                      //   signOut();
+                      //   setActiveLink(''); // Reset active link after logout
+                      // }}
                       onClick={() => {
-                        signOut();
-                        setActiveLink(''); // Reset active link after logout
-                      }}
+                        setShowLogoutDialog(true);
+                        setActiveLink('');
+                      }} // Open dialog on click
                     >
                       <CiLogout className="mr-2 inline-block h-6 w-6" />
                       Logout
@@ -258,7 +283,8 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                   </Link>
                   <button
                     className="ignore-menu-close my-1 block w-full px-4 py-2 text-left text-sm hover:text-blue-700"
-                    onClick={() => signOut()} // Call signOut function on logout
+                    // onClick={() => signOut()} // Call signOut function on logout
+                    onClick={() => setShowLogoutDialog(true)} // Open dialog on click
                   >
                     <CiLogout className="mr-2 inline-block h-6 w-6" />
                     Logout
@@ -269,6 +295,33 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
           </div>
         )}
       </div>
+
+      {/* Logout Dialog */}
+      {/* Logout Confirmation Dialog */}
+      <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Logout</DialogTitle>
+          </DialogHeader>
+          <p>Are you sure you want to log out?</p>
+          <DialogFooter className="flex flex-col gap-4 lg:flex-row">
+            {/* <DialogClose asChild> */}
+            <Button
+              className="border border-gray-300 bg-transparent px-4 text-gray-400 hover:bg-gray-400/50 hover:text-white"
+              onClick={() => setShowLogoutDialog(false)}
+            >
+              Cancel
+            </Button>
+            {/* </DialogClose> */}
+            <Button
+              className="bg-error px-4 text-white hover:border hover:border-error hover:bg-transparent hover:text-error"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </nav>
   );
 };

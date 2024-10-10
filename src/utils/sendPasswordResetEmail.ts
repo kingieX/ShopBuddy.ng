@@ -16,11 +16,11 @@ export async function sendPasswordResetEmail(
     });
 
     const mailOptions = {
-      from: '"ShopBuddy Support" <support@shopbuddy.ng>',
+      from: '"ShopBuddy" <no-reply@shopbuddy.ng>',
       to: email,
       subject: 'Password Reset Request',
       html: `
-          <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+          <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 10px;">
             <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
               <tr>
                 <td style="padding: 20px; text-align: center; background-color: #333; color: #ffffff;">

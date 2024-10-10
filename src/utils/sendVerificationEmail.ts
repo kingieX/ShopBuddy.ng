@@ -18,7 +18,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     to: email,
     subject: 'Verify your email',
     html: `
-      <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+      <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 10px;">
         <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
           <tr>
             <td style="padding: 20px; text-align: center; background-color: #333; color: #ffffff;">

@@ -13,7 +13,7 @@ const VerifyEmail = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = searchParams.get('token');
+    const token = searchParams?.get('token');
 
     if (!token) {
       setError('Verification token is missing.');
@@ -48,7 +48,7 @@ const VerifyEmail = () => {
             </p>
           </div>
         ) : error ? (
-          <div className="text-center">
+          <div className="flex min-h-screen items-center justify-center text-center">
             <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
             {/* <h2 className="text-xl font-semibold text-red-500">
               Verification Error

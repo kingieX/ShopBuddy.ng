@@ -14,11 +14,6 @@ const ContactPage = () => {
       {/* Contact Page Section */}
       <section className="py-12">
         <div className="container mx-auto px-4 py-16">
-          {/* Breadcrumb */}
-          {/* <div className="mb-6 text-sm text-gray-500">
-            Home / <span className="text-gray-900">Contact</span>
-          </div> */}
-
           <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
             {/* Contact Information - 1/4 of the width */}
             <div className="col-span-2 rounded-lg bg-gray-50 p-8">

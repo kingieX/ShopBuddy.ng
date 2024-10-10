@@ -146,8 +146,16 @@ const Profile = () => {
     }
   };
 
+  // if (!user) {
+  //   return <div>Loading...</div>;
+  // }
+
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
+    );
   }
 
   return (
@@ -170,6 +178,9 @@ const Profile = () => {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
+          <div className="mt-2 lg:hidden">
+            <SideMenu />
+          </div>
 
           {/* Profile Content */}
           <div className="lg:px-12">
@@ -182,14 +193,14 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="mt-2 flex w-full gap-8">
+        <div className="mt-2 flex w-full lg:gap-8">
           {/* Side Menu */}
-          <div className="mt-4 hidden lg:block">
+          <div className="hidden lg:block">
             <SideMenu />
           </div>
 
           {/* User Form */}
-          <div className="mt-4 w-full rounded bg-white lg:mx-12 lg:border lg:px-6 lg:py-6 lg:shadow-md">
+          <div className="mt-3 w-full rounded bg-white lg:mx-12 lg:border lg:px-6 lg:py-6 lg:shadow-md">
             {!isEditing ? (
               <div className="px-4 lg:px-8 lg:py-4">
                 <h2 className="mb-4 text-2xl font-semibold text-button">

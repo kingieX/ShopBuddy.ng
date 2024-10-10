@@ -1,6 +1,7 @@
 // pages/api/auth/verify.ts
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db/prisma';
+import { sendWelcomeMessageEmail } from '@/utils/sendWelcomeMessageEmail';
 
 export async function POST(req: Request) {
   try {
@@ -34,6 +35,9 @@ export async function POST(req: Request) {
         verificationToken: null, // Clear the token
       },
     });
+
+    // Send Welcome email
+    await sendWelcomeMessageEmail(user.email);
 
     return NextResponse.json(
       { message: 'Email verified successfully' },
