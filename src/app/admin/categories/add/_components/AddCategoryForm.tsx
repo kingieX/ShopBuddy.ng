@@ -35,6 +35,10 @@ const AddCategoryForm: React.FC = () => {
 
         if (response.ok) {
           setShowModal(true);
+          // Trigger page reload after a short delay
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000); // Reloads after 3 seconds
         } else {
           const errorData = await response.json();
           console.error('Error', errorData.error);

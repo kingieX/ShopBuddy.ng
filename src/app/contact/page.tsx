@@ -46,6 +46,13 @@ const ContactPage = () => {
         toast.success('Your message has been sent successfully!', {
           duration: 4000, // Toast shows for 4 seconds
         });
+        // Reset the form data after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+        });
       } else {
         setSuccessMessage('Something went wrong. Please try again.');
       }

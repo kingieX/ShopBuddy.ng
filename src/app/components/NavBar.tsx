@@ -75,22 +75,22 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
 
   return (
     <nav className="fixed z-20 w-full border-b bg-white shadow-md">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="lg:px- mx-auto max-w-7xl px-4 sm:px-2">
         <div className="relative flex h-16 justify-between">
           {/* left */}
           <div className="flex flex-shrink-0 items-center">
             <Image
-              src="/assets/favicon.svg"
+              src="/assets/logo.png"
               alt="Favicon"
-              width={40}
-              height={40}
-              className="mr-2"
+              width={1500}
+              height={1500}
+              className="w-24"
             />
-            <h1 className="text-xl font-bold">ShopBuddy</h1>
+            {/* <h1 className="text-xl font-bold text-button">ShopBuddy</h1> */}
           </div>
 
           {/* middle */}
-          <div className="mr-12 hidden items-center space-x-4 md:flex">
+          <div className="mx-12 hidden items-center space-x-4 pl-28 md:flex">
             <Link
               href="/"
               className="font-medium text-gray-900 hover:underline"

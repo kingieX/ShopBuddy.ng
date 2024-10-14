@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: 'ShopBuddy',
   description: 'An E-commerce website',
   icons: {
-    icon: '/favicon.svg', // Path to your larger favicon
+    icon: '/favicon1.svg', // Path to your larger favicon
   },
 };
 

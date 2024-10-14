@@ -8,20 +8,20 @@ import { IoSendSharp } from 'react-icons/io5';
 const Footer = () => {
   return (
     <footer className="bg-black py-10 text-white">
-      <div className="container mx-auto grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container mx-auto grid grid-cols-1 gap-8 px-8 sm:grid-cols-2 lg:grid-cols-4 lg:px-4">
         {/* Left Section - ShopBuddy */}
         <div>
           <div className="flex items-center space-x-2">
             <Image
-              src="/assets/favicon.svg"
+              src="/assets/logo.png"
               alt="Google"
-              width={48}
-              height={48}
-              className="mr-2"
+              width={1500}
+              height={1500}
+              className="mr-2 w-2/5 lg:w-1/2"
             />
-            <h3 className="text-lg font-semibold">ShopBuddy</h3>
+            {/* <h3 className="text-lg font-semibold">ShopBuddy</h3> */}
           </div>
-          <p className="mb-4 mt-4 font-semibold">Subscribe</p>
+          <p className="mb-4 font-semibold lg:mt-4">Subscribe</p>
           <p>Get 10% off your first order</p>
           <div className="space-x- mt-4 flex">
             <Input

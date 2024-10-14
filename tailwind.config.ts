@@ -12,6 +12,7 @@ const config: Config = {
       colors: {
         primary: '#363738', // Primary color
         button: '#1600A0', // Button color
+        // button: '#0069BF', // Button color
         text: {
           // Text colors based on sizes from gray-900 to gray-200 and white
           small: '#111827', // Equivalent to gray-900
