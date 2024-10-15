@@ -37,9 +37,6 @@ import AdminLayout from '../page';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import Chart from './_components/Chart';
 
-export const description =
-  'An application shell with a header and main content area. The header has a navbar, a search input and and a user nav dropdown. The user nav is toggled by a button with an avatar image.';
-
 const Dashboard = () => {
   return (
     <AdminLayout>
