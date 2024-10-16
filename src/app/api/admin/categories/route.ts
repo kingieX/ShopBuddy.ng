@@ -11,6 +11,15 @@ export async function GET() {
         _count: {
           select: { products: true },
         },
+        products: {
+          select: {
+            id: true,
+            title: true,
+            mainImage: true,
+            regularPrice: true,
+            salePrice: true,
+          },
+        },
       },
     });
 

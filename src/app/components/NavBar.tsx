@@ -75,7 +75,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
 
   return (
     <nav className="fixed z-20 w-full border-b bg-white shadow-md">
-      <div className="lg:px- mx-auto max-w-7xl px-4 sm:px-2">
+      <div className="lg:px- mx-auto max-w-7xl px-4 sm:px-8">
         <div className="relative flex h-16 justify-between">
           {/* left */}
           <div className="flex flex-shrink-0 items-center">
