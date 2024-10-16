@@ -1,7 +1,9 @@
 import ExtrasSection from '../about/_components/Extras';
+import AllProductSection from './_components/AllProductSection';
 import CategoryProductSection from './_components/CategoryProductSection';
 import MenuBar from './_components/MenuBar';
 import PromotionSlider from './_components/PromotionSlider';
+import PromotionStatic from './_components/PromotionStatic';
 
 export default function HomePage() {
   return (
@@ -17,6 +19,14 @@ export default function HomePage() {
         </div>
         <div className="px-4 py-8 lg:px-20">
           <CategoryProductSection />
+        </div>
+
+        <div className="w-full px-4 py-8 lg:px-20">
+          <PromotionStatic />
+        </div>
+
+        <div className="px-4 py-8 lg:px-20">
+          <AllProductSection />
         </div>
 
         {/* Extras */}

@@ -47,10 +47,10 @@ const CategoryProductSection: React.FC = () => {
             <h2 className="text-sm font-bold text-button">Category</h2>
           </div>
           <div className="category-header mb-8 flex items-center justify-between">
-            <h2 className="text-xl font-semibold lg:text-2xl">
+            <h2 className="text-xl font-semibold lg:text-4xl">
               {category.name}
             </h2>
-            <button className="rounded font-semibold text-button hover:underline lg:bg-button lg:px-4 lg:py-2 lg:text-white lg:hover:bg-blue-500">
+            <button className="font-semibold text-button hover:underline lg:bg-button lg:px-4 lg:py-2 lg:text-white lg:hover:bg-blue-500">
               View All
             </button>
           </div>
