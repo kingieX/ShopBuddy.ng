@@ -39,6 +39,13 @@ const MenuBar = () => {
       <div className="container mx-auto flex items-center justify-between py-4">
         {/* Dynamic Menu */}
         <ul className="flex flex-col gap-2">
+          <li>
+            <Link href="/products">
+              <span className="hover:text-blue-500 hover:underline">
+                All Products
+              </span>
+            </Link>
+          </li>
           {categories.map((category) => (
             <li key={category.id}>
               <Link href={`/category/${category.id}`}>

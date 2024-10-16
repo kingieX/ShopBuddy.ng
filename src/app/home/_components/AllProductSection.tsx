@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
+import Link from 'next/link';
 
 // Define the interfaces for Product and Category
 interface Product {
@@ -22,7 +23,7 @@ const AllProductSection: React.FC = () => {
         const response = await fetch('/api/products'); // Ensure this endpoint returns categories with products
         const data = await response.json();
         setProducts(data);
-        console.log('products:', data);
+        // console.log('products:', data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -62,9 +63,12 @@ const AllProductSection: React.FC = () => {
 
       {/* button */}
       <div className="flex items-center justify-center">
-        <button className="bg-button px-4 py-2 font-semibold text-white lg:hover:bg-blue-500">
+        <Link
+          href="/products"
+          className="bg-button px-4 py-2 font-semibold text-white lg:hover:bg-blue-500"
+        >
           View All Products
-        </button>
+        </Link>
       </div>
     </div>
   );

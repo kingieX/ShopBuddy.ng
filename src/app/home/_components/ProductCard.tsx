@@ -3,6 +3,8 @@
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import StarRating from '@/app/constants/StarRating';
 import React from 'react';
+import { IoIosHeartEmpty } from 'react-icons/io';
+import { IoMdHeart } from 'react-icons/io';
 
 interface Product {
   id: string;
@@ -13,45 +15,72 @@ interface Product {
 }
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+  // Calculate discount percentage if sale price is given
+  const discountPercentage = product.salePrice
+    ? Math.round(
+        ((product.regularPrice - product.salePrice) / product.regularPrice) *
+          100
+      )
+    : 0;
+
   return (
-    <div className="rounded-lg border bg-white p-4 shadow-lg">
+    <div className="group relative rounded-lg border bg-white p-4 shadow-lg transition-shadow hover:shadow-xl">
+      {/* Image and Cart button */}
       <div className="relative bg-[#F5F5F5] p-2 lg:p-8">
         <img
           src={product.mainImage}
           alt={product.title}
           className="h-40 w-full rounded-lg object-contain"
         />
-        <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white hover:bg-black/70">
+
+        {/* Add to Cart Button, visible on hover over the entire card */}
+        <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100">
           Add to cart
         </button>
-      </div>
-      <div className="pt-2">
-        <h3 className="mt-2 font-semibold">{product.title}</h3>
-        <div className="flex place-items-baseline justify-start space-x-1">
-          {product.salePrice === product.regularPrice ? (
-            <span className="font-semibold text-gray-700">
-              <CurrencyFormatter amount={product.regularPrice} />
-            </span>
-          ) : (
-            <span className="font-semibold text-gray-700">
-              <CurrencyFormatter amount={product.salePrice} />
-            </span>
-          )}
 
-          {product.salePrice === product.regularPrice ? (
-            ''
+        {/* Discount percentage box */}
+        {product.salePrice && (
+          <div className="absolute left-2 top-2 rounded bg-button px-2 py-1 text-xs font-bold text-white">
+            -{discountPercentage}%
+          </div>
+        )}
+
+        {/* Love icon */}
+        <div className="absolute right-2 top-2">
+          <button className="text-gray-500 hover:text-red-500">
+            <IoIosHeartEmpty size={20} />
+          </button>
+        </div>
+      </div>
+
+      {/* Product Details */}
+      <div className="pt-2">
+        <h3 className="mt-2 text-sm font-semibold">{product.title}</h3>
+
+        {/* Price display with regular and sale price logic */}
+        <div className="mt-1 flex items-baseline space-x-2">
+          {product.salePrice ? (
+            <>
+              <span className="text-lg font-bold text-gray-900">
+                <CurrencyFormatter amount={product.salePrice} />
+              </span>
+              <span className="text-sm text-gray-500 line-through">
+                <CurrencyFormatter amount={product.regularPrice} />
+              </span>
+            </>
           ) : (
-            <span className="text-gray-500 line-through">
+            <span className="text-lg font-bold text-gray-900">
               <CurrencyFormatter amount={product.regularPrice} />
             </span>
           )}
         </div>
-        {/* <p className="text-gray-500">
-        <CurrencyFormatter
-          amount={product.salePrice ? product.salePrice : product.regularPrice}
-        />
-      </p> */}
-        <StarRating rating={3.5} />
+
+        {/* Star rating and number of reviews */}
+        <div className="mt-2 flex items-center">
+          <StarRating rating={4} /> {/* Example rating */}
+          <span className="ml-1 text-sm text-gray-500">(95)</span>{' '}
+          {/* Example reviews */}
+        </div>
       </div>
     </div>
   );

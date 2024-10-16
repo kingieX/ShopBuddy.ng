@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
+import Link from 'next/link';
 
 // Define the interfaces for Product and Category
 interface Product {
@@ -50,9 +51,12 @@ const CategoryProductSection: React.FC = () => {
             <h2 className="text-xl font-semibold lg:text-4xl">
               {category.name}
             </h2>
-            <button className="font-semibold text-button hover:underline lg:bg-button lg:px-4 lg:py-2 lg:text-white lg:hover:bg-blue-500">
+            <Link
+              href={`/category/${category.id}`}
+              className="font-semibold text-button hover:underline lg:bg-button lg:px-4 lg:py-2 lg:text-white lg:hover:bg-blue-500"
+            >
               View All
-            </button>
+            </Link>
           </div>
 
           {/* Products Grid */}
