@@ -34,7 +34,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         />
 
         {/* Add to Cart Button, visible on hover over the entire card */}
-        <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100">
+        <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">
           Add to cart
         </button>
 
