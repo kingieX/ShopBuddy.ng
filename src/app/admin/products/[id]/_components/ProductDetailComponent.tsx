@@ -31,6 +31,14 @@ interface ProductDetailProps {
 const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
   const images = [product.mainImage, ...product.galleryImages];
 
+  // Calculate discount percentage if sale price is given
+  const discountPercentage = product.salePrice
+    ? Math.round(
+        ((product.regularPrice - product.salePrice) / product.regularPrice) *
+          100
+      )
+    : 0;
+
   return (
     <div className="mx-0 max-w-sm rounded-md bg-white px-4 py-4 shadow-md lg:mx-auto lg:max-w-5xl lg:px-8 lg:py-8">
       <div className="flex flex-col-reverse lg:flex-row lg:space-x-8">
@@ -97,25 +105,28 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
           </div>
 
           <div className="mb-2 flex flex-col items-start justify-center space-y-1 border-b pb-1">
+            {/* Price display with regular and sale price logic */}
             <div className="flex place-items-baseline justify-start space-x-1">
-              {product.salePrice !== product.regularPrice ? (
-                <span className="font-semibold text-gray-700">
-                  <CurrencyFormatter amount={product.salePrice} />
-                </span>
+              {product.salePrice ? (
+                <>
+                  <span className="text-lg font-bold text-gray-900">
+                    <CurrencyFormatter amount={product.salePrice} />
+                  </span>
+                  <span className="text-sm text-gray-500 line-through">
+                    <CurrencyFormatter amount={product.regularPrice} />
+                  </span>
+                </>
               ) : (
-                <span className="font-semibold text-gray-700">
+                <span className="text-lg font-bold text-gray-900">
                   <CurrencyFormatter amount={product.regularPrice} />
                 </span>
               )}
-
-              {product.salePrice !== product.regularPrice ? (
-                <span className="text-gray-500 line-through">
-                  <CurrencyFormatter amount={product.regularPrice} />
-                </span>
-              ) : (
-                ''
+              {/* Discount percentage box */}
+              {product.salePrice && (
+                <div className="px-2 py-1 text-sm font-bold text-green-500">
+                  -{discountPercentage}% off
+                </div>
               )}
-              <span className="text-yellow-500">(x% off)</span>
             </div>
             <div className="mb-4">
               <p className="text-lg font-semibold text-gray-700">

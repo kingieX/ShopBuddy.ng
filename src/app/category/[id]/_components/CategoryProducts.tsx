@@ -29,7 +29,7 @@ interface Category {
 
 const CategoryProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [category, setCategory] = useState<Category | null>(null); // This is now a single category, not an array
   const params = useParams();
 
   const categoryId = params?.id; // Accessing the dynamic route parameter
@@ -44,7 +44,7 @@ const CategoryProductsPage: React.FC = () => {
         // console.log('Category products:', data);
 
         setProducts(data.products);
-        setCategories(data);
+        setCategory(data);
       } catch (error) {
         console.error('Error fetching category products:', error);
       }
@@ -67,12 +67,12 @@ const CategoryProductsPage: React.FC = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{categories.name}</BreadcrumbPage>
+              <BreadcrumbPage>{category?.name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </header>
-      <h1 className="mb-4 text-2xl font-bold">{categories.name}</h1>
+      <h1 className="mb-4 text-2xl font-bold">{category?.name}</h1>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />

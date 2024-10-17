@@ -2,6 +2,7 @@
 
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import StarRating from '@/app/constants/StarRating';
+import Link from 'next/link';
 import React from 'react';
 import { IoIosHeartEmpty } from 'react-icons/io';
 import { IoMdHeart } from 'react-icons/io';
@@ -24,6 +25,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     : 0;
 
   return (
+    // <Link href={`/products/${product.id}`}>
     <div className="group relative rounded-lg border bg-white p-4 shadow-lg transition-shadow hover:shadow-xl">
       {/* Image and Cart button */}
       <div className="relative bg-[#F5F5F5] p-2 lg:p-8">
@@ -55,7 +57,9 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 
       {/* Product Details */}
       <div className="pt-2">
-        <h3 className="mt-2 text-sm font-semibold">{product.title}</h3>
+        <h3 className="mt-2 text-sm font-semibold hover:text-button hover:underline">
+          <Link href={`/products/${product.id}`}>{product.title}</Link>
+        </h3>
 
         {/* Price display with regular and sale price logic */}
         <div className="mt-1 flex items-baseline space-x-2">
@@ -83,6 +87,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
       </div>
     </div>
+    // </Link>
   );
 };
 
