@@ -7,8 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Wishlist {
+  id        String    @id @default(uuid())
+  userId    Int       @unique // Unique one-to-one relation with User
+  user      User      @relation(fields: [userId], references: [id])
+  products  WishlistProduct[] // Many-to-many relation with Product through WishlistProduct
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("wishlists")
+}
+
+model WishlistProduct {
+  id         String   @id @default(uuid())
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+  wishlistId String
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  String
+
+  @@unique([wishlistId, productId]) // Ensure a product can only appear once in a wishlist
+  @@map("wishlist_products")
+}
+
 model Product {
-  id            String   @id @default(uuid()) @map("id") // Use UUID for id
+  id            String    @id @default(uuid()) // Use UUID for id
   title         String
   description   String
   mainImage     String
@@ -16,20 +38,21 @@ model Product {
   regularPrice  Float
   salePrice     Float?
   status        String
-  categoryId    String   @map("category_id") // Foreign key to Category
-  category      Category @relation(fields: [categoryId], references: [id]) // Relation to Category
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  categoryId    String    @map("category_id")// Foreign key to Category
+  category      Category  @relation(fields: [categoryId], references: [id]) // Relation to Category
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  wishlists     WishlistProduct[] // Relation to WishlistProduct
 
   @@map("products") // Map table name to "products"
 }
 
 model Category {
-  id       String    @id @default(uuid()) @map("id") // Use UUID for id
-  name     String    @unique
-  products Product[] @relation // No 'fields' or 'references' needed here
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid()) // Use UUID for id
+  name      String    @unique
+  products  Product[] // No 'fields' or 'references' needed here
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("categories") // Map table name to "categories"
 }
@@ -40,10 +63,10 @@ model Promotion {
   description  String
   startDate    DateTime
   endDate      DateTime
-  imageUrl     String   // Image for the promotion
-  status     String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  imageUrl     String
+  status       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Admin {
@@ -66,6 +89,7 @@ model User {
   verificationToken String?
   resetToken        String?  // The reset token for password reset
   resetTokenExpiry  DateTime? // Token expiry time
+  wishlist          Wishlist? // One-to-one relation with Wishlist
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }

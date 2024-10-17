@@ -31,8 +31,28 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
   const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
+  const [wishlistCount, setWishlistCount] = useState<number>(0); // state for wishlist
 
   const router = useRouter();
+
+  // useEffect for get item from wishlist
+  useEffect(() => {
+    const fetchWishlistCount = async () => {
+      if (status === 'authenticated') {
+        // Fetch wishlist from server
+        const res = await fetch('/api/wishlist');
+        const data = await res.json();
+        setWishlistCount(data.length);
+      } else {
+        // Check localStorage for wishlist count
+        const wishlistItems = JSON.parse(
+          localStorage.getItem('wishlist') || '[]'
+        );
+        setWishlistCount(wishlistItems.length);
+      }
+    };
+    fetchWishlistCount();
+  }, [status]);
 
   // Handle logout logic
   const handleLogout = () => {
@@ -122,7 +142,18 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                   />
                   <Search className="absolute right-3 top-3 h-4 w-4 text-gray-500" />
                 </div>
-                <Heart className="h-6 w-6 text-gray-500" />
+                {/* Wishlist icon logic */}
+                <Link href="/wishlist">
+                  <div className="relative">
+                    <Heart className="h-6 w-6 text-gray-500" />
+                    {wishlistCount > 0 && (
+                      <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+                {/* // Cart icon */}
                 <ShoppingCart className="h-6 w-6 text-gray-500" />
               </div>
             )}
