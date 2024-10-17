@@ -41,7 +41,7 @@ const MenuBar = () => {
         <ul className="flex flex-col gap-2">
           <li>
             <Link href="/products">
-              <span className="hover:text-blue-500 hover:underline">
+              <span className="hover:text-button hover:underline">
                 All Products
               </span>
             </Link>
@@ -49,7 +49,7 @@ const MenuBar = () => {
           {categories.map((category) => (
             <li key={category.id}>
               <Link href={`/category/${category.id}`}>
-                <span className="hover:text-blue-500 hover:underline">
+                <span className="hover:text-button hover:underline">
                   {category.name}
                 </span>
               </Link>

@@ -74,7 +74,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         <div className="mt-1 flex items-baseline space-x-2">
           {product.salePrice ? (
             <>
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-gray-900">
                 <CurrencyFormatter amount={product.salePrice} />
               </span>
               <span className="text-sm text-gray-500 line-through">
@@ -82,7 +82,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
               </span>
             </>
           ) : (
-            <span className="text-lg font-bold text-gray-900">
+            <span className="text-gray-900">
               <CurrencyFormatter amount={product.regularPrice} />
             </span>
           )}
