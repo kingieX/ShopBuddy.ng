@@ -55,6 +55,8 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
       )
     : 0;
 
+  console.log('Product:', product);
+
   return (
     <div className="px-4 py-8 lg:px-20">
       {/* header */}
@@ -144,10 +146,10 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
                 <p>(525) Reviews</p>
                 <p> | </p>
                 <p>
-                  {product.status == 'active' ? (
-                    <span className="text-green-500">In stock</span>
+                  {product.status == 'on_sale' ? (
+                    <span className="text-green-600">In stock</span>
                   ) : (
-                    <span className="text-red-500">Out of stock</span>
+                    <span className="text-red-600">Out of stock</span>
                   )}
                 </p>
               </div>
@@ -220,7 +222,9 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
       </div>
 
       {/* Related Products Section */}
-      <RelatedProducts product={product} />
+      <div className="w-full">
+        <RelatedProducts product={product} />
+      </div>
     </div>
   );
 };

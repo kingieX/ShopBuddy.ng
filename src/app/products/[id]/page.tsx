@@ -16,6 +16,8 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
       include: { category: true }, // Include related data if necessary
     });
 
+    // console.log('Product:', product);
+
     if (!product) {
       return notFound();
     }

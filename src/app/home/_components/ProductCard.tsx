@@ -13,6 +13,7 @@ interface Product {
   mainImage: string;
   regularPrice: number;
   salePrice?: number;
+  status: string;
 }
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
@@ -48,10 +49,18 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         )}
 
         {/* Love icon */}
-        <div className="absolute right-2 top-2">
-          <button className="text-gray-500 hover:text-red-500">
-            <IoIosHeartEmpty size={20} />
-          </button>
+        <div className="absolute right-2 top-2 flex flex-col items-center">
+          <div className="">
+            {product.status == 'on_sale' ? (
+              <button className="text-gray-500 hover:text-red-500">
+                <IoIosHeartEmpty size={20} />
+              </button>
+            ) : (
+              <span className="rounded bg-red-600 px-2 py-1 text-xs text-white">
+                sold out
+              </span>
+            )}
+          </div>
         </div>
       </div>
 

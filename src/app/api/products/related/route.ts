@@ -3,8 +3,8 @@ import prisma from '@/lib/db/prisma';
 
 // Define the expected query params
 interface RelatedProductParams {
-  categoryId: string; // The ID of the category
-  productId: string; // The ID of the current product (to exclude from results)
+  categoryId: string; // The ID of the category (UUID)
+  productId: string; // The ID of the current product (UUID)
 }
 
 // This handles GET requests for related products
@@ -15,6 +15,7 @@ export async function GET(request: Request) {
   const categoryId = searchParams.get('categoryId');
   const productId = searchParams.get('productId');
 
+  // Ensure both parameters are provided
   if (!categoryId || !productId) {
     return new NextResponse('Missing categoryId or productId', { status: 400 });
   }
@@ -22,8 +23,8 @@ export async function GET(request: Request) {
   try {
     const relatedProducts = await prisma.product.findMany({
       where: {
-        categoryId: parseInt(categoryId, 10), // Filter by category
-        id: { not: parseInt(productId, 10) }, // Exclude the current product
+        categoryId, // UUID is a string, no need to parse
+        id: { not: productId }, // Exclude the current product by ID
       },
       orderBy: { id: 'desc' },
       take: 4, // Limit to 4 products
