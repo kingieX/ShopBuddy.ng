@@ -33,13 +33,13 @@ interface ProductDetailProps {
     mainImage: string;
     galleryImages: string[];
     regularPrice: number;
-    salePrice?: number;
+    salePrice?: number | null;
     status: string;
     category: {
       id: string;
       name: string;
     } | null;
-    createdAt: string;
+    createdAt: Date;
   };
 }
 

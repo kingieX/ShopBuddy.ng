@@ -66,7 +66,10 @@ const CategoryProductSection: React.FC = () => {
               category.products
                 .slice(0, 4)
                 .map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard
+                    key={product.id}
+                    product={{ ...product, status: '' }}
+                  />
                 ))
             ) : (
               <p className="text-sm text-gray-500">
