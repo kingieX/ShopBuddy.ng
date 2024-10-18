@@ -9,6 +9,7 @@ import { Autoplay } from 'swiper/modules';
 import { Pagination } from 'swiper/modules';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/autoplay';
+import Image from 'next/image';
 
 interface Promotion {
   id: number;
@@ -150,9 +151,11 @@ const PromotionStatic: React.FC = () => {
               </button>
             </div>
             <div className="w-2/5 lg:w-full">
-              <img
+              <Image
                 src={promotions[0].imageUrl}
                 alt={promotions[0].title}
+                width={1500}
+                height={1500}
                 className="h-full w-2/5 rounded-lg object-contain"
               />
             </div>

@@ -10,16 +10,29 @@ import 'swiper/css/pagination';
 import Image from 'next/image';
 import { FaCalendarAlt } from 'react-icons/fa';
 
+// interface PromotionDetailProps {
+//   promotion: {
+//     id: string;
+//     title: string;
+//     description: string;
+//     imageUrl: string;
+//     startDate: Date;
+//     status: string;
+//     endDate: Date;
+//     createdAt: string;
+//   };
+// }
+
 interface PromotionDetailProps {
   promotion: {
     id: string;
     title: string;
     description: string;
     imageUrl: string;
-    startDate: string;
-    endDate: string;
-    createdAt: string;
-    isActive: boolean;
+    startDate: Date;
+    status: string;
+    endDate: Date;
+    createdAt: Date; // Update the type to Date
   };
 }
 
@@ -79,7 +92,7 @@ const PromotionDetailComponent: React.FC<PromotionDetailProps> = ({
 
           <div className="mb-4 flex flex-col items-start justify-center space-y-1">
             <h2 className="font-semibold">
-              Status: {promotion.isActive ? 'Active' : 'Inactive'}
+              Status: {promotion.status ? 'Active' : 'Inactive'}
             </h2>
           </div>
         </div>

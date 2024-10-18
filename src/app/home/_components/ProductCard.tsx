@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { IoIosHeartEmpty, IoMdHeart } from 'react-icons/io';
 import { useWishlist } from '@/app/contexts/WishlistContext';
+import Image from 'next/image';
 
 interface Product {
   id: string;
@@ -127,9 +128,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="group relative rounded-lg border bg-white p-4 shadow-lg transition-shadow hover:shadow-xl">
       <div className="relative bg-[#F5F5F5] p-2 lg:p-8">
-        <img
+        <Image
           src={product.mainImage}
           alt={product.title}
+          width={1500}
+          height={1500}
           className="h-40 w-full rounded-lg object-contain"
         />
         <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">

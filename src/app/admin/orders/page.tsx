@@ -56,9 +56,7 @@ import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 
 const Orders = () => {
   return (
-    <AdminLayout>
-      {/* <div className="flex min-h-screen w-full flex-col bg-muted/40"> */}
-
+    <div>
       <div className="flex flex-col sm:gap-4 sm:py-4">
         {/* controlled navigation */}
         <header className="stick z-5 bg-background top-0 flex h-14 items-center gap-4 border-b px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -263,8 +261,7 @@ const Orders = () => {
           </div>
         </main>
       </div>
-      {/* </div> */}
-    </AdminLayout>
+    </div>
   );
 };
 

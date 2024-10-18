@@ -51,7 +51,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const Payments = () => {
   return (
-    <AdminLayout>
+    <div>
       <header className="stick z-5 top-0 flex h-14 items-center gap-4 border-b bg-white px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         <Breadcrumb className="flex">
           <BreadcrumbList>
@@ -73,7 +73,7 @@ const Payments = () => {
           <div className="grid w-full gap-6"></div>
         </div>
       </main>
-    </AdminLayout>
+    </div>
   );
 };
 

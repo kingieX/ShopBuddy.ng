@@ -15,6 +15,22 @@ import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import Image from 'next/image';
 import StarRating from '@/app/constants/StarRating';
 
+// interface CategoryDetailProps {
+//   category: {
+//     id: string;
+//     name: string;
+//     products: {
+//       id: string;
+//       title: string;
+//       mainImage: string;
+//       regularPrice: number;
+//       salePrice?: number;
+//       status: string;
+//       createdAt: string;
+//     }[];
+//   };
+// }
+
 interface CategoryDetailProps {
   category: {
     id: string;
@@ -24,7 +40,7 @@ interface CategoryDetailProps {
       title: string;
       mainImage: string;
       regularPrice: number;
-      salePrice?: number;
+      salePrice?: number | null; // Update the type definition to allow for null values
       status: string;
       createdAt: string;
     }[];

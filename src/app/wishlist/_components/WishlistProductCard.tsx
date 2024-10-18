@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/app/constants/StarRating';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
+import Image from 'next/image';
 
 interface Product {
   id: string;
@@ -55,9 +56,11 @@ const WishlistProductCard = ({
   return (
     <div className="group relative rounded-lg border bg-white p-4 shadow-lg transition-shadow hover:shadow-xl">
       <div className="relative bg-[#F5F5F5] p-2 lg:p-8">
-        <img
+        <Image
           src={product.mainImage}
           alt={product.title}
+          width={1500}
+          height={1500}
           className="h-40 w-full rounded-lg object-contain"
         />
 
