@@ -139,7 +139,7 @@ export default function Products() {
             </div>
           ) : filteredProducts.length > 0 ? (
             <ProductsTable
-              products={filteredProducts}
+              products={filteredProducts as any}
               onDelete={handleDeleteProduct}
             />
           ) : (

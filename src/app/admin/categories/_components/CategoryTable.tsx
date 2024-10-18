@@ -22,6 +22,15 @@ interface Category {
   _count: {
     products: number; // The product count for each category
   };
+  products: {
+    id: string;
+    title: string;
+    mainImage: string;
+    regularPrice: number;
+    salePrice?: number | null; // Update the type definition to allow for null values
+    status: string;
+    createdAt: Date;
+  }[];
 }
 
 interface CategoryTableProps {

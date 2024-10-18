@@ -122,9 +122,11 @@ const PromotionStatic: React.FC = () => {
                   </button>
                 </div>
                 <div className="w-2/5 lg:w-full">
-                  <img
+                  <Image
                     src={promotion.imageUrl}
                     alt={promotion.title}
+                    width={1500}
+                    height={1500}
                     className="w-2/5 rounded-lg object-contain"
                   />
                 </div>

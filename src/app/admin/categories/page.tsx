@@ -12,7 +12,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import AdminLayout from '../layout';
 
 interface Category {
   id: string;
@@ -135,7 +134,7 @@ const CategoryPage = () => {
             </div>
           ) : filteredCategories.length > 0 ? (
             <CategoryTable
-              categories={filteredCategories}
+              categories={filteredCategories as any}
               onDelete={handleDeleteCategory}
             />
           ) : (

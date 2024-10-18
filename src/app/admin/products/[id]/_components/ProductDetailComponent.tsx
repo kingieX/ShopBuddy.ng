@@ -20,11 +20,11 @@ interface ProductDetailProps {
     mainImage: string;
     galleryImages: string[];
     regularPrice: number;
-    salePrice?: number;
+    salePrice?: number | null;
     category: {
       name: string;
     } | null;
-    createdAt: string;
+    createdAt: Date;
   };
 }
 
