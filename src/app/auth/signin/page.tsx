@@ -12,9 +12,6 @@ import { signIn, useSession } from 'next-auth/react'; // Import signIn from Next
 import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 import toast from 'react-hot-toast';
 
-export const description =
-  "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
-
 const SignIn = () => {
   // State management for show/hide password and loading state
   const [showPassword, setShowPassword] = useState(false);
