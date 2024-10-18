@@ -66,6 +66,7 @@ const WishListPage = () => {
           },
         });
         // Optionally, refetch the wishlist from the server here
+        toast.error('product removed from wishlist');
       } catch (error) {
         console.error('Error removing product from wishlist:', error);
         // Optionally: handle error by re-adding the product to the state if deletion failed
