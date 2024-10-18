@@ -8,7 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {

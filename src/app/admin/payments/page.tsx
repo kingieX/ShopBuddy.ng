@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,

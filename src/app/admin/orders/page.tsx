@@ -51,7 +51,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 
 const Orders = () => {

@@ -12,7 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 
 interface Promotion {
   id: string;

@@ -1,5 +1,5 @@
 import prisma from '@/lib/db/prisma';
-import AdminLayout from '../../page';
+import AdminLayout from '../../layout';
 import ProductDetailComponent from './_components/ProductDetailComponent';
 import {
   Breadcrumb,

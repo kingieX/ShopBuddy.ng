@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, ListFilter, File } from 'lucide-react';

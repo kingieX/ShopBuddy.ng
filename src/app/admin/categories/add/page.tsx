@@ -1,4 +1,4 @@
-import AdminLayout from '../../page';
+import AdminLayout from '../../layout';
 import {
   Breadcrumb,
   BreadcrumbItem,

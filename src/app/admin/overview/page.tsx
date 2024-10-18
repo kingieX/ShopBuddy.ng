@@ -33,7 +33,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import Chart from './_components/Chart';
 

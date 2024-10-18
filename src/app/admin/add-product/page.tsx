@@ -1,7 +1,7 @@
 // Import Prisma client from the centralized module
 import prisma from '@/lib/db/prisma';
 import AddProductForm from './_components/AddProductForm';
-import AdminLayout from '../page';
+import AdminLayout from '../layout';
 import {
   Breadcrumb,
   BreadcrumbItem,

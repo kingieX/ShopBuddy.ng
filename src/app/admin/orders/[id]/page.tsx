@@ -28,7 +28,7 @@ import {
   MoreVertical,
   Truck,
 } from 'lucide-react';
-import AdminLayout from '../../page';
+import AdminLayout from '../../layout';
 
 const OrdersDetails = () => {
   return (

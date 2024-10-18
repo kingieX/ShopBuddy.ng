@@ -1,7 +1,7 @@
 // pages/admin/categories/[id].tsx
 
 import prisma from '@/lib/db/prisma';
-import AdminLayout from '../../page';
+import AdminLayout from '../../layout';
 import CategoryDetail from './_components/CategoryDetail';
 import {
   Breadcrumb,

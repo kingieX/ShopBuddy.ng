@@ -29,7 +29,7 @@ const CategoryProductSection: React.FC = () => {
         const response = await fetch('/api/admin/categories'); // Ensure this endpoint returns categories with products
         const data = await response.json();
         setCategories(data.categories);
-        console.log('categories:', data);
+        // console.log('categories:', data);
       } catch (error) {
         console.error('Error fetching categories:', error);
       }

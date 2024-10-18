@@ -45,11 +45,11 @@ const ProductActionComponent = () => {
           <button className="w-full bg-button px-4 py-2 text-white transition hover:bg-blue-600">
             Add to cart
           </button>
-          <button onClick={toggleFavorite} className="text-2xl">
+          {/* <button onClick={toggleFavorite} className="text-2xl">
             <FaHeart
               className={isFavorited ? 'text-red-500' : 'text-gray-300'}
             />
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

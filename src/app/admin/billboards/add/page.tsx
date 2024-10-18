@@ -1,6 +1,6 @@
 // Import Prisma client from the centralized module
 import AddPromotionForm from './_components/AddPromotionForm'; // Import the AddPromotionForm
-import AdminLayout from '../../page';
+import AdminLayout from '../../layout';
 import {
   Breadcrumb,
   BreadcrumbItem,

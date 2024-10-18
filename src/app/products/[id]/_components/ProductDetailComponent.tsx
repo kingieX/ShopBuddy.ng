@@ -55,7 +55,7 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
       )
     : 0;
 
-  console.log('Product:', product);
+  // console.log('Product:', product);
 
   return (
     <div className="px-4 py-8 lg:px-20">
@@ -134,7 +134,7 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             </Swiper>
           </div>
 
-          <div className="w-full px-8 lg:w-1/2">
+          <div className="w-full px-2 lg:w-1/2 lg:px-8">
             {/* product detail */}
             <div className="mb-2 flex flex-col items-start justify-center space-y-1 border-b border-b-gray-400 pb-1">
               <h1 className="text-2xl font-semibold lg:text-4xl">

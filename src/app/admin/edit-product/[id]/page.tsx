@@ -1,7 +1,7 @@
 import prisma from '@/lib/db/prisma';
 import EditProductForm from './_components/EditProductForm';
 import { Product, Category } from '@prisma/client';
-import AdminLayout from '../../page';
+import AdminLayout from '../../layout';
 import {
   Breadcrumb,
   BreadcrumbItem,
