@@ -150,8 +150,14 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                   <div className="relative">
                     <Heart className="h-6 w-6 text-gray-500" />
                     {/* {wishlistCount > 0 && ( */}
-                    <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
-                      {wishlist.length}
+                    <span className="">
+                      {wishlist.length === 1 ? (
+                        <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
+                          {wishlist.length}
+                        </span>
+                      ) : (
+                        ''
+                      )}
                     </span>
                     {/* )} */}
                   </div>
@@ -244,11 +250,15 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
               <Link href="/wishlist">
                 <div className="relative">
                   <Heart className="h-6 w-6 text-gray-500" />
-                  {/* {wishlistCount > 0 && ( */}
-                  <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
-                    {wishlist.length}
+                  <span className="">
+                    {wishlist.length === 1 ? (
+                      <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
+                        {wishlist.length}
+                      </span>
+                    ) : (
+                      ''
+                    )}
                   </span>
-                  {/* )} */}
                 </div>
               </Link>
               {/* // Cart icon */}
