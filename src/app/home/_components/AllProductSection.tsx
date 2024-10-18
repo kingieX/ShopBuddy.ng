@@ -53,10 +53,7 @@ const AllProductSection: React.FC = () => {
             products
               .slice(0, 8)
               .map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={{ ...product, status: '' }}
-                />
+                <ProductCard key={product.id} product={product as any} />
               ))
           ) : (
             <p className="text-sm text-gray-500">No products available.</p>

@@ -75,7 +75,7 @@ const CategoryProductsPage: React.FC = () => {
       <h1 className="mb-4 text-2xl font-bold">{category?.name}</h1>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {products.map((product) => (
-          <ProductCard key={product.id} product={{ ...product, status: '' }} />
+          <ProductCard key={product.id} product={product as any} />
         ))}
       </div>
     </div>
