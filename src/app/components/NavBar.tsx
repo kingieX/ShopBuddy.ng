@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
+import { useWishlist } from '../contexts/WishlistContext';
+
 const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState<string | null>(null); // Track active link
@@ -31,28 +33,29 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
   const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
-  const [wishlistCount, setWishlistCount] = useState<number>(0); // state for wishlist
+  // const [wishlistCount, setWishlistCount] = useState<number>(0); // state for wishlist
+  const { wishlist } = useWishlist();
 
   const router = useRouter();
 
   // useEffect for get item from wishlist
-  useEffect(() => {
-    const fetchWishlistCount = async () => {
-      if (status === 'authenticated') {
-        // Fetch wishlist from server
-        const res = await fetch('/api/wishlist');
-        const data = await res.json();
-        setWishlistCount(data.length);
-      } else {
-        // Check localStorage for wishlist count
-        const wishlistItems = JSON.parse(
-          localStorage.getItem('wishlist') || '[]'
-        );
-        setWishlistCount(wishlistItems.length);
-      }
-    };
-    fetchWishlistCount();
-  }, [status]);
+  // useEffect(() => {
+  //   const fetchWishlistCount = async () => {
+  //     if (status === 'authenticated') {
+  //       // Fetch wishlist from server
+  //       const res = await fetch('/api/wishlist');
+  //       const data = await res.json();
+  //       setWishlistCount(data.length);
+  //     } else {
+  //       // Check localStorage for wishlist count
+  //       const wishlistItems = JSON.parse(
+  //         localStorage.getItem('wishlist') || '[]'
+  //       );
+  //       setWishlistCount(wishlistItems.length);
+  //     }
+  //   };
+  //   fetchWishlistCount();
+  // }, [status]);
 
   // Handle logout logic
   const handleLogout = () => {
@@ -146,11 +149,11 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                 <Link href="/wishlist">
                   <div className="relative">
                     <Heart className="h-6 w-6 text-gray-500" />
-                    {wishlistCount > 0 && (
-                      <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
-                        {wishlistCount}
-                      </span>
-                    )}
+                    {/* {wishlistCount > 0 && ( */}
+                    <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
+                      {wishlist.length}
+                    </span>
+                    {/* )} */}
                   </div>
                 </Link>
                 {/* // Cart icon */}
@@ -236,6 +239,21 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
 
           {/* Hamburger menu on mobile */}
           <div className="flex items-center md:hidden">
+            <div className="mr-4 flex items-center space-x-4">
+              {/* Wishlist icon logic */}
+              <Link href="/wishlist">
+                <div className="relative">
+                  <Heart className="h-6 w-6 text-gray-500" />
+                  {/* {wishlistCount > 0 && ( */}
+                  <span className="absolute -right-2 -top-2 rounded-full bg-red-600 px-1 text-xs text-white">
+                    {wishlist.length}
+                  </span>
+                  {/* )} */}
+                </div>
+              </Link>
+              {/* // Cart icon */}
+              <ShoppingCart className="h-6 w-6 text-gray-500" />
+            </div>
             <button
               className="text-gray-500 hover:text-gray-700 focus:outline-none"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -275,6 +293,15 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                   <AiOutlineQuestionCircle className="mr-2 inline-block h-6 w-6" />
                   About
                 </Link>
+
+                <div className="relative mb-4 px-2">
+                  <input
+                    type="text"
+                    placeholder="What are you looking for?"
+                    className="bg-red-700rounded-md border px-3 py-2 text-sm text-white focus:outline-none sm:block"
+                  />
+                  <Search className="absolute right-3 top-3 h-4 w-4 text-gray-500" />
+                </div>
               </div>
 
               {!isSignedIn && !isAuthPage && (

@@ -1,33 +1,45 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react'; // Assuming you use next-auth for authentication
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { useSession } from 'next-auth/react';
+import WishlistProductCard from './WishlistProductCard'; // Import the new component
+import toast from 'react-hot-toast';
 
-interface Product {
+interface WishlistItem {
   id: string;
-  title: string;
-  mainImage: string;
-  regularPrice: number;
-  salePrice?: number;
-  status: string;
+  productId: string;
+  wishlistId: string;
 }
 
 const WishListPage = () => {
-  const { data: session, status } = useSession(); // For authentication status
-  const [wishlist, setWishlist] = useState<Product[]>([]);
+  const { data: session, status } = useSession();
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
   // Fetch wishlist from server if logged in, otherwise from localStorage
   useEffect(() => {
     const fetchWishlist = async () => {
       if (status === 'authenticated') {
-        // Fetch wishlist from server
-        const res = await fetch('/api/wishlist');
-        const data = await res.json();
-        console.log('Wishlist:', data);
-
-        setWishlist(data);
+        try {
+          const res = await fetch('/api/wishlist');
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            setWishlist(data);
+          } else {
+            setWishlist([]);
+          }
+        } catch (error) {
+          console.error('Error fetching wishlist:', error);
+          setWishlist([]);
+        }
       } else {
-        // Fallback to localStorage for unauthenticated users
         const wishlistItems = JSON.parse(
           localStorage.getItem('wishlist') || '[]'
         );
@@ -37,51 +49,74 @@ const WishListPage = () => {
     fetchWishlist();
   }, [status]);
 
-  const removeFromWishlist = async (productId: string) => {
+  const removeFromWishlist = async (wishlistId: string, productId: string) => {
+    // Optimistically update the state first
+    const updatedWishlist = wishlist.filter(
+      (product) => product.productId !== productId
+    );
+    setWishlist(updatedWishlist); // This immediately updates the UI
+
     if (status === 'authenticated') {
-      // If authenticated, sync with the server
-      await fetch('/api/wishlist', {
-        method: 'DELETE',
-        body: JSON.stringify({ productId }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        await fetch('/api/wishlist', {
+          method: 'DELETE',
+          body: JSON.stringify({ productId, wishlistId }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        // Optionally, refetch the wishlist from the server here
+      } catch (error) {
+        console.error('Error removing product from wishlist:', error);
+        // Optionally: handle error by re-adding the product to the state if deletion failed
+        const productToAddBack = wishlist.find(
+          (product) => product.productId === productId
+        );
+        if (productToAddBack) {
+          setWishlist([...wishlist, productToAddBack]);
+        }
+      }
     } else {
-      // If not authenticated, modify localStorage
-      const updatedWishlist = wishlist.filter(
-        (product) => product.id !== productId
-      );
+      // If not authenticated, just update localStorage
       localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-      setWishlist(updatedWishlist);
     }
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="px-4 py-8 lg:px-20">
+      <header className="stick z-5 top-0 mb-8 mt-5 flex h-14 items-center gap-4 border-b bg-white px-4 py-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <Breadcrumb className="flex">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link className="hover:underline" href="/">
+                  Home
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>My wishlist</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </header>
       <h1 className="mb-4 text-2xl font-bold">Your Wishlist</h1>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {wishlist.map((product) => (
-          <div
-            key={product.id}
-            className="group relative rounded-lg border bg-white p-4 shadow-lg"
-          >
-            <img
-              src={product.mainImage}
-              alt={product.title}
-              className="h-40 w-full object-contain"
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        {wishlist.length > 0 ? (
+          wishlist.map((item) => (
+            <WishlistProductCard
+              key={item.id}
+              productId={item.productId}
+              wishlistId={item.wishlistId}
+              removeFromWishlist={removeFromWishlist}
             />
-            <h3 className="mt-2 text-sm font-semibold">
-              <Link href={`/products/${product.id}`}>{product.title}</Link>
-            </h3>
-            <button
-              onClick={() => removeFromWishlist(product.id)}
-              className="absolute right-2 top-2 text-gray-500 hover:text-red-500"
-            >
-              Remove
-            </button>
+          ))
+        ) : (
+          <div className="min-h-screen">
+            <p>No products available in your wishlist.</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

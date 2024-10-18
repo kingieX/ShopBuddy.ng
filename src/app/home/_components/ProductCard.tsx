@@ -7,6 +7,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { IoIosHeartEmpty, IoMdHeart } from 'react-icons/io';
+import { useWishlist } from '@/app/contexts/WishlistContext';
 
 interface Product {
   id: string;
@@ -15,33 +16,103 @@ interface Product {
   regularPrice: number;
   salePrice?: number;
   status: string;
+  description?: string; // Add optional description field
+  galleryImages?: string[]; // Add optional galleryImages field
+  category?: {
+    id: string;
+    name: string;
+  } | null; // Add optional category field
+  createdAt?: string; // Add optional createdAt field
 }
 
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+interface ProductCardProps {
+  product: Product;
+}
+
+const ProductCard = ({ product }: ProductCardProps) => {
   const { data: session, status } = useSession();
-  const [inWishlist, setInWishlist] = useState<boolean>(false); // Track if the product is in the wishlist
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist(); // Remove setWishlist
+  const [inWishlist, setInWishlist] = useState(false);
+
+  // Check if the product is in the wishlist on mount or when wishlist is updated
+  useEffect(() => {
+    const checkWishlist = () => {
+      if (status === 'authenticated') {
+        // Check from global context or backend
+        setInWishlist(wishlist.some((p: Product) => p.id === product.id));
+      } else {
+        // Check from localStorage for unauthenticated users
+        const localWishlist = JSON.parse(
+          localStorage.getItem('wishlist') || '[]'
+        );
+        setInWishlist(localWishlist.some((p: Product) => p.id === product.id));
+      }
+    };
+    checkWishlist();
+  }, [status, product.id, wishlist]);
 
   const toggleWishlist = async () => {
     if (status === 'authenticated') {
-      // Add/Remove from server wishlist
       const method = inWishlist ? 'DELETE' : 'POST';
-      await fetch('/api/wishlist', {
-        method,
-        body: JSON.stringify({ productId: product.id }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    } else {
-      // Add/Remove from localStorage wishlist
-      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      if (inWishlist) {
-        wishlist = wishlist.filter((p: Product) => p.id !== product.id);
-      } else {
-        wishlist.push(product);
+
+      try {
+        const res = await fetch('/api/wishlist', {
+          method,
+          body: JSON.stringify({ productId: product.id }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.ok) {
+          if (inWishlist) {
+            removeFromWishlist(product.id);
+            toast.error('Removed from wishlist');
+          } else {
+            // Add missing fields for wishlist item
+            const fullProduct = {
+              ...product,
+              description: product.description || '',
+              galleryImages: product.galleryImages || [],
+              category: product.category || null,
+              createdAt: product.createdAt || new Date().toISOString(),
+            };
+            addToWishlist(fullProduct); // Pass full product object to wishlist
+            toast.success('Added to wishlist');
+          }
+        } else {
+          toast.error('Failed to update wishlist');
+        }
+      } catch (error) {
+        console.error('Error updating wishlist:', error);
+        toast.error('Something went wrong');
       }
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    } else {
+      // Handle unauthenticated users with localStorage
+      let localWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+
+      if (inWishlist) {
+        localWishlist = localWishlist.filter(
+          (p: Product) => p.id !== product.id
+        );
+        toast.error('Removed from wishlist');
+      } else {
+        const fullProduct = {
+          ...product,
+          description: product.description || '',
+          galleryImages: product.galleryImages || [],
+          category: product.category || null,
+          createdAt: product.createdAt || new Date().toISOString(),
+        };
+        localWishlist.push(fullProduct);
+        toast.success('Added to wishlist');
+        addToWishlist(fullProduct); // Pass full product object to wishlist
+      }
+
+      localStorage.setItem('wishlist', JSON.stringify(localWishlist));
     }
+
+    // Toggle local state to reflect the change visually
     setInWishlist(!inWishlist);
   };
 
@@ -54,32 +125,24 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     : 0;
 
   return (
-    // <Link href={`/products/${product.id}`}>
     <div className="group relative rounded-lg border bg-white p-4 shadow-lg transition-shadow hover:shadow-xl">
-      {/* Image and Cart button */}
       <div className="relative bg-[#F5F5F5] p-2 lg:p-8">
         <img
           src={product.mainImage}
           alt={product.title}
           className="h-40 w-full rounded-lg object-contain"
         />
-
-        {/* Add to Cart Button, visible on hover over the entire card */}
         <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">
           Add to cart
         </button>
-
-        {/* Discount percentage box */}
         {product.salePrice && (
           <div className="absolute left-2 top-2 rounded bg-button px-2 py-1 text-xs font-bold text-white">
             -{discountPercentage}%
           </div>
         )}
-
-        {/* Love icon */}
         <div className="absolute right-2 top-2 flex flex-col items-center">
-          <div className="">
-            {product.status == 'on_sale' ? (
+          <div>
+            {product.status === 'on_sale' ? (
               <button onClick={toggleWishlist}>
                 {inWishlist ? (
                   <IoMdHeart size={20} className="text-red-500" />
@@ -98,14 +161,10 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
           </div>
         </div>
       </div>
-
-      {/* Product Details */}
       <div className="pt-2">
         <h3 className="mt-2 text-sm font-semibold hover:text-button hover:underline">
           <Link href={`/products/${product.id}`}>{product.title}</Link>
         </h3>
-
-        {/* Price display with regular and sale price logic */}
         <div className="mt-1 flex items-baseline space-x-2">
           {product.salePrice ? (
             <>
@@ -122,16 +181,12 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             </span>
           )}
         </div>
-
-        {/* Star rating and number of reviews */}
         <div className="mt-2 flex items-center">
           <StarRating rating={4} /> {/* Example rating */}
           <span className="ml-1 text-sm text-gray-500">(95)</span>{' '}
-          {/* Example reviews */}
         </div>
       </div>
     </div>
-    // </Link>
   );
 };
 
