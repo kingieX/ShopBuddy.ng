@@ -78,9 +78,7 @@ model CartItem {
   quantity  Int       @default(1) // Track the quantity of products in the cart
   createdAt DateTime  @default(now())
 
-    @@unique([cartId, productId]) // Ensure a product appears only once in a cart
-
-
+  @@unique([cartId, productId]) // Ensure a product appears only once in a cart
   @@map("cart_items")
 }
 

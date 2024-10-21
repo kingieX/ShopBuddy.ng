@@ -1,7 +1,14 @@
+import AddToCartButton from '@/app/cart/_components/AddToCartButton';
 import { useState } from 'react';
 import { FaHeart } from 'react-icons/fa';
 
-const ProductActionComponent = () => {
+interface ProductActionProps {
+  productId: string;
+}
+
+const ProductActionComponent: React.FC<ProductActionProps> = ({
+  productId,
+}) => {
   const [quantity, setQuantity] = useState(1);
   const [isFavorited, setIsFavorited] = useState(false);
 
@@ -42,9 +49,12 @@ const ProductActionComponent = () => {
           </button>
         </div>
         <div className="flex w-full gap-4">
-          <button className="w-full bg-button px-4 py-2 text-white transition hover:bg-blue-600">
+          {/* <button className="w-full bg-button px-4 py-2 text-white transition hover:bg-blue-600">
             Add to cart
-          </button>
+          </button> */}
+          {/* Add to cart button */}
+          <AddToCartButton productId={productId} />
+
           {/* <button onClick={toggleFavorite} className="text-2xl">
             <FaHeart
               className={isFavorited ? 'text-red-500' : 'text-gray-300'}

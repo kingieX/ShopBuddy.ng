@@ -4,6 +4,7 @@
 import { SessionProvider } from 'next-auth/react';
 import { Toaster } from 'react-hot-toast';
 import { WishlistProvider } from './contexts/WishlistContext';
+import { CartContextProvider } from './contexts/CartContext';
 
 export default function SessionProviderWrapper({
   children,
@@ -12,10 +13,12 @@ export default function SessionProviderWrapper({
 }) {
   return (
     <SessionProvider>
-      <WishlistProvider>
-        <Toaster position="top-right" reverseOrder={false} />
-        {children}
-      </WishlistProvider>
+      <CartContextProvider>
+        <WishlistProvider>
+          <Toaster position="top-right" reverseOrder={false} />
+          {children}
+        </WishlistProvider>
+      </CartContextProvider>
     </SessionProvider>
   );
 }

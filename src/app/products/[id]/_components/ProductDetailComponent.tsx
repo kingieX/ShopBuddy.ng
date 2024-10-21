@@ -182,7 +182,7 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
 
             {/* product price & Total order */}
-            <ProductActionComponent />
+            <ProductActionComponent productId={product.id} />
 
             {/* Delivery and Return Info */}
             <div className="my-4 mt-4 w-full space-y-2 border">

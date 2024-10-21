@@ -5,6 +5,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/app/constants/StarRating';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import Image from 'next/image';
+import AddToCartButton from '@/app/cart/_components/AddToCartButton';
 
 interface Product {
   id: string;
@@ -65,9 +66,10 @@ const WishlistProductCard = ({
         />
 
         {/* Add to Cart Button, visible on hover over the entire card */}
-        <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">
+        <AddToCartButton productId={product.id} />
+        {/* <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">
           Add to cart
-        </button>
+        </button> */}
 
         {/* Discount percentage box */}
         {product.salePrice && (

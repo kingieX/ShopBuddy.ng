@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { IoIosHeartEmpty, IoMdHeart } from 'react-icons/io';
 import { useWishlist } from '@/app/contexts/WishlistContext';
 import Image from 'next/image';
+import AddToCartButton from '@/app/cart/_components/AddToCartButton';
 
 interface Product {
   id: string;
@@ -135,9 +136,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           height={1500}
           className="h-40 w-full rounded-lg object-contain"
         />
-        <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">
+        {/* <button className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100">
           Add to cart
-        </button>
+        </button> */}
+        {/* Add to cart button */}
+        <AddToCartButton productId={product.id} />
         {product.salePrice && (
           <div className="absolute left-2 top-2 rounded bg-button px-2 py-1 text-xs font-bold text-white">
             -{discountPercentage}%
