@@ -1,48 +1,61 @@
 'use client';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('admin_token');
+    const checkToken = async () => {
+      const token = localStorage.getItem('admin_token');
 
-    if (!token) {
-      router.push('/adminAuth/auth/login'); // Redirect to login if no token
-      return;
-    }
+      if (!token) {
+        // No token found, redirect to login page
+        router.push('/adminAuth/auth/login');
+        return;
+      }
 
-    const secret = process.env.JWT_SECRET as any;
-    if (!secret) {
-      console.log('Secret not found!!!');
-    }
+      try {
+        // Send token to server to verify its validity
+        const response = await axios.post('/api/admin/auth/verify-token', {
+          token,
+        });
 
-    // Verify the token
-    try {
-      const decoded = jwt.verify(token, secret); // Use the same secret as when signing
-      // You can also check for approval status here if needed
-    } catch (error) {
-      // Token is invalid or expired
-      sessionStorage.removeItem('admin_token'); // Clear invalid token
-      router.push('/adminAuth/auth/login'); // Redirect to login
-    }
+        if (response.status === 200) {
+          // Token is valid, allow access to the page
+          setLoading(false);
+        } else {
+          // Invalid token, remove it and redirect to login
+          localStorage.removeItem('admin_token');
+          router.push('/adminAuth/auth/login');
+        }
+      } catch (error) {
+        // Handle the error (e.g. invalid/expired token)
+        localStorage.removeItem('admin_token');
+        router.push('/adminAuth/auth/login');
+      }
+    };
+
+    checkToken();
   }, [router]);
+
+  if (loading) {
+    return <div>Loading...</div>; // You can replace this with a loader/spinner if you like
+  }
 
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside className="fixed hidden h-screen w-0 border-r border-gray-300 bg-gray-100 lg:block lg:w-64">
-        {/* Your Sidebar Code */}
         <Sidebar />
       </aside>
 
       {/* Main Content Area */}
       <div className="static flex flex-1 flex-col lg:ml-64">
-        {/* TopBar, without overlapping the sidebar */}
         <TopBar />
 
         {/* Content below the top bar */}
