@@ -28,12 +28,24 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Settings = () => {
   // State to control the modal visibility
   const [open, setOpen] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter();
+
+  const email = localStorage.getItem('admin_email');
+  console.log(email);
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem('admin_token'); // Remove the token
+    localStorage.removeItem('admin_email'); // Remove the email
+    router.push('/adminAuth/auth/login'); // Redirect to login page
+  };
 
   const handleChangePassword = (event: React.FormEvent) => {
     event.preventDefault(); // Prevent form submission
@@ -77,7 +89,12 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <form className="flex flex-col gap-4">
-                  <Input placeholder="Email Address" type="email" />
+                  <Input
+                    placeholder="Email Address"
+                    type="email"
+                    value={email ?? ''}
+                    disabled
+                  />
                   {/* Trigger for Password Change Modal */}
                   <div className="flex items-center space-x-2">
                     <Button
@@ -157,7 +174,10 @@ const Settings = () => {
             {/* Logout */}
             <Card>
               <CardFooter className="px-6 py-4">
-                <Button className="w-full bg-red-600 text-white hover:bg-red-400">
+                <Button
+                  onClick={handleLogout}
+                  className="w-full bg-red-600 text-white hover:bg-red-400"
+                >
                   Logout
                 </Button>
               </CardFooter>

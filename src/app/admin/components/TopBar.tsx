@@ -17,13 +17,22 @@ import Logo from '../../assets/favicon.svg';
 import { Button } from '@/components/ui/button';
 import { CircleUser } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const TopBar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
 
   // Toggle Sidebar visibility
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem('admin_token'); // Remove the token
+    localStorage.removeItem('admin_email'); // Remove the email
+    router.push('/adminAuth/auth/login'); // Redirect to login page
   };
 
   return (
@@ -67,12 +76,21 @@ const TopBar = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link href="/admin/settings">Settings</Link>
+              <Link href="/admin/settings">
+                <DropdownMenuItem className="cursor-pointer hover:bg-gray-200">
+                  Settings
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem className="cursor-pointer hover:bg-gray-200">
+                Support
               </DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="cursor-pointer hover:bg-gray-200"
+              >
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

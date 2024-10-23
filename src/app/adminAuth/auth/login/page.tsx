@@ -41,7 +41,10 @@ export default function AdminLogin() {
         if (response.status === 200) {
           // Store the JWT token in localStorage
           const token = response.data.token;
+          const email = response.data.email;
           localStorage.setItem('admin_token', token);
+          localStorage.setItem('admin_email', email);
+          console.log('Admin email is:', email);
 
           // Log the token to confirm it's being retrieved correctly
           // console.log('Admin token is:', token);

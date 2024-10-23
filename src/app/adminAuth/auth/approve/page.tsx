@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Logo from '../../../assets/favicon.svg';
 
 export default function ApproveAdmin() {
   const [adminId, setAdminId] = useState<string | null>(null); // Initialize as null
@@ -29,6 +31,10 @@ export default function ApproveAdmin() {
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
+      <div className="hidden items-center justify-start space-x-1 px-4 py-4 lg:flex">
+        <Image src={Logo} alt="Logo" width={50} height={50} />
+        <h1 className="text-xl font-bold">ShopBuddy</h1>
+      </div>
       <div className="rounded bg-white p-6 shadow-md">
         <h2 className="text-xl font-bold">{message || 'Processing...'}</h2>
       </div>
