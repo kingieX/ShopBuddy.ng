@@ -7,9 +7,12 @@ import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '../../../assets/favicon.svg';
+import toast from 'react-hot-toast';
 
 export default function AdminLogin() {
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   // Formik form initialization with Yup validation
@@ -28,6 +31,7 @@ export default function AdminLogin() {
     }),
     onSubmit: async (values) => {
       setError('');
+      setIsLoading(true);
       try {
         const response = await axios.post('/api/admin/auth/login', {
           email: values.email,
@@ -40,10 +44,13 @@ export default function AdminLogin() {
           localStorage.setItem('admin_token', token);
 
           // Log the token to confirm it's being retrieved correctly
-          console.log('Admin token is:', token);
+          // console.log('Admin token is:', token);
 
           // Redirect to admin dashboard
           router.push('/admin/overview');
+          toast.success('Admin Login Successful!', {
+            duration: 4000, // Toast shows for 4 seconds
+          });
         } else if (response.status === 403) {
           setError('Your account is pending approval by the owner.');
         } else {
@@ -51,6 +58,8 @@ export default function AdminLogin() {
         }
       } catch (err) {
         setError('Invalid login credentials');
+      } finally {
+        setIsLoading(false);
       }
     },
   });
@@ -100,8 +109,9 @@ export default function AdminLogin() {
             <button
               type="submit"
               className="bg-blue-600 px-8 py-2 text-white hover:bg-blue-500"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? 'logging in...' : 'Login'}
             </button>
           </form>
 
