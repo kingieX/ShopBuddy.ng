@@ -44,7 +44,7 @@ export default function AdminLogin() {
           const email = response.data.email;
           localStorage.setItem('admin_token', token);
           localStorage.setItem('admin_email', email);
-          console.log('Admin email is:', email);
+          // console.log('Admin email is:', email);
 
           // Log the token to confirm it's being retrieved correctly
           // console.log('Admin token is:', token);

@@ -38,7 +38,7 @@ const Settings = () => {
   const router = useRouter();
 
   const email = localStorage.getItem('admin_email');
-  console.log(email);
+  // console.log(email);
 
   // Logout function
   const handleLogout = () => {
