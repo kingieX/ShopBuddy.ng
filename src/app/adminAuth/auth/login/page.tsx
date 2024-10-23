@@ -7,13 +7,21 @@ import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Logo from '../../../assets/favicon.svg';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export default function AdminLogin() {
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   // Formik form initialization with Yup validation
   const formik = useFormik({
@@ -83,36 +91,54 @@ export default function AdminLogin() {
 
           {/* Formik form */}
           <form onSubmit={formik.handleSubmit}>
-            <input
-              type="email"
-              name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="Email"
-              className={`mb-4 w-full border p-2 ${formik.touched.email && formik.errors.email ? 'border-red-500' : ''}`}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <p className="text-red-500">{formik.errors.email}</p>
-            ) : null}
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="text-sm text-red-500">
+                  {formik.errors.email}
+                </div>
+              ) : null}
+            </div>
 
-            <input
-              type="password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="Password"
-              className={`mb-4 w-full border p-2 ${formik.touched.password && formik.errors.password ? 'border-red-500' : ''}`}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <p className="text-red-500">{formik.errors.password}</p>
-            ) : null}
+            <div className="relative mb-4">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-[35px] cursor-pointer"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-sm text-red-500">
+                  {formik.errors.password}
+                </div>
+              ) : null}
+            </div>
 
             <button
               type="submit"
-              className="bg-blue-600 px-8 py-2 text-white hover:bg-blue-500"
-              disabled={isLoading}
+              className="w-full bg-button py-2 text-white hover:bg-blue-500"
+              disabled={isLoading || formik.isSubmitting}
             >
               {isLoading ? 'logging in...' : 'Login'}
             </button>
