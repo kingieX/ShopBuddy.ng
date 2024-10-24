@@ -1,46 +1,57 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 interface QuantitySelectorProps {
-  initialQuantity?: number;
-  minQuantity?: number;
-  onQuantityChange: (quantity: number) => void; // Callback when quantity is updated
+  cartItemId: string;
+  initialQuantity: number;
+  minQuantity: number;
+  onQuantityChange: (quantity: number) => void;
 }
 
 const QuantitySelector: React.FC<QuantitySelectorProps> = ({
-  initialQuantity = 1, // Default quantity is 1
-  minQuantity = 0, // Minimum quantity (can be 0 or 1)
+  initialQuantity,
+  minQuantity,
   onQuantityChange,
 }) => {
-  const [quantity, setQuantity] = useState<number>(initialQuantity);
+  const [quantity, setQuantity] = useState(initialQuantity);
 
-  // Handle increment
+  // Update local quantity state if initialQuantity changes
+  useEffect(() => {
+    setQuantity(initialQuantity);
+  }, [initialQuantity]);
+
   const handleIncrement = () => {
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
-    onQuantityChange(newQuantity); // Notify parent component about the update
+    onQuantityChange(newQuantity);
+    toast.success('Product quantity increased');
   };
 
-  // Handle decrement
   const handleDecrement = () => {
     if (quantity > minQuantity) {
       const newQuantity = quantity - 1;
       setQuantity(newQuantity);
-      onQuantityChange(newQuantity); // Notify parent component about the update
+      onQuantityChange(newQuantity);
+      toast.success('Product quantity decreased');
+    } else if (quantity === minQuantity) {
+      onQuantityChange(0); // Remove from cart
+      toast.error('Product removed from cart');
     }
   };
+
+  const buttonColor = quantity > 0 ? 'bg-button' : 'bg-white';
 
   return (
     <div className="flex items-center rounded-md border">
       <button
-        className="border-r px-2 py-1 text-lg"
+        className={`border-r px-2 py-1 text-lg ${buttonColor}`}
         onClick={handleDecrement}
-        disabled={quantity === minQuantity} // Disable decrement when quantity is at minimum
       >
         -
       </button>
       <span className="px-4 py-1 text-lg">{quantity}</span>
       <button
-        className="border-l bg-button px-2 py-1 text-lg text-white"
+        className={`border-l px-2 py-1 text-lg ${buttonColor}`}
         onClick={handleIncrement}
       >
         +

@@ -20,10 +20,11 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import ProductDetails from '@/app/admin/products/_components/ProductDetails';
-import ProductActionComponent from './ProductActionComponent';
+import ProductActionWithQuantitySelector from './ProductActionComponent';
 import { TbTruckDelivery } from 'react-icons/tb';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import RelatedProducts from './RelatedProducts';
+import ProductDetailButton from '@/app/cart/_components/ProductDetailButton';
 
 interface ProductDetailProps {
   product: {
@@ -134,9 +135,9 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             </Swiper>
           </div>
 
-          <div className="w-full px-2 lg:w-1/2 lg:px-8">
+          <div className="relative w-full px-2 lg:w-1/2 lg:px-8">
             {/* product detail */}
-            <div className="mb-2 flex flex-col items-start justify-center space-y-1 border-b border-b-gray-400 pb-1">
+            <div className="relative mb-2 flex flex-col items-start justify-center space-y-1 border-b border-b-gray-400 pb-1">
               <h1 className="text-2xl font-semibold lg:text-4xl">
                 {product.title}
               </h1>
@@ -182,7 +183,13 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
 
             {/* product price & Total order */}
-            <ProductActionComponent productId={product.id} />
+            <div className="flex items-center justify-between">
+              <ProductActionWithQuantitySelector productId={product.id} />
+              {/* Always render AddToCartButton */}
+              <div className="relative w-full">
+                <ProductDetailButton productId={product.id} />
+              </div>
+            </div>
 
             {/* Delivery and Return Info */}
             <div className="my-4 mt-4 w-full space-y-2 border">

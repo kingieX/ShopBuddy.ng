@@ -18,14 +18,18 @@ type Cart = {
   items: CartItem[];
 };
 
+// type Cart = CartItem[];
+
 type CartContextType = {
   cart: Cart | null;
+  loading: boolean; // Add loading here
   addToCart: (productId: string, quantity: number) => Promise<void>;
   removeFromCart: (cartItemId: string) => Promise<void>;
   updateCartItemQuantity: (
     cartItemId: string,
     quantity: number
   ) => Promise<void>;
+  reduceCartItemQuantity: (cartItemId: string) => Promise<void>;
   fetchCart: () => Promise<void>;
 };
 
@@ -38,6 +42,7 @@ export const CartContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [cart, setCart] = useState<Cart | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Fetch the cart when the component mounts
   useEffect(() => {
@@ -45,18 +50,31 @@ export const CartContextProvider = ({
   }, []);
 
   const fetchCart = async () => {
+    setLoading(true); // Set loading to true while fetching
     try {
       const response = await axios.get('/api/cart');
       setCart(response.data);
     } catch (error) {
       console.error('Error fetching cart:', error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   };
 
   const addToCart = async (productId: string, quantity: number) => {
     try {
-      const response = await axios.post('/api/cart', { productId, quantity });
-      setCart(response.data); // Update cart in context
+      const existingCartItem = cart?.items?.find(
+        (item) => item.productId === productId
+      );
+      if (existingCartItem) {
+        const cartItemId = existingCartItem.id;
+        await axios.patch(`/api/cart/${cartItemId}`, {
+          quantity: existingCartItem.quantity + quantity,
+        });
+      } else {
+        await axios.post('/api/cart', { productId, quantity });
+      }
+      fetchCart(); // Refresh the cart
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
@@ -64,8 +82,8 @@ export const CartContextProvider = ({
 
   const removeFromCart = async (cartItemId: string) => {
     try {
-      const response = await axios.delete(`/api/cart/${cartItemId}`);
-      setCart(response.data); // Update cart after item removal
+      await axios.delete(`/api/cart/${cartItemId}`);
+      fetchCart(); // Refresh the cart
     } catch (error) {
       console.error('Error removing from cart:', error);
     }
@@ -76,12 +94,23 @@ export const CartContextProvider = ({
     quantity: number
   ) => {
     try {
-      const response = await axios.patch(`/api/cart/${cartItemId}`, {
-        quantity,
-      });
-      setCart(response.data); // Update cart with new quantity
+      console.log('Updating cart item with:', { cartItemId, quantity }); // Add this log
+      if (quantity <= 0 || isNaN(quantity)) {
+        throw new Error('Invalid quantity'); // Basic validation in frontend
+      }
+      await axios.patch(`/api/cart/${cartItemId}`, { quantity });
+      fetchCart(); // Refresh the cart
     } catch (error) {
       console.error('Error updating cart item quantity:', error);
+    }
+  };
+
+  const reduceCartItemQuantity = async (cartItemId: string) => {
+    const item = cart?.items.find((item) => item.id === cartItemId);
+    if (item && item.quantity > 1) {
+      await updateCartItemQuantity(cartItemId, item.quantity - 1);
+    } else {
+      await removeFromCart(cartItemId);
     }
   };
 
@@ -89,9 +118,11 @@ export const CartContextProvider = ({
     <CartContext.Provider
       value={{
         cart,
+        loading, // Expose loading
         addToCart,
         removeFromCart,
         updateCartItemQuantity,
+        reduceCartItemQuantity,
         fetchCart,
       }}
     >

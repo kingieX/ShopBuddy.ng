@@ -25,6 +25,8 @@ import {
 import { Button } from '@/components/ui/button';
 
 import { useWishlist } from '../contexts/WishlistContext';
+import { useCart } from '../contexts/CartContext';
+import SideCart from './SideCart';
 
 const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,29 +35,13 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const isSignedIn = status === 'authenticated'; // Determine if the user is signed in
   const menuRef = useRef<HTMLDivElement>(null); // Reference for the menu div
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
-  // const [wishlistCount, setWishlistCount] = useState<number>(0); // state for wishlist
   const { wishlist } = useWishlist();
+  const [showSideCart, setShowSideCart] = useState(false);
+  const cartItems = 10;
+
+  const { cart } = useCart(); // Access the cart from CartContext
 
   const router = useRouter();
-
-  // useEffect for get item from wishlist
-  // useEffect(() => {
-  //   const fetchWishlistCount = async () => {
-  //     if (status === 'authenticated') {
-  //       // Fetch wishlist from server
-  //       const res = await fetch('/api/wishlist');
-  //       const data = await res.json();
-  //       setWishlistCount(data.length);
-  //     } else {
-  //       // Check localStorage for wishlist count
-  //       const wishlistItems = JSON.parse(
-  //         localStorage.getItem('wishlist') || '[]'
-  //       );
-  //       setWishlistCount(wishlistItems.length);
-  //     }
-  //   };
-  //   fetchWishlistCount();
-  // }, [status]);
 
   // Handle logout logic
   const handleLogout = () => {
@@ -163,7 +149,21 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                   </div>
                 </Link>
                 {/* // Cart icon */}
-                <ShoppingCart className="h-6 w-6 text-gray-500" />
+                <button
+                  onClick={() => setShowSideCart((old) => !old)}
+                  className="relative rounded-full bg-gray-200 p-2"
+                >
+                  <ShoppingCart className="h-6 w-6 text-gray-500" />
+                  {cartItems > 0 ? (
+                    <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-button bg-opacity-70 text-xs font-semibold text-white">
+                      <p>{cartItems >= 9 ? '9+' : cartItems}</p>
+                    </div>
+                  ) : null}
+                </button>
+
+                {/* <Link href="/checkout" className="relative">
+                  <ShoppingCart className="h-6 w-6 text-gray-500" />
+                </Link> */}
               </div>
             )}
 
@@ -262,7 +262,18 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                 </div>
               </Link>
               {/* // Cart icon */}
-              <ShoppingCart className="h-6 w-6 text-gray-500" />
+              {/* <ShoppingCart className="h-6 w-6 text-gray-500" /> */}
+              <button
+                onClick={() => setShowSideCart((old) => !old)}
+                className="relative rounded-full bg-gray-200 p-2"
+              >
+                <ShoppingCart className="h-6 w-6 text-gray-500" />
+                {cartItems > 0 ? (
+                  <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-button bg-opacity-70 text-xs font-semibold text-white">
+                    <p>{cartItems >= 9 ? '9+' : cartItems}</p>
+                  </div>
+                ) : null}
+              </button>
             </div>
             <button
               className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -390,6 +401,12 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* SideCart */}
+      <SideCart
+        visible={showSideCart}
+        onRequestClose={() => setShowSideCart(false)}
+      />
     </nav>
   );
 };

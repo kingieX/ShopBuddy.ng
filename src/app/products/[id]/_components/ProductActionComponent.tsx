@@ -1,69 +1,110 @@
-import AddToCartButton from '@/app/cart/_components/AddToCartButton';
-import { useState } from 'react';
-import { FaHeart } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { useCart } from '@/app/contexts/CartContext';
+import toast from 'react-hot-toast';
 
-interface ProductActionProps {
+interface ProductActionWithQuantitySelectorProps {
   productId: string;
 }
 
-const ProductActionComponent: React.FC<ProductActionProps> = ({
-  productId,
-}) => {
-  const [quantity, setQuantity] = useState(1);
-  const [isFavorited, setIsFavorited] = useState(false);
+type CartItem = {
+  id: string;
+  productId: string;
+  quantity: number;
+  product: {
+    title: string;
+    price: number;
+  };
+};
+
+const ProductActionWithQuantitySelector: React.FC<
+  ProductActionWithQuantitySelectorProps
+> = ({ productId }) => {
+  const { cart, loading, addToCart, updateCartItemQuantity, removeFromCart } =
+    useCart();
+  const [cartItem, setCartItem] = useState<CartItem | null>(null);
+  const [quantity, setQuantity] = useState<number>(0);
+
+  // Check if the product is already in the cart after fetching
+  useEffect(() => {
+    console.log('cart:', cart);
+    if (!loading && cart) {
+      const foundCartItem = cart.find((item) => item.productId === productId);
+      setCartItem(foundCartItem || null); // Set the state
+      setQuantity(foundCartItem ? foundCartItem.quantity : 0); // Set the quantity
+      console.log('Foundcartitem:', foundCartItem); // Log the found item
+    }
+  }, [cart, loading, productId]);
+
+  // Handle quantity change
+  const handleQuantityChange = async (newQuantity: number) => {
+    if (newQuantity > 0) {
+      try {
+        if (cartItem) {
+          await updateCartItemQuantity(cartItem.id, newQuantity);
+          setQuantity(newQuantity); // Update local state only if successful
+          toast.success('Product quantity updated');
+        } else {
+          await addToCart(productId, newQuantity);
+          setQuantity(newQuantity); // Update local state only if successful
+          toast.success('Product added to cart');
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
+        // Optionally, revert quantity back to the original state
+        if (cartItem) {
+          setQuantity(cartItem.quantity); // Reset to original quantity
+        }
+      }
+    } else if (cartItem) {
+      try {
+        await removeFromCart(cartItem.id);
+        setQuantity(0); // Reset quantity since the item is removed
+        toast.error('Product removed from cart');
+      } catch (error) {
+        console.error('Error removing product:', error);
+        // Optionally, revert quantity back to the original state
+        setQuantity(cartItem.quantity);
+      }
+    }
+  };
 
   const handleIncrement = () => {
-    setQuantity((prev) => prev + 1);
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    handleQuantityChange(newQuantity);
   };
 
   const handleDecrement = () => {
     if (quantity > 0) {
-      setQuantity((prev) => prev - 1);
+      const newQuantity = quantity - 1;
+      handleQuantityChange(newQuantity);
     }
   };
 
-  const toggleFavorite = () => {
-    setIsFavorited(!isFavorited);
-  };
+  const buttonColor = quantity > 0 ? 'bg-button' : 'bg-white';
 
   return (
     <div className="w-full p-4">
-      {/* Quantity control and Buy Now */}
-      <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
+      <div className="relative flex w-full flex-col items-center gap-4 lg:flex-row">
         <div className="flex items-center rounded-md border">
           <button
-            className="border-r px-2 py-1 text-lg"
+            className={`border-r px-2 py-1 text-lg ${buttonColor}`}
             onClick={handleDecrement}
-            disabled={quantity === 0} // Disable decrement when quantity is 1
+            disabled={quantity <= 0}
           >
             -
           </button>
           <span className="px-4 py-1 text-lg">{quantity}</span>
           <button
-            className={`border-l px-2 py-1 text-lg ${
-              quantity > 0 ? 'bg-button text-white' : ''
-            }`}
+            className={`border-l px-2 py-1 text-lg ${buttonColor}`}
             onClick={handleIncrement}
           >
             +
           </button>
-        </div>
-        <div className="flex w-full gap-4">
-          {/* <button className="w-full bg-button px-4 py-2 text-white transition hover:bg-blue-600">
-            Add to cart
-          </button> */}
-          {/* Add to cart button */}
-          <AddToCartButton productId={productId} />
-
-          {/* <button onClick={toggleFavorite} className="text-2xl">
-            <FaHeart
-              className={isFavorited ? 'text-red-500' : 'text-gray-300'}
-            />
-          </button> */}
         </div>
       </div>
     </div>
   );
 };
 
-export default ProductActionComponent;
+export default ProductActionWithQuantitySelector;
