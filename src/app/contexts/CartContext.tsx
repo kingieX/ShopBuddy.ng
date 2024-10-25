@@ -7,12 +7,20 @@ type CartItem = {
   productId: string;
   quantity: number;
   product: {
+    id: string;
     title: string;
-    price: number;
+    mainImage: string;
+    regularPrice: number;
+    salePrice: number;
   };
 };
 
 type Cart = {
+  map(
+    arg0: (item: any) => import('react').JSX.Element
+  ): import('react').ReactNode;
+  length: number;
+  reduce(arg0: (total: any, item: any) => any, arg1: number): unknown;
   id: string;
   userId: number;
   items: CartItem[];
@@ -31,6 +39,8 @@ type CartContextType = {
   ) => Promise<void>;
   reduceCartItemQuantity: (cartItemId: string) => Promise<void>;
   fetchCart: () => Promise<void>;
+  countAllItems: () => number;
+  totalPrice: () => number;
 };
 
 // Create the CartContext
@@ -53,6 +63,7 @@ export const CartContextProvider = ({
     setLoading(true); // Set loading to true while fetching
     try {
       const response = await axios.get('/api/cart');
+      // console.log('Cart data:', response.data); // Add this log
       setCart(response.data);
     } catch (error) {
       console.error('Error fetching cart:', error);
@@ -114,6 +125,23 @@ export const CartContextProvider = ({
     }
   };
 
+  const countAllItems = () => {
+    if (!cart || cart.length === 0) return 0;
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+  // console.log('total items in context:', countAllItems());
+
+  const totalPrice = cart
+    ? cart.reduce(
+        (sum, item) =>
+          sum +
+          (item.product.salePrice || item.product.regularPrice) * item.quantity,
+        0
+      )
+    : 0;
+
+  // console.log('total price in context:', totalPrice);
+
   return (
     <CartContext.Provider
       value={{
@@ -124,6 +152,8 @@ export const CartContextProvider = ({
         updateCartItemQuantity,
         reduceCartItemQuantity,
         fetchCart,
+        countAllItems: countAllItems as () => number, // Specify the return type as number
+        totalPrice: totalPrice as () => number,
       }}
     >
       {children}

@@ -37,9 +37,12 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
   const { wishlist } = useWishlist();
   const [showSideCart, setShowSideCart] = useState(false);
-  const cartItems = 10;
+  // const cartItems = 10;
 
-  const { cart } = useCart(); // Access the cart from CartContext
+  const { countAllItems } = useCart();
+  const totalItems = countAllItems();
+
+  console.log('total items: ', totalItems);
 
   const router = useRouter();
 
@@ -154,11 +157,16 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                   className="relative rounded-full bg-gray-200 p-2"
                 >
                   <ShoppingCart className="h-6 w-6 text-gray-500" />
-                  {cartItems > 0 ? (
+                  {/* {cartItems > 0 ? (
                     <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-button bg-opacity-70 text-xs font-semibold text-white">
                       <p>{cartItems >= 9 ? '9+' : cartItems}</p>
                     </div>
-                  ) : null}
+                  ) : null} */}
+                  {totalItems > 0 && (
+                    <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-button bg-opacity-70 text-xs font-semibold text-white">
+                      <span>{totalItems}</span>
+                    </div>
+                  )}
                 </button>
 
                 {/* <Link href="/checkout" className="relative">
@@ -268,11 +276,16 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
                 className="relative rounded-full bg-gray-200 p-2"
               >
                 <ShoppingCart className="h-6 w-6 text-gray-500" />
-                {cartItems > 0 ? (
+                {/* {cartItems > 0 ? (
                   <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-button bg-opacity-70 text-xs font-semibold text-white">
                     <p>{cartItems >= 9 ? '9+' : cartItems}</p>
                   </div>
-                ) : null}
+                ) : null} */}
+                {totalItems > 0 && (
+                  <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-button bg-opacity-70 text-xs font-semibold text-white">
+                    <span>{totalItems}</span>
+                  </div>
+                )}
               </button>
             </div>
             <button

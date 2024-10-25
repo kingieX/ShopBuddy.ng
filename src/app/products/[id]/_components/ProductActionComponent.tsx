@@ -26,12 +26,12 @@ const ProductActionWithQuantitySelector: React.FC<
 
   // Check if the product is already in the cart after fetching
   useEffect(() => {
-    console.log('cart:', cart);
+    // console.log('cart:', cart);
     if (!loading && cart) {
       const foundCartItem = cart.find((item) => item.productId === productId);
       setCartItem(foundCartItem || null); // Set the state
       setQuantity(foundCartItem ? foundCartItem.quantity : 0); // Set the quantity
-      console.log('Foundcartitem:', foundCartItem); // Log the found item
+      // console.log('Foundcartitem:', foundCartItem); // Log the found item
     }
   }, [cart, loading, productId]);
 

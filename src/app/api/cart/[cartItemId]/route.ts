@@ -9,7 +9,7 @@ export async function PATCH(
   { params }: { params: { cartItemId: string } }
 ) {
   try {
-    console.log('cartItemId from params:', params.cartItemId); // Log to verify
+    // console.log('cartItemId from params:', params.cartItemId); // Log to verify
     const session = await getServerSession({ req, ...authOptions });
 
     if (!session?.user?.id) {
