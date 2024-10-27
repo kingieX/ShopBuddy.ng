@@ -46,6 +46,7 @@ model Product {
   cartItems     CartItem[] // Relation to CartItem
 
   @@map("products") // Map table name to "products"
+  OrderItem OrderItem[]
 }
 
 model Category {
@@ -121,4 +122,76 @@ model User {
   carts             Cart[]   // One-to-many relation with Cart (each user can have multiple carts)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  Order Order[]
+}
+
+// BillingDetails model for capturing each order's billing information
+model BillingDetails {
+  id         String   @id @default(uuid())
+  fullname   String
+  email      String
+  phone      String
+  address    String
+  city       String
+  state      String
+  createdAt  DateTime @default(now())
+
+  Order Order[]
+}
+
+// Order and OrderItem models to represent finalized orders and their items
+model Order {
+  id                String         @id @default(uuid())
+  user              User           @relation(fields: [userId], references: [id])
+  userId            Int
+  billingDetailsId  String
+  billingDetails    BillingDetails @relation(fields: [billingDetailsId], references: [id])
+  totalAmount       Float
+  deliveryFee       Float
+  vat               Float
+  status            OrderStatus    @default(PENDING)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  items             OrderItem[]
+  payment           Payment?
+}
+
+model OrderItem {
+  id           String    @id @default(uuid())
+  order        Order     @relation(fields: [orderId], references: [id])
+  orderId      String
+  product      Product   @relation(fields: [productId], references: [id])
+  productId    String
+  quantity     Int       @default(1)
+  price        Float
+  createdAt    DateTime  @default(now())
+}
+
+// Payment model for managing payment status and transactions
+model Payment {
+  id             String        @id @default(uuid())
+  orderId        String        @unique
+  order          Order         @relation(fields: [orderId], references: [id])
+  amount         Float
+  transactionRef String        @unique
+  status         PaymentStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+}
+
+// Enum for order status tracking
+enum OrderStatus {
+  PENDING
+  PAID
+  INPROGRESS
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+// Enum for payment status tracking
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }
