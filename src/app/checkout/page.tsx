@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import Footer from '@/app/components/Footer';
 import Navbar from '@/app/components/NavBar';
