@@ -41,7 +41,7 @@ export const sendOrderConfirmationEmail = async (
           <td style="padding: 20px; color: #333;">
             <h2 style="font-size: 24px; margin-bottom: 20px;">Thank you for your purchase!</h2>
             <p style="font-size: 16px; line-height: 1.6;">
-              Your order <strong>#${orderId}</strong> has been confirmed, and your payment was successfully processed.
+              Your order <strong>#${orderId}</strong> has been confirmed and is being processed, you will receive a message/email when your items is out for delivery.
             </p>
             <h3 style="font-size: 18px; margin-bottom: 15px;">Order Summary</h3>
             <ul style="font-size: 16px; line-height: 1.6; padding-left: 20px;">

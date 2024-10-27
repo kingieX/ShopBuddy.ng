@@ -14,8 +14,8 @@ const PaymentResultPage = () => {
 
   useEffect(() => {
     const verifyPayment = async () => {
-      const reference = searchParams.get('reference');
-      const orderId = searchParams.get('orderId');
+      const reference = searchParams?.get('reference');
+      const orderId = searchParams?.get('orderId');
 
       if (!reference || !orderId) {
         setStatus('failure');
