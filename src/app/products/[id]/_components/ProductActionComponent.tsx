@@ -29,7 +29,9 @@ const ProductActionWithQuantitySelector: React.FC<
   useEffect(() => {
     // console.log('cart:', cart);
     if (!loading && cart) {
-      const foundCartItem = cart.find((item) => item.productId === productId);
+      const foundCartItem = cart.find(
+        (item: CartItem) => item.productId === productId
+      );
       setCartItem(foundCartItem || null); // Set the state
       setQuantity(foundCartItem ? foundCartItem.quantity : 0); // Set the quantity
       // console.log('Foundcartitem:', foundCartItem); // Log the found item

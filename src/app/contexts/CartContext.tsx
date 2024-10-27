@@ -52,7 +52,7 @@ export const CartContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [cart, setCart] = useState<Cart | null>(null);
+  const [cart, setCart] = useState<CartItem[] | null>([]]);
   const [loading, setLoading] = useState(true);
 
   // Fetch the cart when the component mounts
