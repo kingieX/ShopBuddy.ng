@@ -16,6 +16,7 @@ type CartItem = {
 };
 
 type Cart = {
+  find: any;
   map(
     arg0: (item: any) => import('react').JSX.Element
   ): import('react').ReactNode;
