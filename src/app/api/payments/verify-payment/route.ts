@@ -6,6 +6,7 @@ import axios from 'axios';
 import prisma from '@/lib/db/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { sendOrderConfirmationEmail } from '@/utils/sendOrderConfirmationEmail';
 
 export async function GET(request: NextRequest) {
   try {
@@ -51,6 +52,38 @@ export async function GET(request: NextRequest) {
           status: 'PAID',
         },
       });
+
+      // Fetch the order details from database
+      const orderDetails = await prisma.order.findUnique({
+        where: { id: orderId },
+        include: {
+          items: { include: { product: true } },
+          billingDetails: true,
+        },
+      });
+
+      // Send email to customer
+      if (orderDetails?.billingDetails?.email) {
+        await sendOrderConfirmationEmail(
+          orderDetails.billingDetails.email,
+          orderId,
+          {
+            items: orderDetails.items.map((item) => ({
+              name: item.product.title,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+            vat: orderDetails.vat,
+            deliveryFee: orderDetails.deliveryFee,
+            totalAmount: orderDetails.totalAmount,
+            paymentStatus: orderDetails.status,
+          }
+        );
+      } else {
+        console.error(
+          'Order confirmation email could not be sent. Missing email address.'
+        );
+      }
 
       return NextResponse.json({
         message: 'Payment verification successful',

@@ -1,4 +1,5 @@
 'use client';
+import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 import React, { useState } from 'react';
 import { AiOutlineClose, AiOutlineDollarCircle } from 'react-icons/ai';
 
@@ -89,29 +90,39 @@ const CheckoutSummaryModal: React.FC<CheckoutSummaryModalProps> = ({
         <div className="space-y-4 text-sm text-gray-700">
           <div className="flex justify-between">
             <span>Subtotal:</span>
-            <span className="font-semibold">{orderSummary.subtotal}</span>
+            <span className="font-semibold">
+              <CurrencyFormatter amount={orderSummary.subtotal} />
+            </span>
           </div>
 
           <div className="flex justify-between">
             <span>Service Charge:</span>
-            <span className="font-semibold">{orderSummary.serviceCharge}</span>
+            <span className="font-semibold">
+              <CurrencyFormatter amount={orderSummary.serviceCharge} />
+            </span>
           </div>
 
           <div className="flex justify-between">
             <span>Delivery Fee:</span>
-            <span className="font-semibold">{orderSummary.deliveryFee}</span>
+            <span className="font-semibold">
+              <CurrencyFormatter amount={orderSummary.deliveryFee} />
+            </span>
           </div>
 
           <div className="flex justify-between">
             <span>VAT (1.5%):</span>
-            <span className="font-semibold">{orderSummary.vat}</span>
+            <span className="font-semibold">
+              <CurrencyFormatter amount={orderSummary.vat} />
+            </span>
           </div>
 
           <hr className="my-4 border-gray-300" />
 
           <div className="flex justify-between text-lg font-bold text-gray-900">
             <span>Total:</span>
-            <span>{orderSummary.grandTotal}</span>
+            <span>
+              <CurrencyFormatter amount={orderSummary.grandTotal} />
+            </span>
           </div>
         </div>
 
