@@ -1,5 +1,13 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { AiOutlineClose, AiOutlineDollarCircle } from 'react-icons/ai';
+
+interface BillingDetails {
+  fullname: string;
+  email: string;
+  phone: string;
+  address: string;
+}
 
 interface OrderSummary {
   orderId: string;
@@ -8,24 +16,55 @@ interface OrderSummary {
   deliveryFee: number;
   vat: number;
   grandTotal: number;
+  billingDetails: BillingDetails;
 }
 
 interface CheckoutSummaryModalProps {
   isOpen: boolean;
   onClose: () => void;
   orderSummary: OrderSummary;
-  onPayNow: () => void;
 }
 
 const CheckoutSummaryModal: React.FC<CheckoutSummaryModalProps> = ({
   isOpen,
   onClose,
   orderSummary,
-  onPayNow,
 }) => {
+  const [loading, setLoading] = useState(false);
   if (!isOpen) return null;
 
   console.log('orderSummary:', orderSummary);
+
+  // CheckoutSummaryModal.tsx (snippet where you handle the payment button click)
+
+  const handlePayment = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch('/api/payments/initiate-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: orderSummary.orderId,
+          totalAmount: orderSummary.grandTotal,
+          customerEmail: orderSummary.billingDetails.email,
+        }),
+      });
+
+      if (response.ok) {
+        const { authorizationUrl } = await response.json();
+        // Redirect to Paystack payment page
+        window.location.href = authorizationUrl;
+      } else {
+        alert('Failed to initiate payment');
+      }
+    } catch (error) {
+      console.error('Error initiating payment:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 p-8 transition-opacity duration-300 ease-in-out">
@@ -76,7 +115,7 @@ const CheckoutSummaryModal: React.FC<CheckoutSummaryModalProps> = ({
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end space-x-4">
+        <div className="mt-6 flex w-full justify-end space-x-4">
           <button
             onClick={onClose}
             className="rounded-lg bg-gray-200 px-4 py-2 font-medium text-gray-600 hover:bg-gray-300"
@@ -84,11 +123,11 @@ const CheckoutSummaryModal: React.FC<CheckoutSummaryModalProps> = ({
             Close
           </button>
           <button
-            onClick={onPayNow}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+            onClick={handlePayment}
+            className="flex items-center space-x-2 border-2 bg-button px-4 py-2 text-white hover:bg-blue-600"
           >
             <AiOutlineDollarCircle />
-            Pay Now
+            <span>{loading ? 'Paying now...' : 'Pay Now'}</span>
           </button>
         </div>
       </div>

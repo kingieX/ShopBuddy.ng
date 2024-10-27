@@ -16,6 +16,14 @@ import Link from 'next/link';
 import { useCart } from '@/app/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import CheckoutSummaryModal from './_components/CheckoutSummaryModal';
+import PaystackPop from '@paystack/inline-js';
+
+interface BillingDetails {
+  fullname: string;
+  email: string;
+  phone: string;
+  address: string;
+}
 
 type OrderSummaryType = {
   orderId: string;
@@ -24,6 +32,7 @@ type OrderSummaryType = {
   deliveryFee: number;
   vat: number;
   grandTotal: number;
+  billingDetails: BillingDetails;
 };
 
 const CheckOutPage = () => {
@@ -38,6 +47,8 @@ const CheckOutPage = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const publicKey = process.env.PAYSTACK_PUBLIC_KEY;
 
   // Update billing details from BillingDetails component
   const handleBillingDetailsChange = (details: any) => {
@@ -70,7 +81,7 @@ const CheckOutPage = () => {
           vat: data.order.vat, // VAT amount from response
           grandTotal: data.order.totalAmount, // Total amount including VAT and delivery fee
           // items: data.order.items,                       // Array of items from response
-          // billingDetails: data.order.billingDetails,     // Billing details object from response
+          billingDetails: data.order.billingDetails, // Billing details object from response
         });
 
         console.log('data', data);
@@ -93,13 +104,6 @@ const CheckOutPage = () => {
   useEffect(() => {
     console.log('Updated orderSummary:', orderSummary);
   }, [orderSummary]);
-
-  const handlePayNow = () => {
-    // Start the payment process
-    console.log('Initiating payment...');
-    setIsModalOpen(false);
-    // Call the function to initiate payment, like <PaymentButton /> here
-  };
 
   return (
     <>
@@ -169,9 +173,14 @@ const CheckOutPage = () => {
               deliveryFee: 0,
               vat: 0,
               grandTotal: 0,
+              billingDetails: {
+                fullname: '',
+                email: '',
+                phone: '',
+                address: '',
+              },
             }
           }
-          onPayNow={handlePayNow}
         />
       </div>
       <Footer />
