@@ -42,7 +42,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const { countAllItems } = useCart();
   const totalItems = countAllItems();
 
-  console.log('total items: ', totalItems);
+  // console.log('total items: ', totalItems);
 
   const router = useRouter();
 

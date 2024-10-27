@@ -3,7 +3,7 @@ import Footer from '@/app/components/Footer';
 import Navbar from '@/app/components/NavBar';
 import BillingDetails from './_components/BillingDetails';
 import OrderSummary from './_components/OrderSummary';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,6 +15,16 @@ import {
 import Link from 'next/link';
 import { useCart } from '@/app/contexts/CartContext';
 import { useRouter } from 'next/navigation';
+import CheckoutSummaryModal from './_components/CheckoutSummaryModal';
+
+type OrderSummaryType = {
+  orderId: string;
+  subtotal: number;
+  serviceCharge: number;
+  deliveryFee: number;
+  vat: number;
+  grandTotal: number;
+};
 
 const CheckOutPage = () => {
   const [error, setError] = useState('');
@@ -24,6 +34,10 @@ const CheckOutPage = () => {
   const router = useRouter();
   // const { cart, totalPrice } = useCart();
   const [billingDetails, setBillingDetails] = useState({});
+  const [orderSummary, setOrderSummary] = useState<OrderSummaryType | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Update billing details from BillingDetails component
   const handleBillingDetailsChange = (details: any) => {
@@ -33,6 +47,8 @@ const CheckOutPage = () => {
   const handlePlaceOrder = async () => {
     try {
       setLoading(true);
+      setError('');
+      setSuccess('');
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -44,10 +60,25 @@ const CheckOutPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+
+        setOrderSummary({
+          orderId: data.order.id, // Unique order ID
+          subtotal:
+            data.order.totalAmount - data.order.vat - data.order.deliveryFee, // Calculate subtotal if needed
+          serviceCharge: 1000, // Assuming service charge is fixed
+          deliveryFee: data.order.deliveryFee, // From response
+          vat: data.order.vat, // VAT amount from response
+          grandTotal: data.order.totalAmount, // Total amount including VAT and delivery fee
+          // items: data.order.items,                       // Array of items from response
+          // billingDetails: data.order.billingDetails,     // Billing details object from response
+        });
+
         console.log('data', data);
 
         setSuccess('Order placed successfully!');
-        // router.push(`/order-confirmation/${data.orderId}`);
+        setTimeout(() => {
+          setIsModalOpen(true);
+        }, 2000);
       } else {
         setError('Failed to place order');
       }
@@ -57,6 +88,17 @@ const CheckOutPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    console.log('Updated orderSummary:', orderSummary);
+  }, [orderSummary]);
+
+  const handlePayNow = () => {
+    // Start the payment process
+    console.log('Initiating payment...');
+    setIsModalOpen(false);
+    // Call the function to initiate payment, like <PaymentButton /> here
   };
 
   return (
@@ -106,16 +148,31 @@ const CheckOutPage = () => {
             >
               {loading ? 'Placing order...' : 'Place Order'}
             </button>
+            {/* Error & Success message */}
+            {error && (
+              <div className="py-4 text-center text-red-500">{error}</div>
+            )}
+            {success && (
+              <div className="py-4 text-center text-green-500">{success}</div>
+            )}
           </div>
-
-          {/* Error & Success message */}
-          {error && (
-            <div className="py-4 text-center text-red-500">{error}</div>
-          )}
-          {success && (
-            <div className="py-4 text-center text-green-500">{success}</div>
-          )}
         </div>
+        {/* Checkout Summary */}
+        <CheckoutSummaryModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          orderSummary={
+            orderSummary || {
+              orderId: 'No ID',
+              subtotal: 0,
+              serviceCharge: 0,
+              deliveryFee: 0,
+              vat: 0,
+              grandTotal: 0,
+            }
+          }
+          onPayNow={handlePayNow}
+        />
       </div>
       <Footer />
     </>

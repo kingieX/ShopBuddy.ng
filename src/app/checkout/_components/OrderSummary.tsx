@@ -23,7 +23,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ deliveryFee = 0 }) => {
   }
 
   const grandTotal = totalPrice + deliveryFee + serviceCharge + vatValue;
-  console.log('rate:', vatValue);
+  // console.log('rate:', vatValue);
 
   return (
     <div>

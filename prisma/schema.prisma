@@ -124,6 +124,8 @@ model User {
   updatedAt         DateTime @updatedAt
 
   Order Order[]
+
+  BillingDetails BillingDetails[]
 }
 
 // BillingDetails model for capturing each order's billing information
@@ -135,6 +137,8 @@ model BillingDetails {
   address    String
   city       String
   state      String
+  userId    Int 
+   user      User @relation(fields: [userId], references: [id])
   createdAt  DateTime @default(now())
 
   Order Order[]

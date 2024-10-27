@@ -78,8 +78,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Fetch the full order details
+    const fullOrderDetails = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: {
+        items: true,
+        billingDetails: true, // include other relations as needed
+      },
+    });
+
     return NextResponse.json(
-      { message: 'Checkout successful', orderId: order.id },
+      {
+        message: 'Checkout successful',
+        order: fullOrderDetails,
+      },
       { status: 200 }
     );
   } catch (error) {

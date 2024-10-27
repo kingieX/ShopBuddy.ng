@@ -25,15 +25,15 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
 }) => {
   const [states, setStates] = useState<State[]>([]);
   const [selectedState, setSelectedState] = useState<string>('');
-  const [towns, setTowns] = useState<City[]>([]);
-  const [selectedTown, setSelectedTown] = useState<City | null>(null);
+  const [cities, setCities] = useState<City[]>([]);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [formValues, setFormValues] = useState({
     fullname: '',
     email: '',
     phone: '',
     address: '',
     state: '',
-    town: '',
+    city: '',
   });
 
   useEffect(() => {
@@ -42,16 +42,16 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
 
   useEffect(() => {
     const state = states.find((s) => s.name === selectedState);
-    setTowns(state ? state.cities : []);
-    setSelectedTown(null); // Reset town on state change
+    setCities(state ? state.cities : []);
+    setSelectedCity(null); // Reset town on state change
   }, [selectedState, states]);
 
   useEffect(() => {
-    if (selectedTown) {
-      onDeliveryFeeChange(selectedTown.deliveryFee);
-      handleChange('town', selectedTown.name);
+    if (selectedCity) {
+      onDeliveryFeeChange(selectedCity.deliveryFee);
+      handleChange('city', selectedCity.name);
     }
-  }, [selectedTown, onDeliveryFeeChange]);
+  }, [selectedCity, onDeliveryFeeChange]);
 
   const handleChange = (field: string, value: string) => {
     const updatedFormValues = { ...formValues, [field]: value };
@@ -146,30 +146,41 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
           </div>
 
           <div className="flex w-1/2 flex-col">
-            <label htmlFor="town" className="mb-1 text-sm text-gray-500">
+            <label htmlFor="city" className="mb-1 text-sm text-gray-500">
               Town/City*
             </label>
             <select
-              id="town"
-              value={selectedTown?.name || ''}
+              id="city"
+              value={selectedCity?.name || ''}
               onChange={(e) =>
-                setSelectedTown(
-                  towns.find((town) => town.name === e.target.value) || null
+                setSelectedCity(
+                  cities.find((city) => city.name === e.target.value) || null
                 )
               }
               required
               className="px-2 py-2"
             >
               <option value="">Select Town/City</option>
-              {towns.map((town) => (
-                <option key={town.name} value={town.name}>
-                  {town.name} (Delivery Fee:{' '}
-                  <CurrencyFormatter amount={town.deliveryFee} />)
+              {cities.map((city) => (
+                <option key={city.name} value={city.name}>
+                  {city.name} (Delivery Fee:{' '}
+                  <CurrencyFormatter amount={city.deliveryFee} />)
                 </option>
               ))}
             </select>
           </div>
         </div>
+        {/* checked to save data for next time */}
+        {/* <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="save-data"
+            className="h-4 w-4 text-gray-600"
+          />
+          <label htmlFor="save-data" className="text-sm text-gray-500">
+            Save my billing details for future purchases
+          </label>
+        </div> */}
       </form>
     </div>
   );
