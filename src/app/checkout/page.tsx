@@ -94,7 +94,7 @@ const CheckOutPage = () => {
           setIsModalOpen(true);
         }, 2000);
       } else {
-        setError('Failed to place order');
+        setError('Failed to place order, ensure to fill the billing details');
       }
     } catch (error) {
       console.error('Error:', error);
