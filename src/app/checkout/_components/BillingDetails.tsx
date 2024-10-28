@@ -53,6 +53,38 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
     }
   }, [selectedCity, onDeliveryFeeChange]);
 
+  useEffect(() => {
+    const fetchBillingDetails = async () => {
+      const response = await fetch('/api/billing-details');
+      const data = await response.json();
+
+      console.log('data', data);
+
+      if (data) {
+        const billingData = data;
+        setFormValues({
+          fullname: billingData.fullname || '',
+          email: billingData.email || '',
+          phone: billingData.phone || '',
+          address: billingData.address || '',
+          state: billingData.state || '',
+          city: billingData.city || '',
+        });
+
+        setSelectedState(billingData.state || '');
+        setSelectedCity(
+          mockStatesData
+            .find((state) => state.name === billingData.state)
+            ?.cities.find((city) => city.name === billingData.city) || null
+        );
+      }
+
+      console.log('Form values:', formValues); // Check the values here
+    };
+
+    fetchBillingDetails();
+  }, []);
+
   const handleChange = (field: string, value: string) => {
     const updatedFormValues = { ...formValues, [field]: value };
     setFormValues(updatedFormValues);

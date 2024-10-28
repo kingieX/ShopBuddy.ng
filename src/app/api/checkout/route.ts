@@ -44,12 +44,37 @@ export async function POST(req: NextRequest) {
     const grandTotal = totalPrice + deliveryFee + serviceCharge + vat;
 
     // First, create the billing details
-    const billing = await prisma.billingDetails.create({
-      data: {
-        ...billingDetails,
-        userId,
-      },
+    // const billing = await prisma.billingDetails.create({
+    //   data: {
+    //     ...billingDetails,
+    //     userId,
+    //   },
+    // });
+
+    // Check if billing details exist for the user
+    const existingBilling = await prisma.billingDetails.findFirst({
+      where: { userId },
+      orderBy: { createdAt: 'desc' }, // Optional: get the latest if there are duplicates
     });
+
+    let billing;
+    if (existingBilling) {
+      // Update if details exist
+      billing = await prisma.billingDetails.update({
+        where: { id: existingBilling.id },
+        data: {
+          ...billingDetails, // update with new details
+        },
+      });
+    } else {
+      // Create new if no details exist
+      billing = await prisma.billingDetails.create({
+        data: {
+          ...billingDetails,
+          userId,
+        },
+      });
+    }
 
     // Create the order, linking it to the billing details
     const order = await prisma.order.create({

@@ -62,7 +62,7 @@ model Category {
 model Cart {
   id        String      @id @default(uuid())
   user      User        @relation(fields: [userId], references: [id]) // Each cart is tied to a user
-  userId    Int
+  userId    Int        @unique
   items     CartItem[]  // A cart contains multiple CartItems
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
@@ -79,6 +79,7 @@ model CartItem {
   quantity  Int       @default(1) // Track the quantity of products in the cart
   createdAt DateTime  @default(now())
 
+  @@unique([cartId, productId]) // Ensure a product appears only once in a cart
   @@map("cart_items")
 }
 
@@ -94,13 +95,16 @@ model Promotion {
   updatedAt    DateTime  @updatedAt
 }
 
+
 model Admin {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
+  approved  Boolean  @default(false)            // Track approval status
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 model User {
   id                Int      @id @default(autoincrement())
@@ -120,6 +124,8 @@ model User {
   updatedAt         DateTime @updatedAt
 
   Order Order[]
+
+  BillingDetails BillingDetails[]
 }
 
 // BillingDetails model for capturing each order's billing information
@@ -131,6 +137,8 @@ model BillingDetails {
   address    String
   city       String
   state      String
+  userId    Int 
+   user      User @relation(fields: [userId], references: [id])
   createdAt  DateTime @default(now())
 
   Order Order[]
