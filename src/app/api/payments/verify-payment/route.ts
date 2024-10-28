@@ -8,10 +8,10 @@ import { sendOrderConfirmationEmail } from '@/utils/sendOrderConfirmationEmail';
 
 export async function GET(request: NextRequest) {
   try {
-    // Use the nextUrl property to get URL and searchParams
-    const { searchParams } = request.nextUrl;
-    const reference = searchParams.get('reference');
-    const orderId = searchParams.get('orderId');
+    // Use the URL constructor to get query parameters
+    const url = new URL(request.url);
+    const reference = url.searchParams.get('reference');
+    const orderId = url.searchParams.get('orderId');
 
     const session = await getServerSession({ request, ...authOptions });
 
