@@ -27,9 +27,13 @@ const PaymentResultPage = () => {
       }
 
       try {
-        const response = await fetch(
-          `/api/payments/verify-payment?reference=${reference}&orderId=${orderId}`
-        );
+        const response = await fetch('/api/payments/verify-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ reference, orderId }),
+        });
 
         if (response.ok) {
           const data = await response.json();

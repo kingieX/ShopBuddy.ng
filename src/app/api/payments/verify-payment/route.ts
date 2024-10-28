@@ -6,20 +6,15 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { sendOrderConfirmationEmail } from '@/utils/sendOrderConfirmationEmail';
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    // Use the URL constructor to get query parameters
-    const url = new URL(request.url);
-    const reference = url.searchParams.get('reference');
-    const orderId = url.searchParams.get('orderId');
+    const { reference, orderId } = await request.json();
 
     const session = await getServerSession({ request, ...authOptions });
 
     if (!session?.user?.id) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
-
-    const userId = parseInt(session.user.id, 10);
 
     if (!reference || !orderId) {
       return NextResponse.json(
@@ -28,7 +23,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Send request to Paystack to verify transaction
+    // Verify payment with Paystack
     const response = await axios.get(
       `https://api.paystack.co/transaction/verify/${reference}`,
       {
@@ -44,9 +39,7 @@ export async function GET(request: NextRequest) {
       // Payment successful
       await prisma.order.update({
         where: { id: orderId },
-        data: {
-          status: 'PAID',
-        },
+        data: { status: 'PAID' },
       });
 
       const orderDetails = await prisma.order.findUnique({
@@ -86,7 +79,6 @@ export async function GET(request: NextRequest) {
         orderId: orderId,
       });
     } else {
-      // Payment failed
       return NextResponse.json(
         { error: 'Payment verification failed' },
         { status: 400 }
