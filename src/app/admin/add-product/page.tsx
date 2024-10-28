@@ -1,7 +1,5 @@
-// Import Prisma client from the centralized module
-import prisma from '@/lib/db/prisma';
+'use client';
 import AddProductForm from './_components/AddProductForm';
-import AdminLayout from '../layout';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,14 +9,42 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Category } from '@prisma/client'; // Adjust based on your Prisma setup
 
-export default async function AddProduct() {
-  // Fetch categories from DB
-  const categories = await prisma.category.findMany();
+const AddProduct = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // No need to map to only names, just pass the categories directly
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/admin/add-product');
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
+        const data: Category[] = await response.json();
+        setCategories(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return <p>Loading categories...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   return (
-    // <AdminLayout>
     <div>
       <header className="stick z-5 top-0 mt-5 flex h-14 items-center gap-4 border-b bg-white px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         <Breadcrumb className="flex">
@@ -35,11 +61,11 @@ export default async function AddProduct() {
           </BreadcrumbList>
         </Breadcrumb>
       </header>
-      {/* Pass categories with id and name as props to the form */}
       <div className="py-8">
         <AddProductForm initialCategories={categories} />
       </div>
     </div>
-    // </AdminLayout>
   );
-}
+};
+
+export default AddProduct;
