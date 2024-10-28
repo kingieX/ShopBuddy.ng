@@ -16,13 +16,15 @@ export async function POST(request: NextRequest) {
     const { orderId, totalAmount, customerEmail } =
       (await request.json()) as InitiatePaymentRequest;
 
+    const reference = `ORD_${orderId}`;
+
     // Prepare data for Paystack API
     const paystackData = {
       email: customerEmail,
       amount: totalAmount * 100, // Convert to kobo (smallest currency unit in Naira)
-      reference: `ORD_${orderId}`, // Unique order reference
+      reference: reference, // Unique order reference
       // callback_url: `${process.env.NEXT_PUBLIC_URL}/api/payments/verify-payment?orderId=${orderId}`,
-      callback_url: `${process.env.NEXT_PUBLIC_URL}/checkout/result?orderId=${orderId}`,
+      callback_url: `${process.env.NEXT_PUBLIC_URL}/checkout/result?reference=${reference}&orderId=${orderId}`,
     };
 
     // Send request to Paystack to initialize payment

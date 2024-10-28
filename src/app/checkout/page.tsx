@@ -43,7 +43,9 @@ const CheckOutPage = () => {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const router = useRouter();
   // const { cart, totalPrice } = useCart();
-  const [billingDetails, setBillingDetails] = useState({});
+  const [billingDetails, setBillingDetails] = useState<BillingDetails | null>(
+    null
+  );
   const [orderSummary, setOrderSummary] = useState<OrderSummaryType | null>(
     null
   );

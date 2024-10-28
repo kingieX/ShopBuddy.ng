@@ -2,19 +2,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button'; // For potential retry or actions
 
 const VerifyEmail = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = searchParams?.get('token');
+    // Get the full URL and extract the search parameters
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const token = urlParams.get('token');
 
     if (!token) {
       setError('Verification token is missing.');
@@ -36,7 +38,7 @@ const VerifyEmail = () => {
     };
 
     verifyEmail();
-  }, [searchParams, router]);
+  }, [router]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
@@ -51,7 +53,7 @@ const VerifyEmail = () => {
         ) : error ? (
           <div className="flex min-h-screen items-center justify-center text-center">
             <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-            {/* <h2 className="text-xl font-semibold text-red-500">
+            <h2 className="text-xl font-semibold text-red-500">
               Verification Error
             </h2>
             <p className="mt-2 text-gray-600">{error}</p>
@@ -60,7 +62,7 @@ const VerifyEmail = () => {
               onClick={() => window.location.reload()}
             >
               Retry Verification
-            </Button> */}
+            </Button>
           </div>
         ) : (
           <p className="text-lg text-gray-700">Redirecting...</p>

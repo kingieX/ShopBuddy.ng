@@ -2,20 +2,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const PaymentResultPage = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'failure'>(
     'loading'
   );
   const [message, setMessage] = useState<string | null>(null);
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
     const verifyPayment = async () => {
-      const reference = searchParams?.get('reference');
-      const orderId = searchParams?.get('orderId');
+      const urlParams = new URLSearchParams(window.location.search);
+      const reference = urlParams.get('reference');
+      const orderId = urlParams.get('orderId');
+
+      console.log('Reference:', reference);
+      console.log('OrderId:', orderId);
 
       if (!reference || !orderId) {
         setStatus('failure');
@@ -44,7 +47,7 @@ const PaymentResultPage = () => {
     };
 
     verifyPayment();
-  }, [searchParams]);
+  }, []);
 
   const handleBackToHome = () => {
     router.push('/');

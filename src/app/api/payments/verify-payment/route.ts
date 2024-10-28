@@ -1,5 +1,3 @@
-// app/api/payments/verify-payment.ts
-
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import axios from 'axios';
@@ -10,8 +8,8 @@ import { sendOrderConfirmationEmail } from '@/utils/sendOrderConfirmationEmail';
 
 export async function GET(request: NextRequest) {
   try {
-    // Extract query parameters from the URL
-    const { searchParams } = new URL(request.url);
+    // Use the nextUrl property to get URL and searchParams
+    const { searchParams } = request.nextUrl;
     const reference = searchParams.get('reference');
     const orderId = searchParams.get('orderId');
 
@@ -35,7 +33,7 @@ export async function GET(request: NextRequest) {
       `https://api.paystack.co/transaction/verify/${reference}`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`, // Paystack secret key
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
         },
       }
     );
@@ -44,8 +42,6 @@ export async function GET(request: NextRequest) {
 
     if (verificationData.status === 'success') {
       // Payment successful
-
-      // Update order status in the database here, if needed
       await prisma.order.update({
         where: { id: orderId },
         data: {
@@ -53,7 +49,6 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      // Fetch the order details from database
       const orderDetails = await prisma.order.findUnique({
         where: { id: orderId },
         include: {
@@ -62,7 +57,6 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      // Send email to customer
       if (orderDetails?.billingDetails?.email) {
         await sendOrderConfirmationEmail(
           orderDetails.billingDetails.email,
