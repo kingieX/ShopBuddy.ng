@@ -75,11 +75,16 @@ const CheckOutPage = () => {
       if (response.ok) {
         const data = await response.json();
 
+        const serviceCharge = 1000;
+
         setOrderSummary({
           orderId: data.order.id, // Unique order ID
           subtotal:
-            data.order.totalAmount - data.order.vat - data.order.deliveryFee, // Calculate subtotal if needed
-          serviceCharge: 1000, // Assuming service charge is fixed
+            data.order.totalAmount -
+            data.order.vat -
+            data.order.deliveryFee -
+            serviceCharge, // Calculate subtotal if needed
+          serviceCharge: serviceCharge, // Assuming service charge is fixed
           deliveryFee: data.order.deliveryFee, // From response
           vat: data.order.vat, // VAT amount from response
           grandTotal: data.order.totalAmount, // Total amount including VAT and delivery fee
