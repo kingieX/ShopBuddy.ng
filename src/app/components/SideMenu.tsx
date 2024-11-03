@@ -2,28 +2,21 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { PanelRightOpen, X } from 'lucide-react'; // Icons for hamburger and close buttons
+import { usePathname } from 'next/navigation';
 
 const SideMenu = () => {
+  const pathname = usePathname();
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(true);
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to handle menu toggle on mobile
-  const [activeLink, setActiveLink] = useState('/profile');
+  const [activeLink, setActiveLink] = useState('');
 
   const toggleAccountMenu = () => {
     setIsAccountMenuOpen(!isAccountMenuOpen);
   };
 
-  const toggleOrderMenu = () => {
-    setIsOrderMenuOpen(!isOrderMenuOpen);
-  };
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen); // Toggles the menu visibility on mobile
-  };
-
-  const handleLinkClick = (path: string) => {
-    setActiveLink(path);
-    setIsMenuOpen(false); // Close the menu when a link is clicked on mobile
   };
 
   return (
@@ -68,24 +61,14 @@ const SideMenu = () => {
             <div className="pl-4">
               <Link href="/profile">
                 <span
-                  className={`block ${
-                    activeLink === '/profile'
-                      ? 'text-button'
-                      : 'hover:text-gray-500'
-                  }`}
-                  onClick={() => handleLinkClick('/profile')}
+                  className={`block ${pathname === '/profile' ? 'text-button' : 'hover:text-gray-500'}`}
                 >
                   Profile
                 </span>
               </Link>
-              <Link href="/address">
+              <Link href="/address-book">
                 <span
-                  className={`block ${
-                    activeLink === '/address'
-                      ? 'text-button'
-                      : 'hover:text-gray-500'
-                  }`}
-                  onClick={() => handleLinkClick('/address')}
+                  className={`block ${pathname === '/address-book' ? 'text-button' : 'hover:text-gray-500'}`}
                 >
                   Address Book
                 </span>
@@ -96,64 +79,20 @@ const SideMenu = () => {
 
         {/* My Orders */}
         <div className="mt-6">
-          <h3
-            className="cursor-pointer font-semibold"
-            onClick={toggleOrderMenu}
-          >
-            My Orders
-          </h3>
-          {isOrderMenuOpen && (
-            <div className="pl-4">
-              <Link href="/delivered">
-                <span
-                  className={`block ${
-                    activeLink === '/delivered'
-                      ? 'text-button'
-                      : 'hover:text-gray-500'
-                  }`}
-                  onClick={() => handleLinkClick('/delivered')}
-                >
-                  Delivered
-                </span>
-              </Link>
-              <Link href="/processing">
-                <span
-                  className={`block ${
-                    activeLink === '/processing'
-                      ? 'text-button'
-                      : 'hover:text-gray-500'
-                  }`}
-                  onClick={() => handleLinkClick('/processing')}
-                >
-                  Processing
-                </span>
-              </Link>
-              <Link href="/cancelled">
-                <span
-                  className={`block ${
-                    activeLink === '/cancelled'
-                      ? 'text-button'
-                      : 'hover:text-gray-500'
-                  }`}
-                  onClick={() => handleLinkClick('/cancelled')}
-                >
-                  Cancelled
-                </span>
-              </Link>
-            </div>
-          )}
+          <Link href="/orders">
+            <span
+              className={`block font-semibold ${pathname === '/orders' ? 'text-button' : 'hover:text-gray-500'}`}
+            >
+              My Orders
+            </span>
+          </Link>
         </div>
 
         {/* My Reviews */}
         <div className="mt-6">
           <Link href="/reviews">
             <span
-              className={`block font-semibold ${
-                activeLink === '/reviews'
-                  ? 'text-button'
-                  : 'hover:text-gray-500'
-              }`}
-              onClick={() => handleLinkClick('/reviews')}
+              className={`block font-semibold ${pathname === '/reviews' ? 'text-button' : 'hover:text-gray-500'}`}
             >
               My Reviews
             </span>

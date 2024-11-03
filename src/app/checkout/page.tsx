@@ -4,7 +4,11 @@ import Footer from '@/app/components/Footer';
 import Navbar from '@/app/components/NavBar';
 import BillingDetails from './_components/BillingDetails';
 import OrderSummary from './_components/OrderSummary';
-import { useEffect, useState } from 'react';
+// protected page import plue useEffect
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,7 +19,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 import { useCart } from '@/app/contexts/CartContext';
-import { useRouter } from 'next/navigation';
 import CheckoutSummaryModal from './_components/CheckoutSummaryModal';
 import PaystackPop from '@paystack/inline-js';
 
@@ -42,6 +45,19 @@ const CheckOutPage = () => {
   const [loading, setLoading] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const router = useRouter();
+
+  // protexted
+  useEffect(() => {
+    const securePage = async () => {
+      const session = await getSession();
+      if (!session) {
+        router.push('/auth/signin');
+      }
+    };
+
+    securePage();
+  }, [router]);
+
   // const { cart, totalPrice } = useCart();
   const [billingDetails, setBillingDetails] = useState<BillingDetails | null>(
     null

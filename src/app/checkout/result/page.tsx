@@ -1,6 +1,8 @@
 // app/checkout/result/page.tsx
 'use client';
 
+// protected page import plue useEffect
+import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -10,6 +12,18 @@ const PaymentResultPage = () => {
   );
   const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
+
+  // protected
+  useEffect(() => {
+    const securePage = async () => {
+      const session = await getSession();
+      if (!session) {
+        router.push('/auth/signin');
+      }
+    };
+
+    securePage();
+  }, [router]);
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -23,7 +37,7 @@ const PaymentResultPage = () => {
         return;
       }
 
-      try {
+      try {                                                                                                                 
         const response = await fetch('/api/payments/verify-payment', {
           method: 'POST',
           headers: {
@@ -49,8 +63,8 @@ const PaymentResultPage = () => {
     verifyPayment();
   }, []);
 
-  const handleBackToHome = () => {
-    router.push('/');
+  const handleViewOrders = () => {
+    router.push('/orders');
   };
 
   return (
@@ -99,7 +113,7 @@ const PaymentResultPage = () => {
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </div>
-            <h2 className="mb-4 text-2xl font-bold text-red-600">
+            <h2 className="mb-4 text-center text-2xl font-bold text-red-600">
               Payment Failed
             </h2>
             <p>{message}</p>
@@ -107,10 +121,10 @@ const PaymentResultPage = () => {
         )}
 
         <button
-          onClick={handleBackToHome}
-          className="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-white"
+          onClick={handleViewOrders}
+          className="mt-6 rounded-lg bg-button px-4 py-2 text-white hover:bg-blue-600"
         >
-          Back to Home
+          View orders
         </button>
       </div>
     </div>

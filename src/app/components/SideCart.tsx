@@ -29,6 +29,11 @@ const SideCart: FC<Props> = ({ visible, onRequestClose }) => {
       </div>
       <div className="h-0.5 w-full bg-gray-200" />
 
+      {cart.length === 0 && (
+        <p className="py-12 text-center text-sm italic">
+          Your cart is empty...
+        </p>
+      )}
       {/* Cart Items */}
       <div className="space-y-2 p-4">
         {cart.map((item) => (

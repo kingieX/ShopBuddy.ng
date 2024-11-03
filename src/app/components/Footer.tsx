@@ -17,7 +17,7 @@ const Footer = () => {
               alt="Google"
               width={1500}
               height={1500}
-              className="mr-2 w-2/5 lg:w-1/2"
+              className="mr-2 w-1/2 lg:w-full"
             />
             {/* <h3 className="text-lg font-semibold">ShopBuddy</h3> */}
           </div>

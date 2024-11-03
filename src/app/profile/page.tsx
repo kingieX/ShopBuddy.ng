@@ -2,7 +2,7 @@
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { useSession } from 'next-auth/react';
-import SideMenu from './_components/SideMenu';
+import SideMenu from '../components/SideMenu';
 import {
   Breadcrumb,
   BreadcrumbItem,
