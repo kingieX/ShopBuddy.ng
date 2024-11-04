@@ -94,21 +94,27 @@ export async function POST(req: Request) {
       key.startsWith('galleryImage')
     );
 
-    await Promise.all(
-      galleryImageKeys.map(async (key) => {
-        const galleryImageFile = formData.get(key) as File;
-        const galleryImageBuffer = Buffer.from(
-          await galleryImageFile.arrayBuffer()
-        );
-        const galleryImageUpload = await uploadImage(
-          galleryImageBuffer,
-          'products/gallery_images'
-        ).catch((err) => {
-          throw new Error('Failed to upload gallery image');
-        });
-        galleryImages.push(galleryImageUpload.secure_url);
-      })
-    );
+    try {
+      await Promise.all(
+        galleryImageKeys.map(async (key) => {
+          const galleryImageFile = formData.get(key) as File;
+          const galleryImageBuffer = Buffer.from(
+            await galleryImageFile.arrayBuffer()
+          );
+          const galleryImageUpload = await uploadImage(
+            galleryImageBuffer,
+            'products/gallery_images'
+          );
+          galleryImages.push(galleryImageUpload.secure_url);
+        })
+      );
+    } catch (err) {
+      console.error('Error uploading gallery images:', err);
+      return NextResponse.json(
+        { error: 'Failed to upload one or more gallery images' },
+        { status: 500 }
+      );
+    }
 
     // Save the product data using Prisma
     const product = await prisma.product.create({
