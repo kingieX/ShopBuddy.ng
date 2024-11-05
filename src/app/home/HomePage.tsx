@@ -1,6 +1,7 @@
 import ExtrasSection from '../about/_components/Extras';
 import AllProductSection from './_components/AllProductSection';
 import CategoryProductSection from './_components/CategoryProductSection';
+import Hero from './_components/Hero';
 import MenuBar from './_components/MenuBar';
 import PromotionSlider from './_components/PromotionSlider';
 import PromotionStatic from './_components/PromotionStatic';
@@ -13,15 +14,18 @@ export default function HomePage() {
           {/* sidebar */}
           <MenuBar />
           {/* <div className="h-56 w-full bg-black text-white">promotion</div> */}
-          <div className="mt-8 w-full lg:w-3/4">
-            <PromotionSlider />
+          <div className="mt- w-full lg:w-3/4">
+            <Hero />
           </div>
+        </div>
+        <div className="px-4 lg:px-20 lg:py-8">
+          <PromotionSlider />
         </div>
         <div className="px-4 py-8 lg:px-20">
           <CategoryProductSection />
         </div>
 
-        <div className="w-full px-4 py-8 lg:px-20">
+        <div className="w-full px-4 lg:px-20 lg:py-8">
           <PromotionStatic />
         </div>
 

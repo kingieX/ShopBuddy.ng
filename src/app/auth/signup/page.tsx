@@ -16,11 +16,56 @@ import { useRouter } from 'next/navigation';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import toast from 'react-hot-toast';
+import { signIn, useSession } from 'next-auth/react'; // Import signIn from NextAuth.js
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [backendError, setBackendError] = useState('');
+  const { data: session } = useSession(); // Get session data
+  const [loadingGoogle, setLoadingGoogle] = useState(false); // Loading state for Google login button
+
+  // Handle Google login
+  const handleGoogleSignIn = async () => {
+    setLoadingGoogle(true);
+    await signIn('google'); // Trigger Google sign-in
+    setLoadingGoogle(false); // Reset loading state (you may want to handle loading state differently based on sign-in completion)
+  };
+
+  // If the user is authenticated with Google, sign them up
+  if (session && session.user?.email) {
+    const handleSignUpWithGoogle = async () => {
+      const { firstName, lastName, email } = session.user;
+
+      try {
+        const response = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            phoneNumber: '',
+            password: '',
+          }),
+        });
+
+        if (response.ok) {
+          toast.success('Signed up successfully');
+          router.push('/'); // Redirect after successful signup
+          console.log('response', response);
+        } else {
+          throw new Error('Failed to sign up');
+        }
+      } catch (error) {
+        // toast.error('Error signing up with Google');
+      }
+    };
+
+    handleSignUpWithGoogle(); // Call the sign-up function
+  }
 
   const router = useRouter();
 
@@ -102,14 +147,14 @@ const SignUp = () => {
       <div className="w-full lg:grid lg:grid-cols-2">
         <div className="bg-muted hidden lg:block">
           <Image
-            src="/assets/signup.png"
+            src="/assets/signup.jpg"
             alt="Image"
-            width={500}
-            height={500}
+            width={1000}
+            height={1000}
             className="object-cove h-full w-full dark:brightness-[0.2] dark:grayscale"
           />
         </div>
-        <div className="flex items-center justify-center py-24 lg:py-12">
+        <div className="flex items-center justify-center py-24">
           <form
             onSubmit={formik.handleSubmit}
             className="mx-auto grid w-[350px] gap-6"
@@ -126,6 +171,34 @@ const SignUp = () => {
                 {backendError}
               </div>
             )}
+
+            {/* Google Login Button with Logo */}
+            <Button
+              variant="outline"
+              className="flex w-full items-center justify-center hover:bg-gray-100"
+              onClick={handleGoogleSignIn}
+              disabled={loadingGoogle}
+            >
+              <Image
+                src="/assets/google-icon.svg"
+                alt="Google"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              {loadingGoogle ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                'Sign in with Google'
+              )}
+            </Button>
+
+            {/* Divider */}
+            <div className="flex items-center justify-center">
+              <div className="h-px w-full bg-gray-300"></div>
+              <div className="text-muted-foreground mx-4">Or</div>
+              <div className="h-px w-full bg-gray-300"></div>
+            </div>
 
             <div className="grid gap-4">
               {/* First and Last Name */}
@@ -251,6 +324,7 @@ const SignUp = () => {
                 )}
               </Button>
             </div>
+
             <div className="text-center text-sm">
               Already have an account?{' '}
               <Link

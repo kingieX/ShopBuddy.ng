@@ -1,11 +1,18 @@
-// components/Footer.tsx
+'use client';
 import { Input } from '@/components/ui/input'; // Optional, if you want to use Shadcn components
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { IoSendSharp } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Footer = () => {
+  const navigate = useRouter();
+
+  const handleLogin = () => {
+    navigate.push('/auth/signin');
+  };
   return (
     <footer className="bg-black py-10 text-white">
       <div className="container mx-auto grid grid-cols-1 gap-8 px-8 sm:grid-cols-2 lg:grid-cols-4 lg:px-4">
@@ -38,8 +45,11 @@ const Footer = () => {
         {/* Middle Section - Support */}
         <div className="lg:mt-12">
           <h3 className="text-lg font-semibold">Support</h3>
-          <p className="mt-4">11, Abakaliki Ebonyi State, Nigeria</p>
-          <p>shopbuddy@gmail.com</p>
+          <p className="mb-2 mt-4">
+            18, Lawrence Onor Street, Off Olisaemeka Stree by Great mind
+            academy, Abakaliki Ebonyi State, Nigeria
+          </p>
+          <p className="mb-2">shopbuddy106@gmail.com | support@shopbuddy.ng</p>
           <p>+234-88888-9999</p>
         </div>
 
@@ -48,29 +58,29 @@ const Footer = () => {
           <h3 className="text-lg font-semibold">Account</h3>
           <ul className="mt-4 space-y-2">
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="/profile" className="hover:underline">
                 My Account
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="/auth/signin" className="hover:underline">
                 Login / Register
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="/cart" className="hover:underline">
                 Cart
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="/wishlist" className="hover:underline">
                 Wishlist
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="/products" className="hover:underline">
                 Shop
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -80,24 +90,24 @@ const Footer = () => {
           <h3 className="text-lg font-semibold">Quick Link</h3>
           <ul className="mt-4 space-y-2">
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Terms Of Use
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 FAQ
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="/contact" className="hover:underline">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -124,10 +134,18 @@ const Footer = () => {
 
         {/* Social Media Icons */}
         <div className="flex space-x-4">
-          <FaFacebook className="h-6 w-6" />
-          <FaTwitter className="h-6 w-6" />
-          <FaInstagram className="h-6 w-6" />
-          <FaLinkedin className="h-6 w-6" />
+          <Link href="#">
+            <FaFacebook className="h-6 w-6 hover:text-button" />
+          </Link>
+          <Link href="#">
+            <FaTwitter className="h-6 w-6 hover:text-button" />
+          </Link>
+          <Link href="#">
+            <FaInstagram className="h-6 w-6 hover:text-button" />
+          </Link>
+          <Link href="#">
+            <FaLinkedin className="h-6 w-6 hover:text-button" />
+          </Link>
         </div>
       </div>
 

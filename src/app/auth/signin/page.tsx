@@ -15,7 +15,8 @@ import toast from 'react-hot-toast';
 const SignIn = () => {
   // State management for show/hide password and loading state
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadingLogin, setLoadingLogin] = useState(false); // Loading state for login button
+  const [loadingGoogle, setLoadingGoogle] = useState(false); // Loading state for Google login button
   const [email, setEmail] = useState(''); // State for email input
   const [password, setPassword] = useState(''); // State for password input
   const [error, setError] = useState(''); // State for error messages
@@ -36,7 +37,7 @@ const SignIn = () => {
   // Handle form submission (login button)
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission
-    setLoading(true);
+    setLoadingLogin(true);
     setError('');
 
     const res = await signIn('credentials', {
@@ -49,18 +50,19 @@ const SignIn = () => {
       setError(res.error); // Set error message if login fails
     } else {
       router.push('/'); // Redirect to home if login is successful
-      toast.success('successfully signed in', {
+      toast.success('Successfully signed in', {
         duration: 4000, // Toast shows for 4 seconds
       });
     }
 
-    setLoading(false); // Reset loading state
+    setLoadingLogin(false); // Reset loading state
   };
 
   // Handle Google login
-  const handleGoogleSignIn = () => {
-    setLoading(true);
-    signIn('google'); // Trigger Google sign-in
+  const handleGoogleSignIn = async () => {
+    setLoadingGoogle(true);
+    await signIn('google'); // Trigger Google sign-in
+    setLoadingGoogle(false); // Reset loading state (you may want to handle loading state differently based on sign-in completion)
   };
 
   return (
@@ -99,8 +101,8 @@ const SignIn = () => {
                 type="email"
                 placeholder="m@example.com"
                 required
-                value={email} // Bind email state
-                onChange={(e) => setEmail(e.target.value)} // Update email state on input change
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -112,10 +114,9 @@ const SignIn = () => {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  value={password} // Bind password state
-                  onChange={(e) => setPassword(e.target.value)} // Update password state on input change
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
-                {/* Eye Icon */}
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
@@ -141,9 +142,9 @@ const SignIn = () => {
               type="submit"
               className="w-full bg-button text-white hover:bg-blue-500"
               onClick={handleLogin}
-              disabled={loading}
+              disabled={loadingLogin || loadingGoogle} // Disable if either button is loading
             >
-              {loading ? (
+              {loadingLogin ? (
                 <div className="flex items-center justify-center">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Logging in...
@@ -164,16 +165,17 @@ const SignIn = () => {
             <Button
               variant="outline"
               className="flex w-full items-center justify-center hover:bg-gray-100"
-              onClick={handleGoogleSignIn} // Handle Google sign-in
+              onClick={handleGoogleSignIn}
+              disabled={loadingGoogle || loadingLogin} // Disable if either button is loading
             >
               <Image
-                src="/assets/google-icon.svg" // Add the path to your Google logo
+                src="/assets/google-icon.svg"
                 alt="Google"
                 width={20}
                 height={20}
                 className="mr-2"
               />
-              {loading ? (
+              {loadingGoogle ? (
                 <Loader2 className="animate-spin" />
               ) : (
                 'Sign in with Google'

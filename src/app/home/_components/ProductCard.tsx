@@ -140,7 +140,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           Add to cart
         </button> */}
         {/* Add to cart button */}
-        <AddToCartButton productId={product.id} />
+        <AddToCartButton
+          productId={product.id}
+          disabled={product.status !== 'on_sale'}
+        />
         {product.salePrice && (
           <div className="absolute left-2 top-2 rounded bg-button px-2 py-1 text-xs font-bold text-white">
             -{discountPercentage}%

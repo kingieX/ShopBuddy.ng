@@ -10,6 +10,8 @@ declare module 'next-auth' {
     user: {
       id: string; // Extend the session user type with an id field
       name?: string | null;
+      firstName?: string | null;
+      lastName?: string | null;
       email?: string | null;
       image?: string | null;
     };
@@ -62,6 +64,36 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      async profile(profile) {
+        // Here we handle the user profile from Google
+        const existingUser = await prisma.user.findUnique({
+          where: { email: profile.email },
+        });
+
+        if (!existingUser) {
+          // If no user is found, create a new one
+          const newUser = await prisma.user.create({
+            data: {
+              email: profile.email,
+              firstName: profile.given_name,
+              lastName: profile.family_name,
+              password: '',
+            },
+          });
+          return {
+            id: newUser.id.toString(),
+            email: newUser.email,
+            name: newUser.firstName,
+          };
+        }
+
+        // If user exists, return the existing user info
+        return {
+          id: existingUser.id.toString(),
+          email: existingUser.email,
+          name: existingUser.firstName,
+        };
+      },
     }),
   ],
   session: {
@@ -75,12 +107,22 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+
+        // If a user is present, extract the name and email
+        // const nameParts = user.name?.split(' ') || [];
+        // token.firstName = nameParts[0]; // Take the first part as firstName
+        // token.lastName = nameParts.slice(1).join(' ');
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token) {
         session.user.id = token.id; // Add id to session user
+        session.user.firstName = token.firstName as string | null | undefined;
+        session.user.lastName = token.lastName as string | null | undefined;
+        session.user.email = token.email;
       }
       return session;
     },

@@ -10,6 +10,7 @@ import { Pagination } from 'swiper/modules';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/autoplay';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface Promotion {
   id: number;
@@ -25,6 +26,12 @@ const PromotionStatic: React.FC = () => {
   const [countdownMap, setCountdownMap] = useState<{ [key: number]: string }>(
     {}
   );
+
+  const navigate = useRouter();
+
+  const handleShopNow = () => {
+    navigate.push('/products');
+  };
 
   // Fetch promotions
   useEffect(() => {
@@ -106,7 +113,7 @@ const PromotionStatic: React.FC = () => {
         >
           {promotions.map((promotion, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-row items-center justify-between rounded-lg p-4 lg:px-6 lg:py-12">
+              <div className="flex flex-row items-center justify-between rounded-lg px-4 py-24 lg:px-6 lg:py-28">
                 <div className="w-full text-white">
                   <h3 className="text-xl font-bold lg:mb-2 lg:text-4xl">
                     {promotion.title}
@@ -121,13 +128,13 @@ const PromotionStatic: React.FC = () => {
                     Shop Now →
                   </button>
                 </div>
-                <div className="w-2/5 lg:w-full">
+                <div className="w-3/5 lg:w-full">
                   <Image
                     src={promotion.imageUrl}
                     alt={promotion.title}
                     width={1500}
                     height={1500}
-                    className="w-2/5 rounded-lg object-contain"
+                    className="w-3/5 rounded-lg object-contain"
                   />
                 </div>
               </div>
@@ -148,7 +155,10 @@ const PromotionStatic: React.FC = () => {
               <p className="mb-4 text-sm font-semibold lg:text-lg">
                 Ends in: {countdownMap[promotions[0].id] || 'Loading...'}
               </p>
-              <button className="mt-2 rounded bg-white px-4 py-2 text-sm font-bold text-black hover:bg-gray-200">
+              <button
+                onClick={handleShopNow}
+                className="mt-2 rounded bg-white px-4 py-2 text-sm font-bold text-black hover:bg-gray-200"
+              >
                 Shop Now →
               </button>
             </div>

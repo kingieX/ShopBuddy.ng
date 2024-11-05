@@ -88,15 +88,15 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
   return (
     <nav className="fixed z-20 w-full border-b bg-white shadow-md">
       <div className="lg:px- mx-auto max-w-7xl px-4 sm:px-8">
-        <div className="relative flex h-16 justify-between">
+        <div className="relative flex h-16 items-center justify-between">
           {/* left */}
-          <div className="flex flex-shrink-0 items-center">
+          <div className="py-4">
             <Image
               src="/assets/logo.png"
               alt="Favicon"
               width={1000}
               height={1000}
-              className="w-48 lg:w-64"
+              className="w-40 lg:w-64"
             />
             {/* <h1 className="text-xl font-bold text-button">ShopBuddy</h1> */}
           </div>

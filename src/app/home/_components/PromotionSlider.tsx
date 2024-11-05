@@ -10,6 +10,7 @@ import { Pagination } from 'swiper/modules';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/autoplay';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface Promotion {
   id: number;
@@ -25,6 +26,11 @@ const PromotionSlider: React.FC = () => {
   const [countdownMap, setCountdownMap] = useState<{ [key: number]: string }>(
     {}
   );
+  const navigate = useRouter();
+
+  const handleShopNow = () => {
+    navigate.push('/products');
+  };
 
   // Fetch promotions
   useEffect(() => {
@@ -86,7 +92,7 @@ const PromotionSlider: React.FC = () => {
   };
 
   return (
-    <div className="promotion-slider">
+    <div className="">
       {/* Render Swiper only if there are 2 or more promotions */}
       {promotions.length > 1 ? (
         <Swiper
@@ -106,8 +112,8 @@ const PromotionSlider: React.FC = () => {
           {promotions.map((promotion, index) => (
             <SwiperSlide key={index}>
               <div className="flex flex-row items-center justify-between rounded-lg p-4 lg:p-6">
-                <div className="w-full text-white lg:w-1/2">
-                  <h3 className="text-xl font-bold lg:mb-2 lg:text-4xl">
+                <div className="w-full py-8 text-white lg:w-1/2">
+                  <h3 className="text-2xl font-bold lg:mb-2 lg:text-4xl">
                     {promotion.title}
                   </h3>
                   <p className="mb-2 text-sm lg:mb-4 lg:text-xl">
@@ -116,11 +122,14 @@ const PromotionSlider: React.FC = () => {
                   <p className="mb-4 text-sm font-semibold lg:text-lg">
                     Ends in: {countdownMap[promotion.id] || 'Loading...'}
                   </p>
-                  <button className="mt-2 rounded bg-white px-4 py-2 text-sm font-bold text-black hover:bg-gray-200">
+                  <button
+                    onClick={handleShopNow}
+                    className="mt-2 rounded bg-white px-4 py-2 text-sm font-bold text-black hover:bg-gray-200"
+                  >
                     Shop Now →
                   </button>
                 </div>
-                <div className="w-2/5 lg:w-1/2">
+                <div className="w-3/5 lg:w-1/2">
                   <Image
                     src={promotion.imageUrl}
                     alt={promotion.title}

@@ -88,9 +88,9 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
       </header>
 
       {/* Product details */}
-      <div className="mx-0 flex max-w-sm rounded-md bg-white px-4 py-4 shadow-md lg:mx-auto lg:max-w-6xl lg:px-8 lg:py-8">
+      <div className="mx-0 flex rounded-md bg-white px-4 py-4 shadow-md lg:mx-auto lg:max-w-6xl lg:px-8 lg:py-8">
         <div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:space-x-8">
-          <div className="w-full max-w-sm lg:mb-0 lg:w-1/2">
+          <div className="w-full lg:mb-0 lg:w-1/2 lg:max-w-sm">
             {/* Main Image */}
             <div className="mb-4 overflow-hidden rounded-lg border bg-[#F5F5F5] p-4">
               <Image
@@ -187,7 +187,10 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
               <ProductActionWithQuantitySelector productId={product.id} />
               {/* Always render AddToCartButton */}
               <div className="relative w-full">
-                <ProductDetailButton productId={product.id} />
+                <ProductDetailButton
+                  productId={product.id}
+                  disabled={product.status !== 'on_sale'}
+                />
               </div>
             </div>
 

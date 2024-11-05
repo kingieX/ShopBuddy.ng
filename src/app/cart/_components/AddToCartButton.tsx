@@ -4,9 +4,13 @@ import toast from 'react-hot-toast';
 
 interface AddToCartButtonProps {
   productId: string;
+  disabled?: boolean; // Optional prop to disable the button initially (default: false)
 }
 
-const AddToCartButton: React.FC<AddToCartButtonProps> = ({ productId }) => {
+const AddToCartButton: React.FC<AddToCartButtonProps> = ({
+  productId,
+  disabled,
+}) => {
   const { addToCart } = useCart(); // Get the addToCart function from context
   const [isAdding, setIsAdding] = useState(false); // State to manage button loading
 
@@ -26,9 +30,9 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ productId }) => {
 
   return (
     <button
-      className="absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity hover:bg-black/80 lg:opacity-0 lg:group-hover:opacity-100"
+      className={`absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity lg:opacity-0 lg:group-hover:opacity-100 ${disabled ? 'cursor-not-allowed bg-[#7c7979]' : 'hover:bg-black/80'}`}
       onClick={handleAddToCart} // Trigger cart addition when clicked
-      disabled={isAdding} // Disable the button while the product is being added to cart
+      disabled={isAdding || disabled} // Disable the button while the product is being added to cart
     >
       {isAdding ? 'Adding...' : 'Add to cart'}
     </button>
