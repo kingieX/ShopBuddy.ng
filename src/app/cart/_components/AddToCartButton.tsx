@@ -30,7 +30,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   return (
     <button
-      className={`absolute bottom-0 left-0 w-full rounded-b-md bg-black py-2 text-white transition-opacity lg:opacity-0 lg:group-hover:opacity-100 ${disabled ? 'cursor-not-allowed bg-[#7c7979]' : 'hover:bg-black/80'}`}
+      className={`absolute bottom-0 left-0 w-full rounded-b-md py-2 text-white transition-opacity lg:opacity-0 lg:group-hover:opacity-100 ${disabled ? 'cursor-not-allowed bg-[#7c7979]' : 'bg-black hover:bg-black/80'}`}
       onClick={handleAddToCart} // Trigger cart addition when clicked
       disabled={isAdding || disabled} // Disable the button while the product is being added to cart
     >

@@ -66,7 +66,7 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       async profile(profile) {
         // Here we handle the user profile from Google
-        const existingUser = await prisma.user.findUnique({
+        let existingUser = await prisma.user.findUnique({
           where: { email: profile.email },
         });
 
@@ -80,14 +80,15 @@ export const authOptions: AuthOptions = {
               password: '',
             },
           });
-          return {
-            id: newUser.id.toString(),
-            email: newUser.email,
-            name: newUser.firstName,
-          };
+          // return {
+          //   id: newUser.id.toString(),
+          //   email: newUser.email,
+          //   name: newUser.firstName,
+          // };
+          existingUser = newUser;
         }
 
-        // If user exists, return the existing user info
+        // Return the user object with the correct user_id (from the database)
         return {
           id: existingUser.id.toString(),
           email: existingUser.email,

@@ -8,6 +8,9 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession({ req, ...authOptions });
 
+    // Debugging: Check the session object
+    console.log('Session:', session);
+
     if (!session?.user?.id) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
