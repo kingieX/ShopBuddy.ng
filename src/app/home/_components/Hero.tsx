@@ -33,14 +33,14 @@ const Hero: React.FC = () => {
           {!session ? ( // Check if the session exists
             <button
               onClick={handleLogin}
-              className="transform bg-button px-12 py-2 text-white transition-transform hover:scale-105"
+              className="transform bg-button px-4 py-2 text-white transition-transform hover:scale-105 lg:px-12"
             >
               Sign In
             </button>
           ) : null}
           <button
             onClick={handleShopNow}
-            className="transform rounded-lg border-2 border-white bg-transparent px-6 py-3 text-white shadow-lg transition-transform hover:scale-105"
+            className="transform rounded-lg border-2 border-white bg-transparent px-4 py-2 text-white shadow-lg transition-transform hover:scale-105 lg:px-6 lg:py-3"
           >
             Shop Now
           </button>

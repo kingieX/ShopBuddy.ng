@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <>
       <div className="min-h-screen pt-14 sm:py-16">
-        <div className="flex w-full items-start px-4 lg:justify-between lg:gap-12 lg:px-20">
+        <div className="flex w-full items-start px-0 lg:justify-between lg:gap-12 lg:px-20">
           {/* sidebar */}
           <MenuBar />
           {/* <div className="h-56 w-full bg-black text-white">promotion</div> */}
@@ -18,14 +18,14 @@ export default function HomePage() {
             <Hero />
           </div>
         </div>
-        <div className="px-4 lg:px-20 lg:py-8">
+        <div className="px-0 lg:px-20 lg:py-8">
           <PromotionSlider />
         </div>
         <div className="px-4 py-8 lg:px-20">
           <CategoryProductSection />
         </div>
 
-        <div className="w-full px-4 lg:px-20 lg:py-8">
+        <div className="w-full px-0 lg:px-20 lg:py-8">
           <PromotionStatic />
         </div>
 
