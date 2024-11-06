@@ -3,3 +3,5 @@ DATABASE_URL="your database URL"
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
+nameserver1=ns1.host-ww.net
+nameserver2=ns2.host-ww.net

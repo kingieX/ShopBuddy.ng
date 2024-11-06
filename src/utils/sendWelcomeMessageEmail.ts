@@ -9,6 +9,8 @@ export async function sendWelcomeMessageEmail(email: string) {
     },
   });
 
+  const Logo = process.env.EMAIL_LOGO;
+
   const mailOptions = {
     from: '"ShopBuddy" <no-reply@shopbuddy.ng>',
     to: email, // The user's email address
@@ -18,7 +20,7 @@ export async function sendWelcomeMessageEmail(email: string) {
         <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
           <tr>
             <td style="padding: 20px; text-align: center; background-color: #333; color: #ffffff;">
-              <img src="https://res.cloudinary.com/dngy8q2fj/image/upload/t_Profile/v1728331840/favicon_za2jok.svg" alt="ShopBuddy" style="width: 80px;">
+              <img src=${Logo} alt="ShopBuddy" style="width: 80px;">
               <h1 style="margin: 0; font-size: 30px;">ShopBuddy</h1>
             </td>
           </tr>

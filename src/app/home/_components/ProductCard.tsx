@@ -177,15 +177,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="mt-1 flex items-baseline space-x-2">
           {product.salePrice ? (
             <>
-              <span className="text-gray-900">
+              <span className="text-xs text-gray-900 lg:text-sm">
                 <CurrencyFormatter amount={product.salePrice} />
               </span>
-              <span className="text-sm text-gray-500 line-through">
+              <span className="text-xs text-gray-500 line-through lg:text-sm">
                 <CurrencyFormatter amount={product.regularPrice} />
               </span>
             </>
           ) : (
-            <span className="text-gray-900">
+            <span className="text-xs text-gray-900 lg:text-sm">
               <CurrencyFormatter amount={product.regularPrice} />
             </span>
           )}
