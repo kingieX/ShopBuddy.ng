@@ -11,7 +11,9 @@ const ErrorPage: React.FC = () => {
   const handleReload = () => {
     // Reload the page to retry the connection check
     router.push('/');
-    // window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   return (
