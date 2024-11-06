@@ -35,6 +35,7 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
     state: '',
     city: '',
   });
+  const [isAddressFocused, setIsAddressFocused] = useState<boolean>(false);
 
   useEffect(() => {
     setStates(mockStatesData); // Load mock data, replace with actual fetching if needed
@@ -148,9 +149,18 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
             id="address"
             value={formValues.address}
             onChange={(e) => handleChange('address', e.target.value)}
+            onFocus={() => setIsAddressFocused(true)} // When input is focused
+            onBlur={() => setIsAddressFocused(false)} // When input loses focus
             required
             className="bg-gray-100 px-4 py-2 outline-button"
           />
+          {/* Conditionally render message when address input is focused */}
+          {isAddressFocused && (
+            <p className="mt-2 text-xs text-green-500 lg:text-sm">
+              Please add a popular bus stop near your address for easier
+              delivery.
+            </p>
+          )}
         </div>
 
         <div className="flex w-full justify-between gap-4">
@@ -200,6 +210,22 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
                 </option>
               ))}
             </select>
+
+            {/* Conditionally render message based on selected city */}
+            {selectedCity && selectedCity.name === 'Abakaliki' && (
+              <p className="mt-2 text-xs text-green-500 lg:text-sm">
+                Delivery within Abakaliki takes 3-4 hours after successful order
+                and above 24 hours outside of Abakaliki.
+              </p>
+            )}
+            {selectedCity &&
+              selectedCity.name !== 'Abakaliki' &&
+              selectedCity.name !== '' && (
+                <p className="mt-2 text-xs text-green-500 lg:text-sm">
+                  Delivery times may vary based on location but it takes above
+                  24 hours after successful order outside Abakaliki.
+                </p>
+              )}
           </div>
         </div>
         {/* checked to save data for next time */}

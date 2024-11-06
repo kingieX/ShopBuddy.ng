@@ -95,6 +95,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Create initial payment record
+    await prisma.payment.create({
+      data: {
+        orderId: order.id,
+        transactionRef: '',
+        amount: grandTotal,
+        status: 'PENDING',
+      },
+    });
+
     // Clear the cart after checkout
     await prisma.cart.update({
       where: { userId },

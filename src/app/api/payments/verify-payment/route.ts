@@ -36,6 +36,15 @@ export async function POST(request: NextRequest) {
     const verificationData = response.data.data;
 
     if (verificationData.status === 'success') {
+      // Update Payment and Order records
+      await prisma.payment.update({
+        where: { orderId: orderId },
+        data: {
+          transactionRef: verificationData.reference,
+          status: 'COMPLETED', // Update payment status
+        },
+      });
+
       // Payment successful
       await prisma.order.update({
         where: { id: orderId },
@@ -79,6 +88,15 @@ export async function POST(request: NextRequest) {
         orderId: orderId,
       });
     } else {
+      // Update Payment and Order records
+      await prisma.payment.update({
+        where: { orderId: orderId },
+        data: {
+          transactionRef: verificationData.reference,
+          status: 'FAILED', // Update payment status
+        },
+      });
+
       return NextResponse.json(
         { error: 'Payment verification failed' },
         { status: 400 }

@@ -81,7 +81,7 @@ const SideMenu = () => {
         <div className="mt-6">
           <Link href="/orders">
             <span
-              className={`block font-semibold ${pathname === '/orders' ? 'text-button' : 'hover:text-gray-500'}`}
+              className={`block font-semibold ${pathname?.startsWith('/orders') ? 'text-button' : 'hover:text-gray-500'}`}
             >
               My Orders
             </span>

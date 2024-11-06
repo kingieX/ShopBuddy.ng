@@ -117,6 +117,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ deliveryFee = 0 }) => {
             placeholder="Coupon code"
             className="w-1/2 border border-gray-800 px-4 py-2 outline-button"
           />
+
           <button className="border-2 bg-button px-4 py-2 text-white hover:bg-blue-600">
             Apply coupon
           </button>

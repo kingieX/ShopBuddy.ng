@@ -161,7 +161,7 @@ const CheckOutPage = () => {
         </header>
 
         {/* checkout */}
-        <div className="flex min-h-screen flex-col px-8 lg:flex-row lg:space-x-20">
+        <div className="flex min-h-screen flex-col lg:flex-row lg:space-x-20 lg:px-8">
           <div className="flex-1">
             <BillingDetails
               onDeliveryFeeChange={setDeliveryFee}
@@ -170,6 +170,14 @@ const CheckOutPage = () => {
           </div>
           <div className="mt-8 flex-1 lg:mt-0">
             <OrderSummary deliveryFee={deliveryFee} />
+
+            {/* deleivery info */}
+            <p className="mt-2 text-center text-xs text-gray-500 lg:text-sm">
+              <span className="font-semibold">Note: </span>
+              Delivery within Abakaliki takes 3-4 hours after successful order
+              and above 24 hours outside of Abakaliki.
+            </p>
+
             <button
               onClick={handlePlaceOrder}
               className="mt-4 w-full border-2 bg-button py-2 text-white hover:bg-blue-600"
