@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 import Sidebar from './Sidebar'; // Assuming Sidebar component exists
 import Image from 'next/image';
-import Logo from '../../assets/favicon.svg';
+import Logo from '../../assets/logo.png';
 import { Button } from '@/components/ui/button';
 import { CircleUser } from 'lucide-react';
 import Link from 'next/link';
@@ -56,9 +56,14 @@ const TopBar = () => {
               className="cursor-pointer text-2xl"
               onClick={toggleSidebar}
             />
-            <div className="flex items-center justify-center space-x-1">
-              <Image src={Logo} alt="Logo" width={32} height={32} />
-              <h1 className="text-xl font-bold">ShopBuddy</h1>
+            <div className="flex w-full items-center justify-center px-4 py-4 lg:justify-start">
+              <Image
+                src={Logo}
+                alt="Logo"
+                width={1500}
+                height={1500}
+                className="lg:w-64 w-48"
+              />
             </div>
           </div>
         </div>

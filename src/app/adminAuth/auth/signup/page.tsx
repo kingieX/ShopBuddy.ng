@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-import Logo from '../../../assets/favicon.svg'; // Adjust the path as necessary
+import Logo from '../../../assets/logo.png'; // Adjust the path as necessary
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -74,10 +74,15 @@ const SignUp = () => {
   });
 
   return (
-    <div className="flex h-screen flex-col bg-gray-100">
-      <div className="hidden items-center justify-start space-x-1 px-4 py-4 lg:flex">
-        <Image src={Logo} alt="Logo" width={50} height={50} />
-        <h1 className="text-xl font-bold">ShopBuddy</h1>
+    <div className="flex h-screen w-full flex-col bg-gray-100">
+      <div className="flex w-full items-center justify-center px-4 py-4 lg:justify-start">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={1500}
+          height={1500}
+          className="w-64"
+        />
       </div>
       <div className="flex h-screen items-center justify-center bg-gray-100">
         <div className="max-w-sm rounded-lg bg-white p-6 shadow-md lg:max-w-lg">

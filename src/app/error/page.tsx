@@ -9,15 +9,23 @@ const ErrorPage: React.FC = () => {
   const router = useRouter();
 
   const handleReload = () => {
-    // Reload the page to retry the connection check
-    router.push('/');
+    // Check if there's a previous page in the history stack
+    if (window.history.length > 1) {
+      // If there is a history, go back
+      router.back();
+    } else {
+      // If no history, navigate to home page
+      router.push('/');
+    }
+
+    // Reload the page after navigation
     setTimeout(() => {
       window.location.reload();
-    }, 500);
+    }, 1000);
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-8 py-8 text-center">
       {/* Animate the image with framer-motion */}
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
@@ -30,7 +38,7 @@ const ErrorPage: React.FC = () => {
           alt="Error"
           width={1000}
           height={1000}
-          className="w-1/2"
+          className="w-full lg:w-1/2"
         />
       </motion.div>
 

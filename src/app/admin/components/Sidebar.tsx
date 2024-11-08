@@ -11,7 +11,7 @@ import { MdOutlineSettingsSuggest } from 'react-icons/md';
 import { CgList } from 'react-icons/cg';
 import { Component, CircleGauge } from 'lucide-react';
 
-import Logo from '../../assets/favicon.svg';
+import Logo from '../../assets/logo.png';
 import Image from 'next/image';
 
 const Sidebar = () => {
@@ -58,10 +58,15 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="h-screen border-r border-gray-300 bg-white lg:w-64">
-      <div className="hidden items-center justify-start space-x-1 px-4 py-4 lg:flex">
-        <Image src={Logo} alt="Logo" width={50} height={50} />
-        <h1 className="text-2xl font-bold">ShopBuddy</h1>
+    <div className="z-50 h-screen border-r border-gray-300 bg-white lg:w-64">
+      <div className="hidden w-full items-center justify-center px-4 py-4 lg:flex lg:justify-start">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={1500}
+          height={1500}
+          className="w-64"
+        />
       </div>
       <ul className="mt-4 space-y-2">
         {menuItems.map((item, index) => (

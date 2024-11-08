@@ -21,12 +21,14 @@ const ErrorCheckWrapper: React.FC<ErrorCheckWrapperProps> = ({ children }) => {
         } else {
           setIsConnected(false);
           setErrorMessage(data.message);
+          router.push('/error');
         }
       } catch (error) {
         setIsConnected(false);
         setErrorMessage(
           'An error occurred while checking the database connection.'
         );
+        router.push('/error');
       }
     };
 

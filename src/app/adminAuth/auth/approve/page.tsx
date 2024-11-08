@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Logo from '../../../assets/favicon.svg';
+import Logo from '../../../assets/logo.png';
 
 export default function ApproveAdmin() {
   const [adminId, setAdminId] = useState<string | null>(null); // Initialize as null
@@ -30,10 +30,15 @@ export default function ApproveAdmin() {
   }, [adminId]); // Only execute when adminId is set
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <div className="hidden items-center justify-start space-x-1 px-4 py-4 lg:flex">
-        <Image src={Logo} alt="Logo" width={50} height={50} />
-        <h1 className="text-xl font-bold">ShopBuddy</h1>
+    <div className="flex h-screen w-full flex-col bg-gray-100">
+      <div className="flex w-full items-center justify-center px-4 py-4 lg:justify-start">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={1500}
+          height={1500}
+          className="w-64"
+        />
       </div>
       <div className="rounded bg-white p-6 shadow-md">
         <h2 className="text-xl font-bold">{message || 'Processing...'}</h2>
