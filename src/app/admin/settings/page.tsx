@@ -186,7 +186,7 @@ const Settings = () => {
             </Card>
 
             {/* Security Settings */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Security Settings</CardTitle>
                 <CardDescription>Enhance your account security</CardDescription>
@@ -209,7 +209,7 @@ const Settings = () => {
                   Save
                 </Button>
               </CardFooter>
-            </Card>
+            </Card> */}
 
             {/* Logout */}
             <Card>

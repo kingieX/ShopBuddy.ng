@@ -96,14 +96,14 @@ const Customers = () => {
         <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
           <div className="flex items-center">
             <div className="ml-auto flex items-center gap-2">
-              <Button size="sm" variant="outline" className="h-7 gap-1 text-sm">
+              {/* <Button size="sm" variant="outline" className="h-7 gap-1 text-sm">
                 <ListFilter className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only">Filter</span>
               </Button>
               <Button size="sm" variant="outline" className="h-7 gap-1 text-sm">
                 <File className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only">Export</span>
-              </Button>
+              </Button> */}
 
               {/* search */}
               <div className="relative ml-auto flex-1 md:grow-0">
