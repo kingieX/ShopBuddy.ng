@@ -14,8 +14,8 @@ import { Component, CircleGauge } from 'lucide-react';
 import Logo from '../../assets/logo.png';
 import Image from 'next/image';
 
-const Sidebar = () => {
-  const pathname = usePathname();
+const Sidebar = ({ closeSidebar }: { closeSidebar: () => void }) => {
+  const pathname = usePathname() || '';
 
   const menuItems = [
     {
@@ -74,18 +74,19 @@ const Sidebar = () => {
             <Link
               href={item.href}
               className={`flex items-center gap-2 rounded-md px-6 py-2 text-gray-700 transition-all hover:bg-gray-200 ${
-                pathname === item.href
+                pathname.startsWith(item.href) // Check if the pathname starts with the item href
                   ? 'bg-gray-200 font-semibold text-[#1600A0]'
                   : ''
               }`}
+              onClick={closeSidebar} // Close sidebar on menu click
             >
               <span
-                className={`${pathname === item.href ? 'text-[#1600A0]' : ''}`}
+                className={`${pathname.startsWith(item.href) ? 'text-[#1600A0]' : ''}`}
               >
                 {item.icon}
               </span>
               <span
-                className={`${pathname === item.href ? 'text-[#1600A0]' : ''}`}
+                className={`${pathname.startsWith(item.href) ? 'text-[#1600A0]' : ''}`}
               >
                 {item.name}
               </span>

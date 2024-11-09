@@ -28,6 +28,11 @@ const TopBar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  // Close Sidebar
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   // Logout function
   const handleLogout = () => {
     localStorage.removeItem('admin_token'); // Remove the token
@@ -62,13 +67,13 @@ const TopBar = () => {
                 alt="Logo"
                 width={1500}
                 height={1500}
-                className="lg:w-64 w-48"
+                className="w-48 lg:w-64"
               />
             </div>
           </div>
         </div>
 
-        <div className="mr-8 flex items-center space-x-4">
+        <div className="mr-8 flex items-center space-x-4 px-4">
           {/* Right Side Icons (e.g., Notifications, User profile) */}
           <IoMdNotificationsOutline className="text-gray-600" />
           <DropdownMenu>
@@ -116,14 +121,14 @@ const TopBar = () => {
           />
         </div>
         {/* Render Sidebar component */}
-        <Sidebar />
+        <Sidebar closeSidebar={closeSidebar} />
       </div>
 
       {/* Overlay for mobile when sidebar is open */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-10 bg-black opacity-50 lg:hidden"
-          onClick={toggleSidebar}
+          onClick={toggleSidebar} // Close the sidebar when overlay is clicked
         ></div>
       )}
     </>
