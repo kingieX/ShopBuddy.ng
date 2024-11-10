@@ -2,6 +2,7 @@ import prisma from '@/lib/db/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
   try {
@@ -99,7 +100,7 @@ export async function POST(req: NextRequest) {
     await prisma.payment.create({
       data: {
         orderId: order.id,
-        transactionRef: '',
+        transactionRef: uuidv4(),
         amount: grandTotal,
         status: 'PENDING',
       },

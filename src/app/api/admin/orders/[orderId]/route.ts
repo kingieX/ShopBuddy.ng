@@ -1,6 +1,7 @@
 // app/api/admin/orders/[orderId]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db/prisma';
+import { sendOrderStatusUpdateEmail } from '@/utils/sendOrderStatusUpdateEmail';
 
 // Route to update order status
 export async function PATCH(
@@ -13,7 +14,20 @@ export async function PATCH(
     const updatedOrder = await prisma.order.update({
       where: { id: params.orderId },
       data: { status },
+      include: {
+        user: true, // Assuming the order has a related user who has an email
+      },
     });
+
+    // If the order's user and email are available, send the email notification
+    if (updatedOrder.user && updatedOrder.user.email) {
+      await sendOrderStatusUpdateEmail(
+        updatedOrder.user.email,
+        params.orderId,
+        status
+      );
+    }
+
     return NextResponse.json({ updatedOrder }, { status: 200 });
   } catch (error) {
     console.error('Error updating order status:', error);

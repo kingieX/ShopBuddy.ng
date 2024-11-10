@@ -5,6 +5,7 @@ import prisma from '@/lib/db/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { sendOrderConfirmationEmail } from '@/utils/sendOrderConfirmationEmail';
+import { sendOrderNotificationEmailToOwner } from '@/utils/sendOrderNotificationEmailToOwner';
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,6 +76,19 @@ export async function POST(request: NextRequest) {
             paymentStatus: orderDetails.status,
           }
         );
+
+        await sendOrderNotificationEmailToOwner(orderId, {
+          items: orderDetails.items.map((item) => ({
+            name: item.product.title,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          vat: orderDetails.vat,
+          deliveryFee: orderDetails.deliveryFee,
+          totalAmount: orderDetails.totalAmount,
+          paymentStatus: orderDetails.status,
+          customerEmail: orderDetails.billingDetails.email, // Include customer's email for reference
+        });
       } else {
         console.error(
           'Order confirmation email could not be sent. Missing email address.'

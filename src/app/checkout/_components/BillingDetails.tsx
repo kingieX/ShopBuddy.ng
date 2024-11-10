@@ -1,4 +1,3 @@
-// BillingDetails.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
 import mockStatesData from './mockStatesData';
@@ -37,16 +36,19 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
   });
   const [isAddressFocused, setIsAddressFocused] = useState<boolean>(false);
 
+  // Load mock states data (replace with actual API fetch if necessary)
   useEffect(() => {
     setStates(mockStatesData); // Load mock data, replace with actual fetching if needed
   }, []);
 
+  // Update cities when state changes
   useEffect(() => {
     const state = states.find((s) => s.name === selectedState);
     setCities(state ? state.cities : []);
     setSelectedCity(null); // Reset town on state change
   }, [selectedState, states]);
 
+  // Handle city selection and delivery fee change
   useEffect(() => {
     if (selectedCity) {
       onDeliveryFeeChange(selectedCity.deliveryFee);
@@ -54,24 +56,25 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
     }
   }, [selectedCity, onDeliveryFeeChange]);
 
+  // Fetch billing details when component mounts
   useEffect(() => {
     const fetchBillingDetails = async () => {
       const response = await fetch('/api/billing-details');
       const data = await response.json();
-
-      console.log('data', data);
+      console.log('Fetched data:', data);
 
       if (data) {
         const billingData = data;
         setFormValues({
-          fullname: billingData.fullname || '',
-          email: billingData.email || '',
-          phone: billingData.phone || '',
-          address: billingData.address || '',
-          state: billingData.state || '',
-          city: billingData.city || '',
+          fullname: billingData.fullname,
+          email: billingData.email,
+          phone: billingData.phone,
+          address: billingData.address,
+          state: billingData.state,
+          city: billingData.city,
         });
 
+        // Set selected state and city
         setSelectedState(billingData.state || '');
         setSelectedCity(
           mockStatesData
@@ -79,12 +82,15 @@ const BillingDetails: React.FC<BillingDetailsProps> = ({
             ?.cities.find((city) => city.name === billingData.city) || null
         );
       }
-
-      console.log('Form values:', formValues); // Check the values here
     };
 
     fetchBillingDetails();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once
+
+  // Log form values whenever they change (this runs after the state update)
+  useEffect(() => {
+    console.log('Form values updated:', formValues);
+  }, [formValues]); // This effect runs whenever `formValues` changes
 
   const handleChange = (field: string, value: string) => {
     const updatedFormValues = { ...formValues, [field]: value };
