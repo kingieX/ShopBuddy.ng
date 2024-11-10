@@ -28,8 +28,8 @@ const SignUp = () => {
   // Handle Google login
   const handleGoogleSignIn = async () => {
     setLoadingGoogle(true);
-    await signIn('google'); // Trigger Google sign-in
-    setLoadingGoogle(false); // Reset loading state (you may want to handle loading state differently based on sign-in completion)
+    await signIn('google', { callbackUrl: '/auth/complete-registration' }); // Add callbackUrl
+    setLoadingGoogle(false);
   };
 
   // If the user is authenticated with Google, sign them up

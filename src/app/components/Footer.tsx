@@ -67,11 +67,11 @@ const Footer = () => {
                 Login / Register
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/cart" className="hover:underline">
                 Cart
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/wishlist" className="hover:underline">
                 Wishlist

@@ -92,7 +92,8 @@ export const authOptions: AuthOptions = {
         return {
           id: existingUser.id.toString(),
           email: existingUser.email,
-          name: existingUser.firstName,
+          // firstName: existingUser.firstName,
+          // lastName: existingUser.lastName,
         };
       },
     }),
@@ -105,6 +106,14 @@ export const authOptions: AuthOptions = {
     signIn: '/auth/signin', // Custom sign-in page
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Check if the user is logged in via Google
+      // If they are authenticated via Google, we will redirect to the registration page
+      if (url === baseUrl) {
+        return `${baseUrl}/auth/complete-registration`;
+      }
+      return url;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

@@ -25,7 +25,7 @@ const Hero: React.FC = () => {
       style={{ backgroundImage: 'url(/assets/heroImage.jpeg)' }}
     >
       <div className="w-full rounded-lg bg-black bg-opacity-60 p-10 text-center lg:p-24">
-        <h1 className="lg:animate- mb-0 mt-12 text-2xl font-bold text-white lg:mb-4 lg:mt-4 lg:text-5xl">
+        <h1 className="mb-0 mt-12 text-4xl font-bold text-white lg:mb-4 lg:mt-4 lg:text-5xl">
           Discover Amazing Products
         </h1>
         <p className="mb-4 text-sm text-white lg:mb-8 lg:text-lg">
