@@ -6,6 +6,11 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { sendOrderConfirmationEmail } from '@/utils/sendOrderConfirmationEmail';
 import { sendOrderNotificationEmailToOwner } from '@/utils/sendOrderNotificationEmailToOwner';
+import { sendSMS } from '@/utils/sms/sendSMS';
+import {
+  getUserOrderMessage,
+  getOwnerOrderMessage,
+} from '@/utils/sms/orderMessages';
 
 export async function POST(request: NextRequest) {
   try {
@@ -59,6 +64,38 @@ export async function POST(request: NextRequest) {
           billingDetails: true,
         },
       });
+
+      if (orderDetails?.billingDetails?.phone) {
+        // Generate the message content for user and owner
+
+        const userMessage = getUserOrderMessage(orderId, {
+          items: orderDetails.items.map((item) => ({
+            name: item.product.title,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          totalAmount: orderDetails.totalAmount,
+          paymentStatus: orderDetails.status,
+        });
+
+        await sendSMS(orderDetails.billingDetails.phone, userMessage);
+
+        const ownerMessage = getOwnerOrderMessage(orderId, {
+          totalAmount: orderDetails.totalAmount,
+          paymentStatus: orderDetails.status,
+          customerEmail: orderDetails.billingDetails.email,
+        });
+
+        if (process.env.OWNER_PHONE) {
+          await sendSMS(process.env.OWNER_PHONE, ownerMessage);
+        } else {
+          console.error('Owner phone number is not defined.');
+        }
+      } else {
+        console.error(
+          'Order confirmation SMS could not be sent. Missing phone number.'
+        );
+      }
 
       if (orderDetails?.billingDetails?.email) {
         await sendOrderConfirmationEmail(

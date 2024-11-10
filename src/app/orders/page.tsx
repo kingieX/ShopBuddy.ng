@@ -178,7 +178,7 @@ const Orders = () => {
                           </p>
                           <p>
                             <span className="font-semibold text-gray-500">
-                              Quantity:{' '}
+                              Item:{' '}
                             </span>
                             {order.order.items.length}
                           </p>

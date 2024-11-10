@@ -4,6 +4,7 @@ import prisma from '@/lib/db/prisma'; // Prisma client
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto'; // For generating verification tokens
 import { sendVerificationEmail } from '@/utils/sendVerificationEmail';
+import { sendSMSVerificationCode } from '@/utils/sms/sendSMSVerificationCode';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -55,6 +56,25 @@ export async function POST(req: Request) {
         {
           message: 'Failed to sign up. Please check your email and try again.',
         },
+        { status: 500 }
+      );
+    }
+
+    // Send the SMS with the verification code
+    try {
+      if (user.phoneNumber) {
+        await sendSMSVerificationCode(user.phoneNumber, verificationToken);
+      } else {
+        console.error('Phone number is null');
+        return NextResponse.json(
+          { message: 'Failed to send SMS. Phone number is missing.' },
+          { status: 500 }
+        );
+      }
+    } catch (error) {
+      console.error('Failed to send SMS:', error);
+      return NextResponse.json(
+        { message: 'Failed to send SMS. Please try again later.' },
         { status: 500 }
       );
     }

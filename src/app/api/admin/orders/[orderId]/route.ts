@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db/prisma';
 import { sendOrderStatusUpdateEmail } from '@/utils/sendOrderStatusUpdateEmail';
+import { sendOrderStatusUpdateSMS } from '@/utils/sms/sendOrderStatusUpdateSMS';
 
 // Route to update order status
 export async function PATCH(
@@ -15,6 +16,7 @@ export async function PATCH(
       where: { id: params.orderId },
       data: { status },
       include: {
+        billingDetails: true,
         user: true, // Assuming the order has a related user who has an email
       },
     });
@@ -23,6 +25,18 @@ export async function PATCH(
     if (updatedOrder.user && updatedOrder.user.email) {
       await sendOrderStatusUpdateEmail(
         updatedOrder.user.email,
+        params.orderId,
+        status
+      );
+    }
+
+    // If the order's user and phone number are available, send the SMS notification
+    if (
+      (updatedOrder.user && updatedOrder.user.phoneNumber) ||
+      updatedOrder.billingDetails?.phone
+    ) {
+      await sendOrderStatusUpdateSMS(
+        updatedOrder.user.phoneNumber || updatedOrder.billingDetails?.phone,
         params.orderId,
         status
       );
