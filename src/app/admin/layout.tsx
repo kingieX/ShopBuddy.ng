@@ -8,6 +8,7 @@ import axios from 'axios';
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -43,6 +44,11 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     checkToken();
   }, [router]);
 
+  // Close Sidebar
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   if (loading) {
     return <div>Loading...</div>; // You can replace this with a loader/spinner if you like
   }
@@ -51,7 +57,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside className="fixed hidden h-screen w-0 border-r border-gray-300 bg-gray-100 lg:block lg:w-64">
-        <Sidebar />
+        <Sidebar closeSidebar={closeSidebar} />
       </aside>
 
       {/* Main Content Area */}
