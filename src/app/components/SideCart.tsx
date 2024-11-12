@@ -108,27 +108,6 @@ const SideCart: FC<Props> = ({ visible, onRequestClose }) => {
               <CurrencyFormatter amount={totalPrice as any} />
             </p>
           </div>
-          {/* Delivery */}
-          {/* <div className="flex justify-between border-b py-1">
-            <span className="font-normal">Shipping:</span>
-            <p className="font-semibold">
-              <CurrencyFormatter amount={totalPrice as any} />
-            </p>
-          </div> */}
-          {/* Service charge */}
-          {/* <div className="flex justify-between border-b py-1">
-            <span className="font-normal">Service charge:</span>
-            <p className="font-semibold">
-              <CurrencyFormatter amount={totalPrice as any} />
-            </p>
-          </div> */}
-          {/* Total */}
-          {/* <div className="flex justify-between py-2">
-            <span className="font-semibold">Total:</span>
-            <p className="font-semibold">
-              <CurrencyFormatter amount={totalPrice as any} />
-            </p>
-          </div> */}
         </div>
 
         <Link href="/checkout">

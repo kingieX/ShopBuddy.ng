@@ -50,7 +50,7 @@ const Footer = () => {
             academy, Abakaliki Ebonyi State, Nigeria
           </p>
           <p className="mb-2">shopbuddy106@gmail.com | support@shopbuddy.ng</p>
-          <p>+234-88888-9999</p>
+          <p>09065957905</p>
         </div>
 
         {/* Middle Section - Account Links */}
