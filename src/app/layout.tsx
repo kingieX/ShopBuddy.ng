@@ -36,6 +36,29 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
+        <title>Shopbuddy - No1 e-commerce website in Ebonyi State</title>
+        <meta
+          name="description"
+          content="Explore our exclusive collections and elevate your everyday experience
+          with products designed to inspire and delight. Shop now and transform
+          the ordinary into the exceptional! Best in Ebonyi State."
+        />
+        <meta property="og:title" content="Shopbuddy | shopbuddy.ng" />
+        <meta
+          property="og:description"
+          content="Explore our exclusive collections and elevate your everyday experience
+          with products designed to inspire and delight. Shop now and transform
+          the ordinary into the exceptional! Best in Ebonyi State."
+        />
+        <meta
+          property="og:image"
+          content="https://www.shopbuddy.com/favicon1.svg"
+        />
+        <meta property="og:url" content="https://www.shopbuddy.com" />
+        <meta property="og:type" content="website" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="index, follow" />
+
         <link rel="icon" href="/favicon1.svg" />
       </Head>
       <body
