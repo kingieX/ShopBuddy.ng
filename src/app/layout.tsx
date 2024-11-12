@@ -20,7 +20,7 @@ const geistMono = localFont({
 // Metadata is a server-side export
 export const metadata: Metadata = {
   title: 'ShopBuddy',
-  description: 'An E-commerce website',
+  description: 'An E-commerce website in Ebonyi state',
   icons: {
     icon: '/favicon1.svg', // Path to your larger favicon
   },

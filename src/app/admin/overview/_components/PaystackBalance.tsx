@@ -26,7 +26,7 @@ function PaystackBalance() {
         if (data && data.data && data.data.length > 0) {
           // Extracting the first item from the `data` array
           setBalance(data.data[0]);
-          // console.log('Balance: ', data.data[0]);
+          console.log('Balance: ', data.data[0]);
         } else {
           throw new Error('No balance data available');
         }

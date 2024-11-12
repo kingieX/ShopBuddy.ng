@@ -18,7 +18,7 @@ const SideCart: FC<Props> = ({ visible, onRequestClose }) => {
   return (
     <div
       style={{ right: visible ? '0' : '-100%' }}
-      className="fixed right-0 top-0 z-50 flex h-screen max-h-screen w-96 flex-col overflow-y-auto bg-white shadow-md transition-all"
+      className="fixed right-0 top-0 z-50 flex h-screen max-h-screen w-full flex-col overflow-y-auto bg-white shadow-md transition-all lg:w-96"
     >
       {/* Header */}
       <div className="flex justify-between px-4 py-2">
