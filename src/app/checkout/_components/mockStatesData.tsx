@@ -9,8 +9,8 @@ const mockStatesData = [
       { name: 'Uburu', deliveryFee: 10000 },
       { name: 'Ishieke', deliveryFee: 2000 },
       { name: 'Perm Site', deliveryFee: 2000 },
+      { name: 'FUNAI', deliveryFee: 3500 }, // Fix here, use 'deliveryFee' (capital 'F')
       { name: 'Pickup', deliveryFee: 0 },
-      { name: 'FUNAI', deliveryfee: 3500 },
       // { name: 'Onueke', deliveryFee: 3500 },
       // { name: 'Ezzamgbo', deliveryFee: 3000 },
       // { name: 'Nkalagu', deliveryFee: 3500 },
