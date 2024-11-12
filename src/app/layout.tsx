@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import SessionProviderWrapper from './SessionProviderWrapper'; // Import the client-side SessionProvider wrapper
+import Head from 'next/head';
 
 // Font configuration remains in the server component
 const geistSans = localFont({
@@ -34,6 +35,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/favicon1.svg" />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
