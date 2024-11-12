@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'; // Optional, if you want to use S
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaTiktok } from 'react-icons/fa6';
 import { IoSendSharp } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -134,18 +135,27 @@ const Footer = () => {
 
         {/* Social Media Icons */}
         <div className="flex space-x-4">
-          <Link href="#">
+          <Link
+            href="https://www.facebook.com/share/19VMqVZBNs/?mibextid=qi2Omg"
+            target="_blank"
+          >
             <FaFacebook className="h-6 w-6 hover:text-button" />
           </Link>
-          <Link href="#">
+          {/* <Link href="#" target="_blank">
             <FaTwitter className="h-6 w-6 hover:text-button" />
-          </Link>
-          <Link href="#">
+          </Link> */}
+          <Link
+            href="https://www.instagram.com/shopbuddy.ng/profilecard/?igsh=MXZ0djN1NWt0ZWN1dQ=="
+            target="_blank"
+          >
             <FaInstagram className="h-6 w-6 hover:text-button" />
           </Link>
-          <Link href="#">
-            <FaLinkedin className="h-6 w-6 hover:text-button" />
+          <Link href="https://vm.tiktok.com/ZMhpdb8SH/" target="_blank">
+            <FaTiktok className="h-6 w-6 hover:text-button" />
           </Link>
+          {/* <Link href="#" target='_blank'>
+            <FaLinkedin className="h-6 w-6 hover:text-button" />
+          </Link> */}
         </div>
       </div>
 
