@@ -111,7 +111,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ deliveryFee = 0 }) => {
         </div>
 
         {/* Coupon */}
-        <div className="flex space-x-4 py-4">
+        <div className="flex flex-col gap-4 py-4 lg:flex-row">
           <input
             type="text"
             placeholder="Coupon code"
