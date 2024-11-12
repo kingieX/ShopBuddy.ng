@@ -5,6 +5,9 @@ import prisma from '@/lib/db/prisma';
 export async function GET(req: NextRequest) {
   try {
     const orders = await prisma.order.findMany({
+      orderBy: {
+        updatedAt: 'desc', // Sort by the createdAt field in descending order (most recent first)
+      },
       include: {
         billingDetails: true,
         items: { include: { product: true } },

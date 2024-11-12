@@ -5,6 +5,9 @@ import prisma from '@/lib/db/prisma';
 export async function GET(req: NextRequest) {
   try {
     const payments = await prisma.payment.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         order: { include: { items: true, billingDetails: true } },
       },

@@ -137,9 +137,18 @@ const Payments: React.FC = () => {
                                 <div>{payment.orderId}</div>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
-                                {new Date(
-                                  payment.createdAt
-                                ).toLocaleDateString()}
+                                {new Date(payment.createdAt).toLocaleString(
+                                  'en-US',
+                                  {
+                                    weekday: 'short', // 'long' for full name
+                                    year: 'numeric',
+                                    month: 'short', // 'long' for full month name
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                  }
+                                )}
                               </TableCell>
                               <TableCell>
                                 <CurrencyFormatter amount={payment.amount} />

@@ -190,9 +190,18 @@ const Orders: React.FC = () => {
                                   </div>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                  {new Date(
-                                    order.createdAt
-                                  ).toLocaleDateString()}
+                                  {new Date(order.createdAt).toLocaleString(
+                                    'en-US',
+                                    {
+                                      weekday: 'short', // 'long' for full name
+                                      year: 'numeric',
+                                      month: 'short', // 'long' for full month name
+                                      day: 'numeric',
+                                      hour: '2-digit',
+                                      minute: '2-digit',
+                                      second: '2-digit',
+                                    }
+                                  )}
                                 </TableCell>
                                 <TableCell className="hidden sm:table-cell">
                                   <Badge
