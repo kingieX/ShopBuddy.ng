@@ -91,12 +91,12 @@ const Footer = () => {
           <h3 className="text-lg font-semibold">Quick Link</h3>
           <ul className="mt-4 space-y-2">
             <li>
-              <Link href="#" className="hover:underline">
+              <Link href="/privacy" className="hover:underline">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:underline">
+              <Link href="/terms" className="hover:underline">
                 Terms Of Use
               </Link>
             </li>
