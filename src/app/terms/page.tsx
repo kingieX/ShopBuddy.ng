@@ -27,7 +27,7 @@ const TermsOfService = () => {
 
       <div className="mx-auto bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 px-8 py-24 lg:px-20">
         <header className="text-center">
-          <h1 className="text-4xl font-semibold text-gray-800 transition duration-300 hover:text-button">
+          <h1 className="text-2xl font-semibold text-gray-800 transition duration-300 hover:text-button lg:text-4xl">
             Terms of Service
           </h1>
         </header>
