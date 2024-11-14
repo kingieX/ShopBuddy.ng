@@ -107,11 +107,11 @@ const PromotionSlider: React.FC = () => {
             768: { slidesPerView: 1 },
             1024: { slidesPerView: 1 },
           }}
-          className="flex flex-row items-center justify-center rounded-lg bg-black p-4 lg:p-6"
+          className="flex flex-row items-center justify-center rounded-lg bg-black p-4 lg:px-6 lg:py-12"
         >
           {promotions.map((promotion, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-row items-center justify-between rounded-lg p-4 lg:p-6">
+              <div className="flex flex-row items-center justify-between rounded-lg px-4 py-24 lg:px-12 lg:py-32">
                 <div className="w-full py-8 text-white lg:w-1/2">
                   <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                     {promotion.title}
@@ -145,8 +145,8 @@ const PromotionSlider: React.FC = () => {
       ) : (
         // Fallback for only one promotion
         promotions.length === 1 && (
-          <div className="flex flex-row items-center justify-between rounded-lg bg-black p-4 lg:p-6">
-            <div className="w-full text-white lg:w-1/2">
+          <div className="flex flex-row items-center justify-between rounded-lg bg-black px-4 py-24 lg:px-12 lg:py-24">
+            <div className="w-full text-white">
               <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                 {promotions[0].title}
               </h3>

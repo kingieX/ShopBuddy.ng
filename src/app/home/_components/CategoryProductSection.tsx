@@ -67,7 +67,7 @@ const CategoryProductSection: React.FC = () => {
             {/* Check if category.products exists and is an array, then render the first 4 products */}
             {category.products && category.products.length > 0 ? (
               category.products
-                .slice(0, 4)
+                .slice(0, 8)
                 .map((product) => (
                   <ProductCard key={product.id} product={product as any} />
                 ))
