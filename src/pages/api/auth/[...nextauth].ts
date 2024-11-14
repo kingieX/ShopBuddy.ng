@@ -75,16 +75,11 @@ export const authOptions: AuthOptions = {
           const newUser = await prisma.user.create({
             data: {
               email: profile.email,
-              firstName: profile.given_name,
-              lastName: profile.family_name,
+              firstName: '',
+              lastName: '',
               password: '',
             },
           });
-          // return {
-          //   id: newUser.id.toString(),
-          //   email: newUser.email,
-          //   name: newUser.firstName,
-          // };
           existingUser = newUser;
         }
 
@@ -92,8 +87,6 @@ export const authOptions: AuthOptions = {
         return {
           id: existingUser.id.toString(),
           email: existingUser.email,
-          // firstName: existingUser.firstName,
-          // lastName: existingUser.lastName,
         };
       },
     }),
@@ -130,8 +123,8 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (session.user && token) {
         session.user.id = token.id; // Add id to session user
-        session.user.firstName = token.firstName as string | null | undefined;
-        session.user.lastName = token.lastName as string | null | undefined;
+        // session.user.firstName = token.firstName as string | null | undefined;
+        // session.user.lastName = token.lastName as string | null | undefined;
         session.user.email = token.email;
       }
       return session;

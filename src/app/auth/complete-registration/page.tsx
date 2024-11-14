@@ -30,15 +30,12 @@ const CompleteRegistration = () => {
     }
   }, [status, router]);
 
-  // Set initial values for the form when session is available
-  const googleEmail = session?.user?.email || '';
-
   // Formik setup for the registration completion form
   const formik = useFormik({
     initialValues: {
       firstName: '',
       lastName: '',
-      email: googleEmail,
+      email: '', // Initial email is empty
       phoneNumber: '',
       password: '',
     },
@@ -70,7 +67,7 @@ const CompleteRegistration = () => {
         console.log('Formatted values: ', formattedValues);
 
         const response = await axios.post(
-          '/api/auth/complete-registration',
+          '/api/auth/complete-signup',
           formattedValues
         );
 
@@ -89,6 +86,17 @@ const CompleteRegistration = () => {
       }
     },
   });
+
+  // Set initial values for the form when session is available
+  const googleEmail = session?.user?.email || '';
+  // console.log('Google email: ', googleEmail);
+
+  // Update Formik email value after session is loaded
+  useEffect(() => {
+    if (session?.user?.email && formik.values.email !== session.user.email) {
+      formik.setFieldValue('email', session.user.email); // Only update if the email is different
+    }
+  }, [session, formik]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -133,15 +141,17 @@ const CompleteRegistration = () => {
               />
             </div>
 
-            {/* Email pre-filled */}
+            {/* Email pre-filled and disabled */}
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                value={formik.values.email}
-                disabled
+                value={formik.values.email} // Bind Formik's email value here
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled // Keep email input disabled
               />
             </div>
 

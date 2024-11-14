@@ -32,41 +32,6 @@ const SignUp = () => {
     setLoadingGoogle(false);
   };
 
-  // If the user is authenticated with Google, sign them up
-  // if (session && session.user?.email) {
-  //   const handleSignUpWithGoogle = async () => {
-  //     const { firstName, lastName, email } = session.user;
-
-  //     try {
-  //       const response = await fetch('/api/auth/signup', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           firstName,
-  //           lastName,
-  //           email,
-  //           phoneNumber: '',
-  //           password: '',
-  //         }),
-  //       });
-
-  //       if (response.ok) {
-  //         toast.success('Signed up successfully');
-  //         router.push('/'); // Redirect after successful signup
-  //         console.log('response', response);
-  //       } else {
-  //         throw new Error('Failed to sign up');
-  //       }
-  //     } catch (error) {
-  //       // toast.error('Error signing up with Google');
-  //     }
-  //   };
-
-  //   handleSignUpWithGoogle(); // Call the sign-up function
-  // }
-
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
