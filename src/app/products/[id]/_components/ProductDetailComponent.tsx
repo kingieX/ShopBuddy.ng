@@ -89,7 +89,7 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
 
       {/* Product details */}
       <div className="mx-0 flex rounded-md bg-white px-4 py-4 shadow-md lg:mx-auto lg:max-w-6xl lg:px-8 lg:py-8">
-        <div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:space-x-8">
+        <div className="flex w-full flex-col-reverse lg:flex-row lg:justify-between lg:space-x-8">
           <div className="w-full lg:mb-0 lg:w-1/2 lg:max-w-sm">
             {/* Main Image */}
             <div className="mb-4 overflow-hidden rounded-lg border bg-[#F5F5F5] p-4">
@@ -105,17 +105,17 @@ const ProductDetailComponent: React.FC<ProductDetailProps> = ({ product }) => {
             {/* Thumbnail Swiper for gallery images */}
             <Swiper
               spaceBetween={10}
-              slidesPerView={2} // Show only 2 slides on mobile
+              slidesPerView={4} // Show only 2 slides on mobile
               breakpoints={{
                 640: { slidesPerView: 3 }, // Show 3 slides on tablets
                 1024: { slidesPerView: 4 }, // Show 4 slides on larger screens
               }}
-              className="mt-4"
+              className="mt-4 max-w-full"
             >
               {images.map((image, index) => (
                 <SwiperSlide key={index}>
                   <div
-                    className="max-w-sm cursor-pointer overflow-hidden rounded-md border bg-[#F5F5F5]"
+                    className="max-w-full cursor-pointer overflow-hidden rounded-md border bg-[#F5F5F5]"
                     onClick={() => setSelectedImage(image)} // Set the clicked image as the selected one
                   >
                     <Image
