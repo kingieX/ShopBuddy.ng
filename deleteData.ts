@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -10,12 +11,12 @@ async function deleteAllData() {
     // Delete data from each model (table)
     await prisma.wishlist.deleteMany({});
     await prisma.wishlistProduct.deleteMany({});
-    await prisma.product.deleteMany({});
-    await prisma.category.deleteMany({});
+    // await prisma.product.deleteMany({});
+    // await prisma.category.deleteMany({});
     await prisma.cart.deleteMany({});
     await prisma.cartItem.deleteMany({});
-    await prisma.promotion.deleteMany({});
-    await prisma.admin.deleteMany({});
+    // await prisma.promotion.deleteMany({});
+    // await prisma.admin.deleteMany({});
     await prisma.user.deleteMany({});
     await prisma.billingDetails.deleteMany({});
     await prisma.order.deleteMany({});
