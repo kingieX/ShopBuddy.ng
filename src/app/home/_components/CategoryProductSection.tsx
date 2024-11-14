@@ -21,6 +21,7 @@ interface Category {
 
 const CategoryProductSection: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [recentProducts, setRecentProducts] = useState<Product[]>([]);
 
   // Fetch categories with their products
   useEffect(() => {
@@ -29,6 +30,8 @@ const CategoryProductSection: React.FC = () => {
         const response = await fetch('/api/admin/categories'); // Ensure this endpoint returns categories with products
         const data = await response.json();
         setCategories(data.categories);
+        setRecentProducts(data.recentProducts); // Set the most recent products
+
         // console.log('categories:', data);
       } catch (error) {
         console.error('Error fetching categories:', error);

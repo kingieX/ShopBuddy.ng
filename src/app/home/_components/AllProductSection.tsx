@@ -20,10 +20,10 @@ const AllProductSection: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products'); // Ensure this endpoint returns categories with products
+        const response = await fetch('/api/products?limit=8'); // Ensure this endpoint returns categories with products
         const data = await response.json();
-        setProducts(data);
-        // console.log('products:', data);
+        setProducts(data.products);
+        // console.log('products:', data.products);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -49,7 +49,7 @@ const AllProductSection: React.FC = () => {
         {/* Products Grid */}
         <div className="products-grid grid grid-cols-2 gap-4 lg:grid-cols-4">
           {/* Check if category.products exists and is an array, then render the first 4 products */}
-          {products ? (
+          {Array.isArray(products) && products.length > 0 ? (
             products
               .slice(0, 8)
               .map((product) => (

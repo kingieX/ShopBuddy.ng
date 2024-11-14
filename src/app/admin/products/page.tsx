@@ -28,17 +28,25 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); // State for search term
+  const [page, setPage] = useState(1); // Track current page
+  const [totalProducts, setTotalProducts] = useState(0); // Track total number of products
+  const [limit, setLimit] = useState(10); // Number of products per page
 
+  // Fetch products when the component mounts or when page/limit changes
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await fetch('/api/products', { method: 'GET' });
+        const response = await fetch(
+          `/api/products?page=${page}&limit=${limit}`,
+          { method: 'GET' }
+        );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setProducts(data);
-        setFilteredProducts(data); // Set filtered products initially
+        setProducts(data.products);
+        setTotalProducts(data.total); // Set total products for pagination controls
+        setFilteredProducts(data.products); // Set filtered products initially
       } catch (error) {
         console.error('Error fetching products:', error);
         setError(true);
@@ -47,7 +55,7 @@ export default function Products() {
       }
     }
     fetchProducts();
-  }, []);
+  }, [page, limit]);
 
   // Filter products based on search term
   useEffect(() => {
@@ -81,7 +89,14 @@ export default function Products() {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage); // Update the page number
+  };
+
   if (error) return <p>Failed to load products.</p>;
+
+  // Pagination helpers
+  const totalPages = Math.ceil(totalProducts / limit);
 
   return (
     <div className="">
@@ -145,6 +160,25 @@ export default function Products() {
           ) : (
             <p className="mt-4 text-center text-gray-500">No products found.</p> // No products message
           )}
+
+          {/* Pagination Controls */}
+          <div className="mt-4 flex justify-center space-x-4">
+            <button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+              className="rounded-md bg-gray-300 px-4 py-2 hover:bg-gray-400 disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2">{`Page ${page} of ${totalPages}`}</span>
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === totalPages}
+              className="rounded-md bg-gray-300 px-4 py-2 hover:bg-gray-400 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

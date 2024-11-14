@@ -1,17 +1,19 @@
-// File: /app/api/admin/categories/route.ts
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db/prisma';
 
-// Handle GET Request for fetching all categories
+// Handle GET Request for fetching all categories with their most recent product
 export async function GET() {
   try {
     const categories = await prisma.category.findMany({
-      orderBy: { id: 'desc' },
+      orderBy: { updatedAt: 'desc' },
       include: {
         _count: {
           select: { products: true },
         },
-        products: true,
+        products: {
+          orderBy: { updatedAt: 'desc' }, // Order products within the category by createdAt
+          // take: 1, // Take only the most recent product from each category
+        },
       },
     });
 
