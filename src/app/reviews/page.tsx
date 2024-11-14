@@ -100,7 +100,7 @@ const Reviews = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>My order</BreadcrumbPage>
+                  <BreadcrumbPage>My Reviews</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

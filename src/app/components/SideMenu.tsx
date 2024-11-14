@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { PanelRightOpen, X } from 'lucide-react'; // Icons for hamburger and close buttons
 import { usePathname } from 'next/navigation';
+import { CgProfile } from 'react-icons/cg';
+import { FaRegAddressBook } from 'react-icons/fa';
+import { BsCartCheck } from 'react-icons/bs';
+import { MdOutlineReviews } from 'react-icons/md';
 
 const SideMenu = () => {
   const pathname = usePathname();
@@ -58,19 +62,37 @@ const SideMenu = () => {
             Manage My Account
           </h3>
           {isAccountMenuOpen && (
-            <div className="pl-4">
+            <div className="flex flex-col gap-3 py-2 pl-4">
               <Link href="/profile">
-                <span
-                  className={`block ${pathname === '/profile' ? 'text-button' : 'hover:text-gray-500'}`}
+                <p
+                  className={`flex items-center space-x-2 ${pathname === '/profile' ? 'text-button' : 'hover:text-gray-500'}`}
                 >
-                  Profile
-                </span>
+                  <CgProfile className="h-5 w-5" />
+                  <span>Profile</span>
+                </p>
               </Link>
               <Link href="/address-book">
                 <span
-                  className={`block ${pathname === '/address-book' ? 'text-button' : 'hover:text-gray-500'}`}
+                  className={`flex items-center space-x-2 ${pathname === '/address-book' ? 'text-button' : 'hover:text-gray-500'}`}
                 >
-                  Address Book
+                  <FaRegAddressBook className="h-5 w-5" />
+                  <span>Address Book</span>
+                </span>
+              </Link>
+              <Link href="/orders">
+                <span
+                  className={`flex items-center space-x-2 ${pathname?.startsWith('/orders') ? 'text-button' : 'hover:text-gray-500'}`}
+                >
+                  <BsCartCheck className="h-5 w-5" />
+                  <span>My Orders</span>
+                </span>
+              </Link>
+              <Link href="/reviews">
+                <span
+                  className={`flex items-center space-x-2 ${pathname === '/reviews' ? 'text-button' : 'hover:text-gray-500'}`}
+                >
+                  <MdOutlineReviews className="h-5 w-5" />
+                  <span>My Reviews</span>
                 </span>
               </Link>
             </div>
@@ -78,7 +100,7 @@ const SideMenu = () => {
         </div>
 
         {/* My Orders */}
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <Link href="/orders">
             <span
               className={`block font-semibold ${pathname?.startsWith('/orders') ? 'text-button' : 'hover:text-gray-500'}`}
@@ -86,10 +108,10 @@ const SideMenu = () => {
               My Orders
             </span>
           </Link>
-        </div>
+        </div> */}
 
         {/* My Reviews */}
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <Link href="/reviews">
             <span
               className={`block font-semibold ${pathname === '/reviews' ? 'text-button' : 'hover:text-gray-500'}`}
@@ -97,7 +119,7 @@ const SideMenu = () => {
               My Reviews
             </span>
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

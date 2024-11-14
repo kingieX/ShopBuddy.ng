@@ -113,7 +113,7 @@ const PromotionSlider: React.FC = () => {
             <SwiperSlide key={index}>
               <div className="flex flex-row items-center justify-between rounded-lg p-4 lg:p-6">
                 <div className="w-full py-8 text-white lg:w-1/2">
-                  <h3 className="text-2xl font-bold lg:mb-2 lg:text-4xl">
+                  <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                     {promotion.title}
                   </h3>
                   <p className="mb-2 text-sm lg:mb-4 lg:text-xl">
@@ -147,7 +147,7 @@ const PromotionSlider: React.FC = () => {
         promotions.length === 1 && (
           <div className="flex flex-row items-center justify-between rounded-lg bg-black p-4 lg:p-6">
             <div className="w-full text-white lg:w-1/2">
-              <h3 className="text-xl font-bold lg:mb-2 lg:text-4xl">
+              <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                 {promotions[0].title}
               </h3>
               <p className="mb-2 text-sm lg:mb-4 lg:text-xl">

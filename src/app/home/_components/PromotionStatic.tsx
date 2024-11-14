@@ -113,9 +113,9 @@ const PromotionStatic: React.FC = () => {
         >
           {promotions.map((promotion, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-row items-center justify-between rounded-lg px-4 py-24 lg:px-6 lg:py-28">
+              <div className="flex flex-row items-center justify-between rounded-lg px-4 py-24 lg:px-12 lg:py-32">
                 <div className="w-full text-white">
-                  <h3 className="text-xl font-bold lg:mb-2 lg:text-4xl">
+                  <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                     {promotion.title}
                   </h3>
                   <p className="mb-2 text-sm lg:mb-4 lg:text-xl">
@@ -134,7 +134,7 @@ const PromotionStatic: React.FC = () => {
                     alt={promotion.title}
                     width={1500}
                     height={1500}
-                    className="w-3/5 rounded-lg object-contain"
+                    className="w-full rounded-lg object-contain"
                   />
                 </div>
               </div>
@@ -144,9 +144,9 @@ const PromotionStatic: React.FC = () => {
       ) : (
         // Fallback for only one promotion
         promotions.length === 1 && (
-          <div className="flex flex-row items-center justify-between rounded-lg bg-black p-4 lg:p-6">
-            <div className="w-full text-white lg:w-1/2">
-              <h3 className="text-xl font-bold lg:mb-2 lg:text-4xl">
+          <div className="flex flex-row items-center justify-between rounded-lg bg-black px-4 py-24 lg:px-12 lg:py-24">
+            <div className="w-full text-white">
+              <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                 {promotions[0].title}
               </h3>
               <p className="mb-2 text-sm lg:mb-4 lg:text-xl">
@@ -168,7 +168,7 @@ const PromotionStatic: React.FC = () => {
                 alt={promotions[0].title}
                 width={1500}
                 height={1500}
-                className="h-full w-2/5 rounded-lg object-contain"
+                className="h-full w-full rounded-lg object-contain"
               />
             </div>
           </div>
