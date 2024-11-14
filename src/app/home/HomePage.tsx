@@ -5,6 +5,7 @@ import Hero from './_components/Hero';
 import MenuBar from './_components/MenuBar';
 import PromotionSlider from './_components/PromotionSlider';
 import PromotionStatic from './_components/PromotionStatic';
+import SearchProducts from './_components/SearchProducts';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,12 @@ export default function HomePage() {
             <Hero />
           </div>
         </div>
+
+        {/* Search */}
+        <div className="px-8 lg:px-20 lg:py-4">
+          <SearchProducts />
+        </div>
+
         <div className="px-0 lg:px-20 lg:py-8">
           <PromotionSlider />
         </div>
