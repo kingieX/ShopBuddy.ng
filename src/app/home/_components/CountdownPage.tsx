@@ -73,9 +73,9 @@ const CountdownPage = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gray-800 text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
       {/* Countdown Modal */}
-      <div className="absolute inset-0 z-50 bg-black opacity-50" />
+      {/* <div className="fixed inset-0 left-1/2 top-1/2 z-50 bg-black opacity-50" /> */}
       <div className="z-50 mx-auto max-w-sm rounded-lg bg-white p-8 text-black shadow-lg lg:max-w-2xl">
         <h2 className="mb-4 text-center text-4xl font-semibold lg:text-6xl">
           Launching Soon!
