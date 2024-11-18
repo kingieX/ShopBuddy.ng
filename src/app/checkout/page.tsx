@@ -44,6 +44,7 @@ const CheckOutPage = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
+  const [couponCode, setCouponCode] = useState(''); // State to store the coupon code
   const router = useRouter();
 
   // protexted
@@ -74,6 +75,11 @@ const CheckOutPage = () => {
     setBillingDetails(details);
   };
 
+  // Callback to handle coupon code change
+  const handleCouponCodeChange: (code: string) => void = (code: string) => {
+    setCouponCode(code);
+  };
+
   const handlePlaceOrder = async () => {
     try {
       setLoading(true);
@@ -85,6 +91,7 @@ const CheckOutPage = () => {
         body: JSON.stringify({
           billingDetails,
           deliveryFee,
+          couponCode, // Include coupon code in the request
         }),
       });
 
@@ -169,7 +176,10 @@ const CheckOutPage = () => {
             />
           </div>
           <div className="mt-8 flex-1 lg:mt-0">
-            <OrderSummary deliveryFee={deliveryFee} />
+            <OrderSummary
+              deliveryFee={deliveryFee}
+              onCouponCodeChange={handleCouponCodeChange}
+            />
 
             {/* deleivery info */}
             <p className="mt-2 text-center text-xs text-gray-500 lg:text-sm">

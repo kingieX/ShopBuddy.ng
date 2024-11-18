@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
 
     const userId = parseInt(session.user.id, 10);
-    const { billingDetails, deliveryFee } = await req.json();
+    const { billingDetails, deliveryFee, couponCode } = await req.json();
 
     // Fetch the user's cart
     const cart = await prisma.cart.findUnique({
@@ -42,15 +42,12 @@ export async function POST(req: NextRequest) {
     }
 
     // const vat = rate * (totalPrice + deliveryFee + serviceCharge);
-    const grandTotal = totalPrice + deliveryFee + serviceCharge + vat;
+    let grandTotal = totalPrice + deliveryFee + serviceCharge + vat;
 
-    // First, create the billing details
-    // const billing = await prisma.billingDetails.create({
-    //   data: {
-    //     ...billingDetails,
-    //     userId,
-    //   },
-    // });
+    // Apply coupon discount if valid
+    if (couponCode === 'SHOPBUDDY' && totalPrice > 30000) {
+      grandTotal -= 2000; // Apply 2000 discount
+    }
 
     // Check if billing details exist for the user
     const existingBilling = await prisma.billingDetails.findFirst({

@@ -1,19 +1,20 @@
-// app/checkout/result/page.tsx
 'use client';
 
-// protected page import plue useEffect
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Footer from '@/app/components/Footer';
+import Navbar from '@/app/components/NavBar';
 
 const PaymentResultPage = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'failure'>(
     'loading'
   );
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
 
-  // protected
+  // Ensure the user is authenticated
   useEffect(() => {
     const securePage = async () => {
       const session = await getSession();
@@ -25,6 +26,7 @@ const PaymentResultPage = () => {
     securePage();
   }, [router]);
 
+  // Verify payment status on page load
   useEffect(() => {
     const verifyPayment = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -33,11 +35,14 @@ const PaymentResultPage = () => {
 
       if (!reference || !orderId) {
         setStatus('failure');
-        setMessage('Invalid payment details.');
+        setMessage(
+          'Invalid payment details. Please check the payment information and try again.'
+        );
         return;
       }
 
-      try {                                                                                                                 
+      try {
+        setIsLoading(true);
         const response = await fetch('/api/payments/verify-payment', {
           method: 'POST',
           headers: {
@@ -49,14 +54,20 @@ const PaymentResultPage = () => {
         if (response.ok) {
           const data = await response.json();
           setStatus('success');
-          setMessage(data.message || 'Payment successful!');
+          setMessage(
+            data.message || 'Your payment was processed successfully!'
+          );
         } else {
           setStatus('failure');
-          setMessage('Payment verification failed.');
+          setMessage(
+            'Payment verification failed. Please check your payment details or try again later.'
+          );
         }
       } catch (error) {
         setStatus('failure');
-        setMessage('Error verifying payment. Please try again.');
+        setMessage('Error verifying payment. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -68,66 +79,93 @@ const PaymentResultPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-      <div className="rounded-lg bg-white p-6 text-center shadow-md">
-        {status === 'loading' && <p>Verifying payment...</p>}
-
-        {status === 'success' && (
-          <>
-            <div className="animate-checkmark mb-4 flex justify-center">
+    <>
+      <Navbar isAuthPage={false} />
+      <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-6 py-8 lg:py-4">
+        <div className="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
+          {/* Loading State */}
+          {status === 'loading' && (
+            <div className="flex flex-col items-center justify-center">
               <svg
-                width="80"
-                height="80"
+                className="h-16 w-16 animate-spin text-blue-600"
                 viewBox="0 0 24 24"
-                className="text-green-600"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M20 6L9 17l-5-5" />
+                <path d="M12 2v20M2 12h20" />
               </svg>
+              <p className="mt-4 text-lg text-gray-700">
+                Verifying your payment, please wait...
+              </p>
             </div>
-            <h2 className="mb-4 text-2xl font-bold text-green-600">
-              Payment Successful!
-            </h2>
-            <p>{message}</p>
-          </>
-        )}
+          )}
 
-        {status === 'failure' && (
-          <>
-            <div className="animate-xmark mb-4">
-              <svg
-                width="80"
-                height="80"
-                viewBox="0 0 24 24"
-                className="text-red-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </div>
-            <h2 className="mb-4 text-center text-2xl font-bold text-red-600">
-              Payment Failed
-            </h2>
-            <p>{message}</p>
-          </>
-        )}
+          {/* Success State */}
+          {status === 'success' && (
+            <>
+              <div className="mb-4 flex justify-center">
+                <svg
+                  className="h-16 w-16 text-green-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </div>
+              <h2 className="text-center text-2xl font-semibold text-green-600">
+                Payment Successful
+              </h2>
+              <p className="mt-4 text-center text-lg text-gray-600">
+                {message}
+              </p>
+            </>
+          )}
 
-        <button
-          onClick={handleViewOrders}
-          className="mt-6 rounded-lg bg-button px-4 py-2 text-white hover:bg-blue-600"
-        >
-          View orders
-        </button>
+          {/* Failure State */}
+          {status === 'failure' && (
+            <>
+              <div className="mb-4 flex justify-center">
+                <svg
+                  className="h-16 w-16 text-red-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </div>
+              <h2 className="text-center text-2xl font-semibold text-red-600">
+                Payment Failed
+              </h2>
+              <p className="mt-4 text-center text-lg text-gray-600">
+                {message}
+              </p>
+            </>
+          )}
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={handleViewOrders}
+              disabled={isLoading}
+              className="rounded-lg bg-button px-6 py-3 font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 disabled:bg-gray-300 disabled:text-gray-500"
+            >
+              View Orders
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

@@ -26,3 +26,100 @@ body {
   transform-origin: center;
   animation: scale-up 0.3s ease-in-out;
 }
+
+/* discount animation */
+/* Add this to your Tailwind CSS file or global styles */
+@keyframes floatUp {
+  0% {
+    transform: scale(0) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-float-up {
+  animation: floatUp 0.5s ease-out forwards;
+}
+
+/* Countdown flip animation styles */
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 6px;
+  /* flex-wrap: wrap; */
+  gap: 8px; /* Default spacing between boxes */
+}
+
+.countdown-item {
+  position: relative;
+  width: 60px; /* Default width */
+  height: 80px; /* Default height */
+  margin: 0 4px;
+}
+
+.countdown-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 3rem; /* Default font size */
+  font-weight: bold;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  color: #333;
+  animation: flip 1s ease-in-out forwards;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: rotateX(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotateX(360deg);
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .countdown-container {
+    gap: 8px;
+    margin: 0 1px;
+  }
+  .countdown-item {
+    width: 30px; /* Smaller size for medium screens */
+    height: 50px;
+    margin: 0 1px;
+  }
+  .countdown-number {
+    font-size: 1.5rem; /* Adjusted font size for medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .countdown-item {
+    width: 40px; /* Even smaller for small screens */
+    height: 60px;
+  }
+  .countdown-number {
+    font-size: 2rem; /* Smaller font size for very small screens */
+  }
+
+  .countdown-container {
+    gap: 4px; /* Reduce gap for mobile */
+  }
+
+  .lg\\:text-4xl {
+    font-size: 2rem; /* Smaller label font size */
+  }
+}

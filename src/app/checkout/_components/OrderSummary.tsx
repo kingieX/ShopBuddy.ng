@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/app/contexts/CartContext';
 import CurrencyFormatter from '@/app/constants/CurrencyFormatter';
 
 interface OrderSummaryProps {
   deliveryFee: any;
+  onCouponCodeChange: (couponCode: string) => void; // Callback to send coupon code to parent
 }
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({ deliveryFee = 0 }) => {
+const OrderSummary: React.FC<OrderSummaryProps> = ({
+  deliveryFee = 0,
+  onCouponCodeChange,
+}) => {
   const { cart, totalPrice } = useCart();
+  const [couponCode, setCouponCode] = useState('');
+  const [discountApplied, setDiscountApplied] = useState(false);
+  const [invalidCoupon, setInvalidCoupon] = useState(false); // State for invalid coupon
 
   if (!cart) return null;
 
@@ -22,8 +29,27 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ deliveryFee = 0 }) => {
     vatValue = 0.015 * (totalPrice + deliveryFee + serviceCharge);
   }
 
-  const grandTotal = totalPrice + deliveryFee + serviceCharge + vatValue;
-  // console.log('rate:', vatValue);
+  // Calculate initial grand total without coupon
+  const initialGrandTotal = totalPrice + deliveryFee + serviceCharge + vatValue;
+
+  // Calculate the final grand total (after coupon is applied if applicable)
+  let finalGrandTotal = initialGrandTotal;
+  if (couponCode === 'SHOPBUDDY' && (totalPrice as any) > 30000) {
+    finalGrandTotal -= 2000; // Apply discount if conditions are met
+  }
+
+  const handleApplyCoupon = () => {
+    if (couponCode === 'SHOPBUDDY' && (totalPrice as any) > 30000) {
+      setDiscountApplied(true);
+      setInvalidCoupon(false); // Reset invalid coupon flag
+    } else {
+      setDiscountApplied(false);
+      setInvalidCoupon(true); // Set invalid coupon flag
+    }
+
+    // Send the coupon code to the parent component
+    onCouponCodeChange(couponCode);
+  };
 
   return (
     <div>
@@ -102,25 +128,46 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ deliveryFee = 0 }) => {
           </p>
         </div>
 
-        {/* Grand Total */}
-        <div className="mt-4 flex justify-between">
-          <span className="font-semibold">Grand Total:</span>
-          <p className="font-semibold">
-            <CurrencyFormatter amount={grandTotal} />
-          </p>
-        </div>
-
         {/* Coupon */}
         <div className="flex flex-col gap-4 py-4 lg:flex-row">
           <input
             type="text"
             placeholder="Coupon code"
+            value={couponCode}
+            onChange={(e) => setCouponCode(e.target.value)}
             className="w-1/2 border border-gray-800 px-4 py-2 outline-button"
           />
 
-          <button className="border-2 bg-button px-4 py-2 text-white hover:bg-blue-600">
+          <button
+            onClick={handleApplyCoupon}
+            className="border-2 bg-button px-4 py-2 text-white hover:bg-blue-600"
+          >
             Apply coupon
           </button>
+        </div>
+
+        {/* Discount Applied Message */}
+        {discountApplied && (
+          <div className="mt-2 text-green-500">
+            Coupon applied! Discount: -2000
+          </div>
+        )}
+
+        {/* Invalid Coupon Message */}
+        {invalidCoupon && (
+          <div className="mt-2 text-red-500">
+            The coupon code is invalid or does not meet the requirements.
+          </div>
+        )}
+
+        {/* Grand Total */}
+        <div className="mt-4 flex justify-between">
+          <span className="font-semibold">Grand Total:</span>
+          <p className="font-semibold">
+            <CurrencyFormatter
+              amount={discountApplied ? finalGrandTotal : initialGrandTotal}
+            />
+          </p>
         </div>
       </div>
     </div>

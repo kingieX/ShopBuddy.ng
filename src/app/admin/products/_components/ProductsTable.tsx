@@ -105,10 +105,8 @@ export default function ProductsTable({
                       <CurrencyFormatter amount={product.regularPrice} />
                     </TableCell>
                     <TableCell>
-                      {product.salePrice ? (
+                      {product.salePrice && (
                         <CurrencyFormatter amount={product.salePrice} />
-                      ) : (
-                        <CurrencyFormatter amount={product.regularPrice} />
                       )}
                     </TableCell>
                     <TableCell>

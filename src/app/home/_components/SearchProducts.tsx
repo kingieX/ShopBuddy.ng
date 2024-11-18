@@ -58,11 +58,11 @@ const SearchProducts: React.FC = () => {
 
   const whatsappLink = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hi,%20I%20am%20interested%20in%20ordering%20a%20product%20that%20is%20not%20available%20on%20your%20website.`; // Replace with your own phone number
 
-  console.log('whatsappLink', whatsappLink);
+  // console.log('whatsappLink', whatsappLink);
 
   return (
     <div>
-      <div className="w-full py-8 pt-14 sm:py-16">
+      <div className="w-full py-4 pt-14 sm:py-16">
         {/* Search Bar */}
         <div className="relative mb-6">
           <Input
@@ -79,10 +79,23 @@ const SearchProducts: React.FC = () => {
         <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
           {searchQuery.trim() === '' ? (
             // If there's no search query, show a message in the center
-            <div className="col-span-full flex items-center justify-center">
+            <div className="col-span-full flex flex-col items-center justify-center">
               <p className="text- text-center text-gray-500">
                 Please enter a search query to find products.
               </p>
+              {/* WhatsApp Button */}
+              <h3 className="mt-2 text-center text-xl font-bold">
+                Can't find what you're looking for? We've Got You Covered!
+              </h3>
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center justify-center rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
+              >
+                <FaWhatsapp className="mr-2 h-5 w-5" />
+                <span>Order via WhatsApp</span>
+              </a>
             </div>
           ) : filteredProducts.length > 0 ? (
             // If there are filtered products, show them

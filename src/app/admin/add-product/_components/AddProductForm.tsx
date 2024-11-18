@@ -102,7 +102,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
           router.refresh();
           // Trigger page reload after a short delay
           setTimeout(() => {
-            window.location.reload();
+            // window.location.reload();
           }, 3000); // Reloads after 3 seconds
         } else {
           const errorData = await response.json();

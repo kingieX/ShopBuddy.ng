@@ -23,8 +23,8 @@ interface Product {
 }
 
 export default function Products() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]); // All products for searching
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]); // Products after search filter
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); // State for search term
@@ -32,21 +32,18 @@ export default function Products() {
   const [totalProducts, setTotalProducts] = useState(0); // Track total number of products
   const [limit, setLimit] = useState(10); // Number of products per page
 
-  // Fetch products when the component mounts or when page/limit changes
+  // Fetch all products for search on component mount
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchAllProducts() {
       try {
-        const response = await fetch(
-          `/api/products?page=${page}&limit=${limit}`,
-          { method: 'GET' }
-        );
+        const response = await fetch(`/api/products/all`, { method: 'GET' });
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to fetch products');
         }
         const data = await response.json();
-        setProducts(data.products);
-        setTotalProducts(data.total); // Set total products for pagination controls
-        setFilteredProducts(data.products); // Set filtered products initially
+        setAllProducts(data.products); // Store all products for search
+        setTotalProducts(data.total); // Store total products count for pagination
+        setFilteredProducts(data.products); // Set initial filtered products (all products initially)
       } catch (error) {
         console.error('Error fetching products:', error);
         setError(true);
@@ -54,22 +51,28 @@ export default function Products() {
         setLoading(false);
       }
     }
-    fetchProducts();
-  }, [page, limit]);
+    fetchAllProducts();
+  }, []);
 
-  // Filter products based on search term
+  // Filter all products based on the search term
   useEffect(() => {
-    const filtered = products.filter((product) => {
-      const nameMatches = product.title
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const categoryMatches = product.category?.name
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      return nameMatches || categoryMatches;
-    });
-    setFilteredProducts(filtered);
-  }, [searchTerm, products]);
+    if (!searchTerm) {
+      // If no search term, reset to all products
+      setFilteredProducts(allProducts);
+    } else {
+      // Filter all products based on the search term
+      const filtered = allProducts.filter((product) => {
+        const nameMatches = product.title
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const categoryMatches = product.category?.name
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        return nameMatches || categoryMatches;
+      });
+      setFilteredProducts(filtered);
+    }
+  }, [searchTerm, allProducts]);
 
   const handleDeleteProduct = async (id: string) => {
     try {
@@ -79,10 +82,11 @@ export default function Products() {
       if (!response.ok) {
         throw new Error('Failed to delete the product');
       }
-      setProducts(products.filter((product) => product.id !== id));
+      // After deleting a product, remove it from the filtered list
+      setAllProducts(allProducts.filter((product) => product.id !== id));
       setFilteredProducts(
         filteredProducts.filter((product) => product.id !== id)
-      ); // Update filtered products
+      );
     } catch (error) {
       console.error('Error deleting product:', error);
       setError(true);
@@ -96,7 +100,11 @@ export default function Products() {
   if (error) return <p>Failed to load products.</p>;
 
   // Pagination helpers
-  const totalPages = Math.ceil(totalProducts / limit);
+  const totalPages = Math.ceil(filteredProducts.length / limit);
+  const paginatedProducts = filteredProducts.slice(
+    (page - 1) * limit,
+    page * limit
+  );
 
   return (
     <div className="">
@@ -152,9 +160,9 @@ export default function Products() {
               <Skeleton height="80px" />
               <Skeleton height="80px" />
             </div>
-          ) : filteredProducts.length > 0 ? (
+          ) : paginatedProducts.length > 0 ? (
             <ProductsTable
-              products={filteredProducts as any}
+              products={paginatedProducts as any}
               onDelete={handleDeleteProduct}
             />
           ) : (

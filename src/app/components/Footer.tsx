@@ -46,10 +46,10 @@ const Footer = () => {
         {/* Middle Section - Support */}
         <div className="lg:mt-12">
           <h3 className="text-lg font-semibold">Support</h3>
-          <p className="mb-2 mt-4">
+          {/* <p className="mb-2 mt-4">
             18, Lawrence Onor Street, Off Olisaemeka Stree by Great mind
             academy, Abakaliki Ebonyi State, Nigeria
-          </p>
+          </p> */}
           <p className="mb-2">shopbuddy106@gmail.com | support@shopbuddy.ng</p>
           <p>09065957905</p>
         </div>

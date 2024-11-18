@@ -124,7 +124,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         ((product.regularPrice - product.salePrice) / product.regularPrice) *
           100
       )
-    : 0;
+    : '';
 
   return (
     <div className="group relative rounded-lg border bg-white p-4 shadow-lg transition-shadow hover:shadow-xl">

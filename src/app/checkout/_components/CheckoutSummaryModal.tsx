@@ -34,7 +34,7 @@ const CheckoutSummaryModal: React.FC<CheckoutSummaryModalProps> = ({
   const [loading, setLoading] = useState(false);
   if (!isOpen) return null;
 
-  console.log('orderSummary:', orderSummary);
+  // console.log('orderSummary:', orderSummary);
 
   // CheckoutSummaryModal.tsx (snippet where you handle the payment button click)
 
@@ -42,12 +42,15 @@ const CheckoutSummaryModal: React.FC<CheckoutSummaryModalProps> = ({
     try {
       setLoading(true);
 
+      // Ensure totalAmount is an integer (convert to kobo by multiplying by 100)
+      const totalAmountInKobo = Math.round(orderSummary.grandTotal * 100);
+
       const response = await fetch('/api/payments/initiate-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId: orderSummary.orderId,
-          totalAmount: orderSummary.grandTotal,
+          totalAmount: totalAmountInKobo, // Send amount in kobo (integer)
           customerEmail: orderSummary.billingDetails.email,
         }),
       });
