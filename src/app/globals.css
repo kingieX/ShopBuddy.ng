@@ -97,8 +97,8 @@ body {
     margin: 0 1px;
   }
   .countdown-item {
-    width: 30px; /* Smaller size for medium screens */
-    height: 50px;
+    width: 20px; /* Smaller size for medium screens */
+    height: 40px;
     margin: 0 1px;
   }
   .countdown-number {
@@ -107,19 +107,24 @@ body {
 }
 
 @media (max-width: 480px) {
+  .countdown-container {
+    gap: 4px; /* Reduce gap for mobile */
+    margin: 0 1px;
+  }
   .countdown-item {
-    width: 40px; /* Even smaller for small screens */
-    height: 60px;
+    width: 20px; /* Even smaller for small screens */
+    height: 30px;
+    margin: 0 1px;
   }
   .countdown-number {
-    font-size: 2rem; /* Smaller font size for very small screens */
+    font-size: 0.5rem; /* Smaller font size for very small screens */
   }
 
   .countdown-container {
-    gap: 4px; /* Reduce gap for mobile */
+    gap: 2px; /* Reduce gap for mobile */
   }
 
   .lg\\:text-4xl {
-    font-size: 2rem; /* Smaller label font size */
+    font-size: 1rem; /* Smaller label font size */
   }
 }
