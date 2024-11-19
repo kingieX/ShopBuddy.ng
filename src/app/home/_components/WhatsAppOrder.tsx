@@ -25,7 +25,7 @@ const WhatsAppOrder = () => {
   if (!showAd) return null; // Don't render ad if it's not shown
 
   return (
-    <div className="fixed bottom-4 right-4 z-30 w-96 rounded-lg bg-green-600 px-4 py-6 text-white shadow-lg">
+    <div className="fixed bottom-4 right-4 z-20 w-96 rounded-lg bg-green-600 px-4 py-6 text-white shadow-lg">
       {/* Captivating Title */}
       <h3 className="mt-2 text-center text-xl font-bold">
         Can't find what you're looking for? We've Got You Covered!
