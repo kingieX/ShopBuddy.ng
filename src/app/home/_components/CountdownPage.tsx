@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Set target date to November 20th, 2024 (Wednesday)
-const targetDate = new Date('2024-11-21T00:00:00Z'); // UTC time
+const targetDate = new Date('2024-11-25T00:00:00Z'); // UTC time
 targetDate.setHours(targetDate.getHours() - 1); // Adjust to Lagos time (GMT+1)
 
 const CountdownPage = () => {
