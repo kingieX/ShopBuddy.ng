@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     // Prepare data for Paystack API
     const paystackData = {
       email: customerEmail,
-      amount: amount * 100,
+      amount: amount,
       reference: reference, // Unique order reference
       // callback_url: `${process.env.NEXT_PUBLIC_URL}/api/payments/verify-payment?orderId=${orderId}`,
       callback_url: `${process.env.NEXT_PUBLIC_URL}/checkout/result?reference=${reference}&orderId=${orderId}`,
