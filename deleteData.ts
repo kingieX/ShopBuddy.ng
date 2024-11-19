@@ -17,7 +17,7 @@ async function deleteAllData() {
     await prisma.cartItem.deleteMany({});
     // await prisma.promotion.deleteMany({});
     // await prisma.admin.deleteMany({});
-    await prisma.user.deleteMany({});
+    // await prisma.user.deleteMany({});
     await prisma.billingDetails.deleteMany({});
     await prisma.order.deleteMany({});
     await prisma.orderItem.deleteMany({});

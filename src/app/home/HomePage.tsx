@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <>
       {/* countdown */}
-      <CountdownPage />
+      {/* <CountdownPage /> */}
       {/* adverts */}
       <div>
         <WhatsAppOrder />
