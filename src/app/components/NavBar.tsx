@@ -96,7 +96,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
               alt="Favicon"
               width={1000}
               height={1000}
-              className="w-40 lg:w-64"
+              className="w-24 lg:w-24"
             />
             {/* <h1 className="text-xl font-bold text-button">ShopBuddy</h1> */}
           </div>

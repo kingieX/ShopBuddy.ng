@@ -36,7 +36,7 @@ export default function RejectAdmin() {
           alt="Logo"
           width={1500}
           height={1500}
-          className="w-64"
+          className="w-24 lg:w-32"
         />
       </div>
       <div className="rounded bg-white p-6 shadow-md">

@@ -65,7 +65,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: () => void }) => {
           alt="Logo"
           width={1500}
           height={1500}
-          className="w-64"
+          className="w-24"
         />
       </div>
       <ul className="mt-4 space-y-2">

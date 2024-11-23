@@ -67,7 +67,7 @@ const TopBar = () => {
                 alt="Logo"
                 width={1500}
                 height={1500}
-                className="w-48 lg:w-64"
+                className="w-24"
               />
             </div>
           </div>
