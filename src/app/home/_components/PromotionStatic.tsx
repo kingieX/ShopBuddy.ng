@@ -113,7 +113,7 @@ const PromotionStatic: React.FC = () => {
         >
           {promotions.map((promotion, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-row items-center justify-between rounded-lg px-4 py-24 lg:px-12 lg:py-32">
+              <div className="flex flex-row items-center justify-between gap-4 rounded-lg px-4 py-24 lg:px-12 lg:py-32">
                 <div className="w-full text-white">
                   <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                     {promotion.title}
@@ -144,7 +144,7 @@ const PromotionStatic: React.FC = () => {
       ) : (
         // Fallback for only one promotion
         promotions.length === 1 && (
-          <div className="flex flex-row items-center justify-between rounded-lg bg-black px-4 py-24 lg:px-12 lg:py-24">
+          <div className="flex flex-row items-center justify-between gap-4 rounded-lg bg-black px-4 py-24 lg:px-12 lg:py-24">
             <div className="w-full text-white">
               <h3 className="text-3xl font-bold lg:mb-2 lg:text-4xl">
                 {promotions[0].title}
