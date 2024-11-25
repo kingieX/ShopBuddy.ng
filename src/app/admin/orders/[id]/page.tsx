@@ -65,7 +65,9 @@ const OrdersDetails = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const res = await fetch(`/api/admin/orders/${orderId}`);
+        const res = await fetch(`/api/admin/orders/${orderId}`, {
+          method: 'GET',
+        });
         if (!res.ok) throw new Error('Failed to fetch order');
         const data = await res.json();
         setOrder(data);

@@ -85,7 +85,9 @@ const Orders: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('/api/admin/orders'); // Assuming this is the route you created
+        const response = await fetch('/api/admin/orders', {
+          method: 'GET',
+        }); // Assuming this is the route you created
         const data = await response.json();
         setOrders(data.orders);
         console.log('Orders:', data);

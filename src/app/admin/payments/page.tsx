@@ -52,7 +52,9 @@ const Payments: React.FC = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await fetch('/api/admin/payment');
+        const response = await fetch('/api/admin/payment', {
+          method: 'GET',
+        });
         const data = await response.json();
         setPayments(data.payments);
         console.log('Payment data: ', data);
