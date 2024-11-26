@@ -77,74 +77,43 @@ const getStatusColor = (status: OrderStatus) => {
       return 'text-gray-500';
   }
 };
-
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [activeTab, setActiveTab] = useState<string>('all');
 
-  // Fetch orders on component mount and when data changes
-  const fetchOrders = async () => {
-    try {
-      const response = await fetch('/api/admin/orders', {
-        method: 'GET',
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
-          Pragma: 'no-cache',
-          Expires: '0',
-        },
-      });
-
-      if (!response.ok) {
-        console.error(
-          'Error fetching orders:',
-          response.status,
-          response.statusText
-        );
-        return;
-      }
-
-      const data = await response.json();
-      setOrders(data.orders);
-      console.log('Fetched orders:', data.orders);
-    } catch (error) {
-      console.error('Failed to fetch orders:', error);
-    }
-  };
-
-  // Fetch orders on mount and when the status is updated
+  // Fetch orders on component mount
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('/api/admin/orders', {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        }); // Assuming this is the route you created
+        const data = await response.json();
+        setOrders(data.orders);
+        console.log('Orders:', data);
+
+        if (!response.ok) {
+          console.error(
+            'Error fetching orders:',
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error('Failed to fetch orders:', error);
+      }
+    };
     fetchOrders();
-  }, []); // Empty array ensures fetch is done only once on mount
+  }, []);
 
   // Filter orders based on activeTab
   const filteredOrders =
     activeTab === 'all'
       ? orders
       : orders.filter((order) => order.status.toLowerCase() === activeTab);
-
-  // Update order status and refetch orders
-  const updateOrderStatus = async (orderId: string, newStatus: OrderStatus) => {
-    try {
-      const response = await fetch(`/api/admin/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!response.ok) {
-        console.error('Failed to update order status');
-        return;
-      }
-
-      // Refetch orders after status update
-      fetchOrders();
-    } catch (error) {
-      console.error('Error updating order status:', error);
-    }
-  };
 
   return (
     <div>
@@ -214,6 +183,7 @@ const Orders: React.FC = () => {
                             <TableHead className="font-semibold">
                               Order Status
                             </TableHead>
+                            {/* <TableHead className="text-right">Actions</TableHead> */}
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -229,16 +199,16 @@ const Orders: React.FC = () => {
                                     {order.user?.lastName}
                                   </div>
                                   <div className="text-muted-foreground hidden text-sm md:inline">
-                                    {order.user?.email}
+                                    {order.user?.email} <br />
                                   </div>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
                                   {new Date(order.createdAt).toLocaleString(
                                     'en-US',
                                     {
-                                      weekday: 'short',
+                                      weekday: 'short', // 'long' for full name
                                       year: 'numeric',
-                                      month: 'short',
+                                      month: 'short', // 'long' for full month name
                                       day: 'numeric',
                                       hour: '2-digit',
                                       minute: '2-digit',
@@ -278,7 +248,7 @@ const Orders: React.FC = () => {
                                       <DropdownMenuRadioGroup
                                         value={order.status}
                                         onValueChange={(newStatus) => {
-                                          // Update the order status in the frontend
+                                          // Update the order status
                                           const updatedOrders = orders.map(
                                             (o) =>
                                               o.id === order.id
@@ -290,10 +260,21 @@ const Orders: React.FC = () => {
                                                 : o
                                           );
                                           setOrders(updatedOrders);
-                                          // Update status on the server
-                                          updateOrderStatus(
-                                            order.id,
-                                            newStatus as OrderStatus
+                                          // Save the status to the server here
+                                          fetch(
+                                            `/api/admin/orders/${order.id}`,
+                                            {
+                                              method: 'PATCH',
+                                              headers: {
+                                                'Content-Type':
+                                                  'application/json',
+                                                'Cache-Control': 'no-cache',
+                                              },
+
+                                              body: JSON.stringify({
+                                                status: newStatus,
+                                              }),
+                                            }
                                           );
                                         }}
                                       >

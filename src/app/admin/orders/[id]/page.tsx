@@ -68,7 +68,9 @@ const OrdersDetails = () => {
         const res = await fetch(`/api/admin/orders/${orderId}`, {
           method: 'GET',
           headers: {
-            'Cache-Control': 'no-cache',
+            'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
+            Pragma: 'no-cache',
+            Expires: '0',
           },
         });
         if (!res.ok) throw new Error('Failed to fetch order');

@@ -39,7 +39,9 @@ export default function Products() {
         const response = await fetch(`/api/products/all`, {
           method: 'GET',
           headers: {
-            'Cache-Control': 'no-cache',
+            'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
+            Pragma: 'no-cache',
+            Expires: '0',
           },
         });
         if (!response.ok) {
