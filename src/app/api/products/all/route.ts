@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   try {
     // Get all products from the database without pagination
     const products = await prisma.product.findMany({
-      orderBy: { createdAt: 'desc' }, // Optional: Order by created date in descending order
+      orderBy: { updatedAt: 'desc' }, // Optional: Order by created date in descending order
       include: {
         category: true, // Include related category information if needed
       },

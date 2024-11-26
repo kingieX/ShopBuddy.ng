@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     const products = await prisma.product.findMany({
       skip: (page - 1) * limit, // Skip products based on the current page
       take: limit, // Limit the number of products
-      orderBy: { createdAt: 'desc' },
+      orderBy: { updatedAt: 'desc' },
       include: {
         category: true, // Include category
       },
