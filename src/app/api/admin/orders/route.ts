@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   try {
     const orders = await prisma.order.findMany({
       orderBy: {
-        updatedAt: 'desc', // Sort by the updatedAt field in descending order
+        updatedAt: 'desc', // Ensure you're ordering by the most recent updates
       },
       include: {
         billingDetails: true,
@@ -14,12 +14,14 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const response = NextResponse.json({ orders }, { status: 200 });
-
-    // Set Cache-Control headers to avoid caching
-    response.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate'
+    const response = NextResponse.json(
+      { orders },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate', // Disable caching for this API
+        },
+      }
     );
     return response;
   } catch (error) {

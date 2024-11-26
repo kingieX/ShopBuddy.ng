@@ -115,7 +115,7 @@ const Orders: React.FC = () => {
   // Fetch orders on mount and when the status is updated
   useEffect(() => {
     fetchOrders();
-  }, []); // Empty array ensures fetch is done only once on mount
+  }, [orders]); // Empty array ensures fetch is done only once on mount
 
   // Filter orders based on activeTab
   const filteredOrders =

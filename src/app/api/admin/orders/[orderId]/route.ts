@@ -81,13 +81,18 @@ export async function GET(
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    const response = NextResponse.json(order, { status: 200 });
+    const response = NextResponse.json(order, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store', // Disable caching for this API
+      },
+    });
 
-    // Set Cache-Control headers to avoid caching
-    response.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate'
-    );
+    // // Set Cache-Control headers to avoid caching
+    // response.headers.set(
+    //   'Cache-Control',
+    //   'no-store, no-cache, must-revalidate'
+    // );
     return response;
   } catch (error) {
     console.error('Error fetching order details:', error);

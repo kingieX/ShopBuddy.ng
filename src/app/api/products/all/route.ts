@@ -21,13 +21,21 @@ export async function GET(request: Request) {
     }));
 
     // Return all products in the response
-    const response = NextResponse.json({ products: serializedProducts });
+    const response = NextResponse.json(
+      { products: serializedProducts },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store', // Disable caching for this API
+        },
+      }
+    );
 
     // Set Cache-Control headers to avoid caching
-    response.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate'
-    );
+    // response.headers.set(
+    //   'Cache-Control',
+    //   'no-store, no-cache, must-revalidate'
+    // );
     return response;
   } catch (error) {
     console.error('Error fetching products:', error);

@@ -12,13 +12,21 @@ export async function GET(req: NextRequest) {
         order: { include: { items: true, billingDetails: true } },
       },
     });
-    const response = NextResponse.json({ payments }, { status: 200 });
-
-    // Set Cache-Control headers to avoid caching
-    response.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate'
+    const response = NextResponse.json(
+      { payments },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store', // Disable caching for this API
+        },
+      }
     );
+
+    // // Set Cache-Control headers to avoid caching
+    // response.headers.set(
+    //   'Cache-Control',
+    //   'no-store, no-cache, must-revalidate'
+    // );
     return response;
   } catch (error) {
     console.error('Error fetching payments:', error);
