@@ -75,6 +75,7 @@ const OrdersDetails = () => {
         });
         if (!res.ok) throw new Error('Failed to fetch order');
         const data = await res.json();
+        console.log('Fetched orders:', data); // Check the data being returned
         setOrder(data);
         console.log('Order:', data);
       } catch (error) {

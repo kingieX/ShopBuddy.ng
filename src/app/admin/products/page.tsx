@@ -48,6 +48,7 @@ export default function Products() {
           throw new Error('Failed to fetch products');
         }
         const data = await response.json();
+        console.log('Fetched orders:', data); // Check the data being returned
         setAllProducts(data.products); // Store all products for search
         setTotalProducts(data.total); // Store total products count for pagination
         setFilteredProducts(data.products); // Set initial filtered products (all products initially)

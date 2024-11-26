@@ -61,6 +61,7 @@ const Payments: React.FC = () => {
           },
         });
         const data = await response.json();
+        console.log('Fetched orders:', data); // Check the data being returned
         setPayments(data.payments);
         console.log('Payment data: ', data);
       } catch (error) {
