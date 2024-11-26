@@ -87,10 +87,21 @@ const Orders: React.FC = () => {
       try {
         const response = await fetch('/api/admin/orders', {
           method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
         }); // Assuming this is the route you created
         const data = await response.json();
         setOrders(data.orders);
         console.log('Orders:', data);
+
+        if (!response.ok) {
+          console.error(
+            'Error fetching orders:',
+            response.status,
+            response.statusText
+          );
+        }
       } catch (error) {
         console.error('Failed to fetch orders:', error);
       }
@@ -257,7 +268,9 @@ const Orders: React.FC = () => {
                                               headers: {
                                                 'Content-Type':
                                                   'application/json',
+                                                'Cache-Control': 'no-cache',
                                               },
+
                                               body: JSON.stringify({
                                                 status: newStatus,
                                               }),

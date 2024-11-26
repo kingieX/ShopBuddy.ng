@@ -31,6 +31,9 @@ const CategoryPage = () => {
       try {
         const response = await fetch('/api/admin/categories', {
           method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
         });
         if (!response.ok) {
           throw new Error('Network response was not ok');

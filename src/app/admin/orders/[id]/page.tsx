@@ -67,6 +67,9 @@ const OrdersDetails = () => {
       try {
         const res = await fetch(`/api/admin/orders/${orderId}`, {
           method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
         });
         if (!res.ok) throw new Error('Failed to fetch order');
         const data = await res.json();

@@ -54,6 +54,9 @@ const Payments: React.FC = () => {
       try {
         const response = await fetch('/api/admin/payment', {
           method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
         });
         const data = await response.json();
         setPayments(data.payments);

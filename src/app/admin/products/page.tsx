@@ -36,7 +36,12 @@ export default function Products() {
   useEffect(() => {
     async function fetchAllProducts() {
       try {
-        const response = await fetch(`/api/products/all`, { method: 'GET' });
+        const response = await fetch(`/api/products/all`, {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
