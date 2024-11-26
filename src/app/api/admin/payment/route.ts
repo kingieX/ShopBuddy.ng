@@ -12,7 +12,14 @@ export async function GET(req: NextRequest) {
         order: { include: { items: true, billingDetails: true } },
       },
     });
-    return NextResponse.json({ payments }, { status: 200 });
+    const response = NextResponse.json({ payments }, { status: 200 });
+
+    // Set Cache-Control headers to avoid caching
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate'
+    );
+    return response;
   } catch (error) {
     console.error('Error fetching payments:', error);
     return NextResponse.json(

@@ -42,7 +42,14 @@ export async function PATCH(
       );
     }
 
-    return NextResponse.json({ updatedOrder }, { status: 200 });
+    const response = NextResponse.json({ updatedOrder }, { status: 200 });
+
+    // Set Cache-Control headers to avoid caching
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate'
+    );
+    return response;
   } catch (error) {
     console.error('Error updating order status:', error);
     return NextResponse.json(
@@ -74,7 +81,14 @@ export async function GET(
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    return NextResponse.json(order, { status: 200 });
+    const response = NextResponse.json(order, { status: 200 });
+
+    // Set Cache-Control headers to avoid caching
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate'
+    );
+    return response;
   } catch (error) {
     console.error('Error fetching order details:', error);
     return NextResponse.json(

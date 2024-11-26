@@ -106,7 +106,7 @@ const Orders: React.FC = () => {
       const data = await response.json();
       console.log('Fetched orders:', data); // Check the data being returned
       setOrders(data.orders);
-      console.log('Fetched orders:', data.orders);
+      // console.log('Fetched orders:', data.orders);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
     }

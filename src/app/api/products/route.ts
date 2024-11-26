@@ -28,12 +28,19 @@ export async function GET(request: Request) {
       updatedAt: product.updatedAt.toISOString(),
     }));
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       products: serializedProducts,
       total: totalProducts, // Total product count
       page,
       limit,
     });
+
+    // Set Cache-Control headers to avoid caching
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate'
+    );
+    return response;
   } catch (error) {
     console.error('Error fetching products:', error);
     return new NextResponse('Failed to fetch products', { status: 500 });

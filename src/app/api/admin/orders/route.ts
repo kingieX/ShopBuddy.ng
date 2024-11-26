@@ -1,4 +1,3 @@
-// app/api/admin/orders/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db/prisma';
 
@@ -6,7 +5,7 @@ export async function GET(req: NextRequest) {
   try {
     const orders = await prisma.order.findMany({
       orderBy: {
-        updatedAt: 'desc', // Sort by the createdAt field in descending order (most recent first)
+        updatedAt: 'desc', // Sort by the updatedAt field in descending order
       },
       include: {
         billingDetails: true,
@@ -14,7 +13,15 @@ export async function GET(req: NextRequest) {
         user: { select: { firstName: true, lastName: true, email: true } },
       },
     });
-    return NextResponse.json({ orders }, { status: 200 });
+
+    const response = NextResponse.json({ orders }, { status: 200 });
+
+    // Set Cache-Control headers to avoid caching
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate'
+    );
+    return response;
   } catch (error) {
     console.error('Error fetching orders:', error);
     return NextResponse.json(
