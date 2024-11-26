@@ -13,7 +13,12 @@ const ErrorCheckWrapper: React.FC<ErrorCheckWrapperProps> = ({ children }) => {
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        const res = await fetch('/api/check-db', { method: 'GET' });
+        const res = await fetch('/api/check-db', {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        });
         const data = await res.json();
 
         if (data.success) {
