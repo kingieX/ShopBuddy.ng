@@ -124,26 +124,60 @@ const Orders: React.FC = () => {
       : orders.filter((order) => order.status.toLowerCase() === activeTab);
 
   // Update order status and refetch orders
+  // const updateOrderStatus = async (orderId: string, newStatus: OrderStatus) => {
+  //   try {
+  //     const response = await fetch(`/api/admin/orders/${orderId}`, {
+  //       method: 'PATCH',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
+  //       },
+  //       body: JSON.stringify({ status: newStatus }),
+  //     });
+
+  //     if (!response.ok) {
+  //       console.error('Failed to update order status');
+  //       return;
+  //     }
+
+  //     // Refetch orders after status update
+  //     await fetchOrders();
+  //   } catch (error) {
+  //     console.error('Error updating order status:', error);
+  //   }
+  // };
+
+  // Optimistic Update: Update the UI immediately and then update the server.
   const updateOrderStatus = async (orderId: string, newStatus: OrderStatus) => {
+    // Optimistically update the UI
+    setOrders((prevOrders) =>
+      prevOrders.map((o) =>
+        o.id === orderId ? { ...o, status: newStatus } : o
+      )
+    );
+
     try {
       const response = await fetch(`/api/admin/orders/${orderId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
         },
         body: JSON.stringify({ status: newStatus }),
       });
 
       if (!response.ok) {
         console.error('Failed to update order status');
-        return;
+        // If the server update failed, revert the change.
+        fetchOrders(); // Refetch all orders to ensure they are in sync.
+      } else {
+        // Optionally: Refetch orders to ensure data consistency after the update.
+        // fetchOrders();
       }
-
-      // Refetch orders after status update
-      fetchOrders();
     } catch (error) {
       console.error('Error updating order status:', error);
+      // If there was an error, revert the status update optimistically made
+      fetchOrders(); // Refetch all orders to sync them correctly
     }
   };
 
@@ -280,8 +314,8 @@ const Orders: React.FC = () => {
                                         value={order.status}
                                         onValueChange={(newStatus) => {
                                           // Update the order status in the frontend
-                                          const updatedOrders = orders.map(
-                                            (o) =>
+                                          setOrders((prevOrders) =>
+                                            prevOrders.map((o) =>
                                               o.id === order.id
                                                 ? {
                                                     ...o,
@@ -289,8 +323,9 @@ const Orders: React.FC = () => {
                                                       newStatus as OrderStatus,
                                                   }
                                                 : o
+                                            )
                                           );
-                                          setOrders(updatedOrders);
+
                                           // Update status on the server
                                           updateOrderStatus(
                                             order.id,
