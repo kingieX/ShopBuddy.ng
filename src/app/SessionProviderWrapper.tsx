@@ -17,12 +17,12 @@ export default function SessionProviderWrapper({
     <SessionProvider>
       <CartContextProvider>
         <WishlistProvider>
-          {/* <ErrorCheckWrapper> */}
-          <ScrollToTop>
-            <Toaster position="top-right" reverseOrder={false} />
-            {children}
-          </ScrollToTop>
-          {/* </ErrorCheckWrapper> */}
+          <ErrorCheckWrapper>
+            <ScrollToTop>
+              <Toaster position="top-right" reverseOrder={false} />
+              {children}
+            </ScrollToTop>
+          </ErrorCheckWrapper>
         </WishlistProvider>
       </CartContextProvider>
     </SessionProvider>
