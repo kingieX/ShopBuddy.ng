@@ -14,28 +14,8 @@
 
 // if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma;
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/edge';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
-const prismaClientSingleton = () => {
-  return new PrismaClient();
-};
-
-// Add the singleton client to the global object in development
-declare const globalThis: {
-  prismaGlobal?: PrismaClient;
-} & typeof global;
-
-let prisma: PrismaClient;
-
-if (process.env.NODE_ENV === 'production') {
-  // In production, always create a new PrismaClient instance to ensure it's not cached
-  prisma = new PrismaClient();
-} else {
-  // In development, use a global singleton to reuse the Prisma client between requests
-  if (!globalThis.prismaGlobal) {
-    globalThis.prismaGlobal = prismaClientSingleton();
-  }
-  prisma = globalThis.prismaGlobal;
-}
-
+const prisma = new PrismaClient().$extends(withAccelerate());
 export default prisma;
