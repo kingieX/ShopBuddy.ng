@@ -46,7 +46,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: 'Password updated successfully' },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store', // Disable caching for this API
+        },
+      }
     );
   } catch (error) {
     console.error(error);

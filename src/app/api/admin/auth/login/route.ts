@@ -50,7 +50,15 @@ export async function POST(req: Request) {
       { expiresIn: '1h' }
     );
 
-    return NextResponse.json({ token, email }, { status: 200 });
+    return NextResponse.json(
+      { token, email },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store', // Disable caching for this API
+        },
+      }
+    );
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

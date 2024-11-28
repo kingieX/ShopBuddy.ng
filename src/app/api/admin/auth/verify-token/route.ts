@@ -17,7 +17,15 @@ export async function POST(request: Request) {
     const decoded = jwt.verify(token, secret);
 
     // Token is valid, respond with success
-    return NextResponse.json({ message: 'Token is valid' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Token is valid' },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store', // Disable caching for this API
+        },
+      }
+    );
   } catch (error) {
     // Token verification failed (expired or invalid token)
     return NextResponse.json({ message: 'Token is invalid' }, { status: 401 });

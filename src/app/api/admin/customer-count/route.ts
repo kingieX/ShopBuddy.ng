@@ -44,7 +44,12 @@ export async function GET(req: NextRequest) {
         totalCustomers: currentMonthUsers,
         percentageIncrease: percentageIncrease,
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store', // Disable caching for this API
+        },
+      }
     );
   } catch (error) {
     console.error('Error fetching users:', error);
