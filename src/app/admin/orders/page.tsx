@@ -91,6 +91,7 @@ const Orders: React.FC = () => {
           'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
           Pragma: 'no-cache',
           Expires: '0',
+          cache: 'no-store',
         },
       });
 
