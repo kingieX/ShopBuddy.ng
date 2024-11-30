@@ -71,6 +71,7 @@ const OrdersDetails = () => {
             'Cache-Control': 'no-store, no-cache, must-revalidate', // Prevent caching
             Pragma: 'no-cache',
             Expires: '0',
+            cache: 'no-store',
           },
         });
         if (!res.ok) throw new Error('Failed to fetch order');
