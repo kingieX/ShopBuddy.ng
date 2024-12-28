@@ -7,313 +7,50 @@
   - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 6.9s
- ○ Compiling / ...
- ✓ Compiled / in 60s
- GET / 200 in 66869ms
- ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
- ○ Compiling /_not-found/page ...
- ✓ Compiled /_not-found/page in 2.8s
- GET /app-store.png 404 in 3993ms
- ⨯ The requested resource isn't a valid image for /app-store.png received text/html; charset=utf-8
- GET /google-play.png 404 in 4351ms
- ⨯ The requested resource isn't a valid image for /google-play.png received text/html; charset=utf-8
- ○ Compiling /api/admin/categories ...
- ✓ Compiled /api/admin/categories in 18.2s
- GET /api/check-db 200 in 18771ms
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/cart 401 in 19347ms
- ○ Compiling /api/auth/[...nextauth] ...
- ✓ Compiled /api/auth/[...nextauth] in 803ms
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session 304 in 1733ms
- GET /api/products?limit=8 200 in 22160ms
- GET /api/admin/promotions 200 in 22762ms
- GET /api/admin/categories 200 in 23084ms
- GET /api/products/all 200 in 23022ms
- GET /api/cart 401 in 890ms
- GET /api/check-db 200 in 5728ms
- GET /api/admin/promotions 200 in 2535ms
- GET /api/admin/categories 200 in 3419ms
- GET /api/admin/categories 200 in 4446ms
- GET /api/products/all 200 in 4503ms
- GET /api/auth/session 200 in 275ms
- GET /api/admin/promotions 200 in 2597ms
- GET /api/admin/promotions 200 in 5051ms
- GET /api/admin/categories 200 in 4217ms
- GET /api/products?limit=8 200 in 5533ms
- GET /api/check-db 200 in 7199ms
- GET /api/check-db 200 in 4684ms
- GET /api/check-db 200 in 6537ms
- GET /api/check-db 200 in 6533ms
- GET /api/check-db 200 in 6443ms
- GET /api/check-db 200 in 6441ms
- ○ Compiling /error ...
- ✓ Compiled /error in 13s
- ✓ Compiled in 1594ms
- GET /api/admin/promotions 200 in 3327ms
- GET /api/products/all 200 in 4335ms
- GET /api/admin/categories 200 in 4634ms
- GET /api/products?limit=8 200 in 5161ms
- GET /api/admin/promotions 200 in 2377ms
- GET /api/admin/promotions 200 in 1877ms
- GET /api/products/all 200 in 3815ms
- GET /api/products?limit=8 200 in 3348ms
- GET /api/admin/categories 200 in 4051ms
- GET /api/admin/promotions 200 in 2018ms
- GET /api/admin/categories 200 in 3666ms
- GET /api/admin/categories 200 in 4507ms
- ○ Compiling /category/[id] ...
- ✓ Compiled /category/[id] in 2.8s
- ✓ Compiled /api/admin/categories/[id] in 494ms
- GET /api/admin/categories/bc51e6f5-010f-40fd-9d65-bd1f857d0dd3 200 in 5776ms
- GET /api/admin/categories/bc51e6f5-010f-40fd-9d65-bd1f857d0dd3 200 in 7958ms
- ✓ Compiled in 1518ms
- GET /category/bc51e6f5-010f-40fd-9d65-bd1f857d0dd3 200 in 4005ms
- GET /api/cart 401 in 876ms
- GET /api/auth/session 304 in 772ms
- GET /api/cart 401 in 860ms
- GET /api/auth/session 304 in 321ms
- GET /api/check-db 200 in 10217ms
- GET /api/check-db 200 in 10233ms
- GET /api/check-db 200 in 4761ms
- GET /api/check-db 200 in 4759ms
- GET /api/check-db 200 in 7110ms
- GET /api/check-db 200 in 7107ms
- GET /api/check-db 200 in 5976ms
- GET /api/check-db 200 in 5973ms
- GET /api/admin/categories/bc51e6f5-010f-40fd-9d65-bd1f857d0dd3 200 in 3158ms
- GET /api/admin/categories/bc51e6f5-010f-40fd-9d65-bd1f857d0dd3 200 in 2954ms
- ✓ Compiled in 1717ms
- GET /error 200 in 2213ms
- GET /api/cart 401 in 826ms
- GET /api/auth/session 304 in 514ms
- GET /api/cart 401 in 478ms
- GET /api/auth/session 304 in 197ms
- GET /api/check-db 200 in 3024ms
- GET /api/check-db 200 in 2992ms
- GET / 200 in 929ms
- GET /api/cart 401 in 2484ms
- GET /api/auth/session 304 in 1064ms
- GET /api/cart 401 in 1154ms
- GET /api/auth/session 304 in 361ms
- GET /api/check-db 200 in 10352ms
- GET /api/check-db 200 in 11332ms
- GET /api/check-db 200 in 5849ms
- GET /api/check-db 200 in 5847ms
- GET /api/check-db 200 in 7280ms
- GET /api/check-db 200 in 7274ms
- GET /api/check-db 200 in 5957ms
- GET /api/check-db 200 in 5949ms
- GET /api/admin/promotions 200 in 4911ms
- GET /api/admin/categories 200 in 6126ms
- GET /api/products/all 200 in 6212ms
- GET /api/products?limit=8 200 in 6541ms
- GET /api/admin/promotions 200 in 2198ms
- GET /api/admin/promotions 200 in 2166ms
- GET /api/products/all 200 in 3333ms
- GET /api/admin/categories 200 in 3575ms
- GET /api/products?limit=8 200 in 3683ms
- GET /api/admin/promotions 200 in 3181ms
- GET /api/admin/categories 200 in 4604ms
- GET /api/admin/categories 200 in 3181ms
- ✓ Compiled in 1699ms
- GET /api/check-db 200 in 7290ms
- GET /api/check-db 200 in 7283ms
- GET / 200 in 3835ms
- GET /api/cart 401 in 660ms
- GET /api/auth/session 304 in 469ms
- GET /api/cart 401 in 628ms
- GET /api/auth/session 304 in 251ms
- GET /api/check-db 200 in 5679ms
- GET /api/check-db 200 in 5730ms
- GET /api/check-db 200 in 6556ms
- GET /api/check-db 200 in 6555ms
- GET /api/check-db 200 in 6246ms
- GET /api/check-db 200 in 6244ms
- GET /api/check-db 200 in 6759ms
- GET /api/check-db 200 in 6758ms
- GET /api/admin/promotions 200 in 3470ms
- GET /api/admin/categories 200 in 4866ms
- GET /api/products/all 200 in 5752ms
- GET /api/admin/promotions 200 in 2467ms
- GET /api/products?limit=8 200 in 5968ms
- GET /api/admin/promotions 200 in 3593ms
- GET /api/products/all 200 in 4758ms
- GET /api/admin/categories 200 in 5825ms
- GET /api/products?limit=8 200 in 5158ms
- GET /api/admin/promotions 200 in 2315ms
- GET /api/admin/categories 200 in 3013ms
- GET /api/admin/categories 200 in 3007ms
- ✓ Compiled in 3s
- GET /api/check-db 200 in 7516ms
- GET /api/check-db 200 in 7526ms
- GET / 200 in 5831ms
- GET /api/cart 401 in 1175ms
- GET /api/admin/promotions 200 in 2931ms
- GET /api/auth/session 304 in 288ms
- GET /api/cart 401 in 476ms
- GET /api/admin/categories 200 in 4478ms
- GET /api/products/all 200 in 4464ms
- GET /api/products?limit=8 200 in 4498ms
- GET /api/auth/session 304 in 368ms
- GET /api/check-db 200 in 6469ms
- GET /api/check-db 200 in 5075ms
- GET /api/admin/promotions 200 in 2611ms
- GET /api/products/all 200 in 3899ms
- GET /api/admin/categories 200 in 4020ms
- GET /api/admin/promotions 200 in 2157ms
- GET /api/products?limit=8 200 in 3467ms
- GET /api/admin/promotions 200 in 2779ms
- GET /api/admin/categories 200 in 4243ms
- GET /api/admin/categories 200 in 4396ms
- GET /api/products/all 200 in 2389ms
- GET /api/products?limit=8 200 in 2396ms
- GET /api/admin/categories 200 in 2492ms
- GET /api/admin/promotions 200 in 2413ms
- GET / 200 in 1530ms
- GET /api/cart 401 in 2777ms
- GET /api/admin/promotions 200 in 4186ms
- GET /api/auth/session 304 in 414ms
- GET /api/admin/categories 200 in 5488ms
- GET /api/products/all 200 in 5434ms
- GET /api/cart 401 in 1357ms
- GET /api/auth/session 304 in 218ms
- GET /api/products?limit=8 200 in 5100ms
- GET /api/admin/promotions 200 in 2864ms
- GET /api/check-db 200 in 8396ms
- GET /api/check-db 200 in 8393ms
- GET /api/products?limit=8 200 in 4962ms
- GET /api/admin/promotions 200 in 2649ms
- GET /api/admin/categories 200 in 3708ms
- GET /api/products/all 200 in 3816ms
- GET /api/admin/promotions 200 in 2868ms
- GET /api/admin/categories 200 in 4610ms
- GET /api/admin/categories 200 in 8920ms
- ✓ Compiled in 1893ms
-Checking database connection...
-Checking database connection...
-Database connected successfully.
-Database connected successfully.
- GET /api/check-db 200 in 11412ms
- GET /api/check-db 200 in 11400ms
- GET / 200 in 4765ms
- GET /api/cart 401 in 835ms
-Checking database connection...
-Checking database connection...
- GET /api/auth/session 304 in 548ms
- GET /api/cart 401 in 558ms
- GET /api/auth/session 304 in 211ms
-Database connected successfully.
-Database connected successfully.
- GET /api/check-db 200 in 7439ms
- GET /api/check-db 200 in 7439ms
-Checking database connection...
-Checking database connection...
-Database connected successfully.
-Database connected successfully.
- GET /api/check-db 200 in 6438ms
- GET /api/check-db 200 in 6435ms
-Checking database connection...
-Checking database connection...
-Database connected successfully.
-Database connected successfully.
- GET /api/check-db 200 in 6369ms
- GET /api/check-db 200 in 6364ms
-Checking database connection...
-Checking database connection...
-Database connected successfully.
-Database connected successfully.
- GET /api/check-db 200 in 6820ms
- GET /api/check-db 200 in 6817ms
- GET /api/admin/categories 200 in 4319ms
- GET /api/admin/promotions 200 in 4501ms
- GET /api/products/all 200 in 5993ms
- GET /api/products?limit=8 200 in 6025ms
- GET /api/admin/promotions 200 in 1785ms
- GET /api/admin/categories 200 in 3079ms
- GET /api/admin/promotions 200 in 2545ms
- GET /api/products/all 200 in 4000ms
- GET /api/products?limit=8 200 in 4058ms
- GET /api/admin/categories 200 in 3035ms
- GET /api/admin/promotions 200 in 2427ms
- GET /api/admin/categories 200 in 3351ms
- GET /google-play.png 404 in 1844ms
- ⨯ The requested resource isn't a valid image for /google-play.png received text/html; charset=utf-8
- GET /app-store.png 404 in 1939ms
- ⨯ The requested resource isn't a valid image for /app-store.png received text/html; charset=utf-8
- ✓ Compiled in 912ms
- GET / 200 in 5064ms
-Checking database connection...
-Checking database connection...
- GET /api/cart 401 in 795ms
- GET /api/auth/session 304 in 458ms
- GET /api/cart 401 in 717ms
- GET /api/auth/session 304 in 339ms
-Database connected successfully.
-Database connected successfully.
- GET /api/check-db 200 in 11128ms
- GET /api/check-db 200 in 10965ms
- GET /api/admin/promotions 200 in 5018ms
- GET /api/admin/categories 200 in 6417ms
- GET /api/products/all 200 in 6603ms
- GET /api/products?limit=8 200 in 7187ms
- GET /api/admin/promotions 200 in 2382ms
- GET /api/admin/promotions 200 in 2961ms
- GET /api/admin/categories 200 in 4725ms
- GET /api/products/all 200 in 4606ms
- GET /api/products?limit=8 200 in 4666ms
- GET /api/admin/promotions 200 in 3109ms
- GET /api/admin/categories 200 in 4146ms
- GET /api/admin/categories 200 in 3761ms
- GET /api/admin/categories/b7465c01-ec5a-4049-8a61-1319aa32e342 200 in 3439ms
- GET /api/admin/categories/b7465c01-ec5a-4049-8a61-1319aa32e342 200 in 3481ms
- GET /api/admin/promotions 200 in 3682ms
- GET /api/admin/categories 200 in 5042ms
- GET /api/products/all 200 in 5029ms
- GET /api/products?limit=8 200 in 5279ms
- GET /api/admin/promotions 200 in 1901ms
- GET /api/admin/promotions 200 in 2411ms
- GET /api/admin/categories 200 in 4064ms
- GET /api/products?limit=8 200 in 3805ms
- GET /api/products/all 200 in 4203ms
- GET /api/admin/promotions 200 in 2085ms
- GET /api/admin/categories 200 in 2589ms
- GET /api/admin/categories 200 in 2553ms
+ ✓ Ready in 9.1s
  ○ Compiling /admin/overview ...
- ✓ Compiled /admin/overview in 48.1s
- GET /admin/overview 200 in 51240ms
- GET /api/cart 401 in 1278ms
+ ✓ Compiled /admin/overview in 94.6s
+ GET /admin/overview 200 in 99902ms
+ ○ Compiling /api/cart ...
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session 304 in 4328ms
 Checking database connection...
 Checking database connection...
- GET /api/auth/session 304 in 564ms
- GET /api/cart 401 in 737ms
- GET /api/auth/session 304 in 313ms
+ GET /api/auth/session 304 in 1576ms
+ ✓ Compiled /api/cart in 15.1s
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/cart 401 in 16251ms
+ GET /api/cart 401 in 367ms
 Database connected successfully.
 Database connected successfully.
- GET /api/check-db 200 in 11750ms
- GET /api/check-db 200 in 11747ms
+ GET /api/check-db 200 in 21169ms
+ GET /api/check-db 200 in 20698ms
  ○ Compiling /api/admin/auth/verify-token ...
- ✓ Compiled /api/admin/auth/verify-token in 1462ms
- POST /api/admin/auth/verify-token 401 in 1966ms
- POST /api/admin/auth/verify-token 401 in 2007ms
- ○ Compiling /adminAuth/auth/login ...
- ✓ Compiled /adminAuth/auth/login in 5.8s
- ✓ Compiled /api/admin/auth/login in 274ms
- POST /api/admin/auth/login 200 in 3240ms
- POST /api/admin/auth/verify-token 200 in 907ms
- POST /api/admin/auth/verify-token 200 in 835ms
+ ✓ Compiled /api/admin/auth/verify-token in 2.7s
+ POST /api/admin/auth/verify-token 200 in 3271ms
+ POST /api/admin/auth/verify-token 200 in 3228ms
  ○ Compiling /api/admin/total-revenue ...
- GET /api/admin/paystack-balance 200 in 1872ms
- GET /api/admin/paystack-balance 200 in 1222ms
- ✓ Compiled /api/admin/total-revenue in 6.3s
- GET /api/admin/orders/total-last-6-months 200 in 11785ms
- GET /api/admin/customer-count 200 in 12099ms
- GET /api/admin/total-revenue 200 in 12203ms
- GET /api/admin/orders-count 200 in 12717ms
- GET /api/admin/orders/total-last-6-months 200 in 4033ms
- GET /api/admin/total-revenue 200 in 5441ms
- GET /api/admin/customer-count 200 in 5463ms
- GET /api/admin/orders-count 200 in 5068ms
+ GET /api/admin/paystack-balance 200 in 1676ms
+ GET /api/admin/paystack-balance 200 in 1190ms
+ ✓ Compiled /api/admin/total-revenue in 7s
+ GET /api/admin/orders/total-last-6-months 200 in 14697ms
+ GET /api/admin/orders-count 200 in 14954ms
+ GET /api/admin/customer-count 200 in 15699ms
+ GET /api/admin/total-revenue 200 in 15806ms
+ GET /api/admin/orders/total-last-6-months 200 in 4183ms
+ GET /api/admin/total-revenue 200 in 4719ms
+ GET /api/admin/customer-count 200 in 4839ms
+ GET /api/admin/orders-count 200 in 5577ms
+ ○ Compiling /admin/products ...
+ ✓ Compiled /admin/products in 9.2s
+ ○ Compiling /api/products/all ...
+ ✓ Compiled /api/products/all in 549ms
+ GET /api/products/all 200 in 4692ms
+ GET /api/products/all 200 in 4802ms
+ ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
+ ○ Compiling /api/products/[id] ...
+ ✓ Compiled /api/products/[id] in 7.1s
+ DELETE /api/products/be92b7f0-1310-49a1-a4a6-38f0b107e0d5 200 in 18025ms
+[?25h
