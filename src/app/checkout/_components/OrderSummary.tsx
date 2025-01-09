@@ -19,7 +19,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 
   if (!cart) return null;
 
-  const serviceCharge = 1000;
+  const serviceCharge = 3000;
 
   let vatValue;
   const rate = 2500;

@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         (item.product.salePrice || item.product.regularPrice) * item.quantity,
       0
     );
-    const serviceCharge = 1000;
+    const serviceCharge = 3000;
 
     let vat;
     if (totalPrice >= 2500) {

@@ -98,7 +98,7 @@ const CheckOutPage = () => {
       if (response.ok) {
         const data = await response.json();
 
-        const serviceCharge = 1000;
+        const serviceCharge = 3000;
 
         setOrderSummary({
           orderId: data.order.id, // Unique order ID
