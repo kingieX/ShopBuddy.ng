@@ -203,7 +203,7 @@ const OrdersDetails = () => {
                 <span>
                   <CurrencyFormatter
                     amount={
-                      order.totalAmount - order.deliveryFee - order.vat - 1000
+                      order.totalAmount - order.deliveryFee - order.vat - 3000
                     }
                   />
                 </span>
@@ -217,7 +217,7 @@ const OrdersDetails = () => {
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Service Fee</span>
                 <span>
-                  <CurrencyFormatter amount={1000} />
+                  <CurrencyFormatter amount={3000} />
                 </span>
               </li>
               <li className="flex items-center justify-between">
