@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-import Logo from '../../../assets/logo.png'; // Adjust the path as necessary
+import Logo from '../../../assets/logo.svg'; // Adjust the path as necessary
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);

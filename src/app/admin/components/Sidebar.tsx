@@ -11,7 +11,7 @@ import { MdOutlineSettingsSuggest } from 'react-icons/md';
 import { CgList } from 'react-icons/cg';
 import { Component, CircleGauge } from 'lucide-react';
 
-import Logo from '../../assets/logo.png';
+import Logo from '../../assets/logo.svg';
 import Image from 'next/image';
 
 const Sidebar = ({ closeSidebar }: { closeSidebar: () => void }) => {

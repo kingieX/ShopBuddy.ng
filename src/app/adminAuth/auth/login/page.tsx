@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Logo from '../../../assets/logo.png';
+import Logo from '../../../assets/logo.svg';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Input } from '@/components/ui/input';
