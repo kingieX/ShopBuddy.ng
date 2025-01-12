@@ -92,7 +92,7 @@ const Navbar = ({ isAuthPage }: { isAuthPage: boolean }) => {
           {/* left */}
           <div className="py-4">
             <Image
-              src="/assets/logo.svg"
+              src="/assets/logo.png"
               alt="Favicon"
               width={1000}
               height={1000}

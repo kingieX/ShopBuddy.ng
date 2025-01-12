@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Logo from '../../../assets/logo.svg';
+import Logo from '../../../assets/logo.png';
 
 export default function ApproveAdmin() {
   const [adminId, setAdminId] = useState<string | null>(null); // Initialize as null

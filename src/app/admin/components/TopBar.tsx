@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 import Sidebar from './Sidebar'; // Assuming Sidebar component exists
 import Image from 'next/image';
-import Logo from '../../assets/logo.svg';
+import Logo from '../../assets/logo.png';
 import { Button } from '@/components/ui/button';
 import { CircleUser } from 'lucide-react';
 import Link from 'next/link';
