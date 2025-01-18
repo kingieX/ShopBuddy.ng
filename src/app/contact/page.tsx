@@ -82,7 +82,7 @@ const ContactPage = () => {
                   We are available 24/7, 7 days a week.
                 </p>
                 <p className="mt-2">
-                  <strong>Phone:</strong> +2348111112222
+                  <strong>Phone:</strong> +2349065957905
                 </p>
               </div>
 
